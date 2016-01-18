@@ -1,0 +1,16 @@
+﻿CREATE TABLE [dbo].[Artist]
+(
+	[ArtistId]		INT					NOT NULL		IDENTITY(1,1)
+,	[Name]			[dbo].[Name]		NOT NULL
+,	[Biography]		NVARCHAR(4000)		NULL
+,	[WebsiteURL]	[dbo].[URL]			NULL
+,	[StartDate]		DATE				NULL
+,	[EndDate]		DATE				NULL
+
+,	[rowguid]		UNIQUEIDENTIFIER	NOT NULL		ROWGUIDCOL		CONSTRAINT [DF_Artist_rowguid] DEFAULT (NEWID())
+,	[ModifiedDate]	DATETIME2			NOT NULL						CONSTRAINT [DF_Artist_ModifiedDate] DEFAULT (SYSDATETIME())
+
+,	CONSTRAINT [PK_Artist_ArtistId] PRIMARY KEY CLUSTERED ([ArtistId])
+
+);
+GO
