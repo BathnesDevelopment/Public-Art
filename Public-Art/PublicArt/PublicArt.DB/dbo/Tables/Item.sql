@@ -17,6 +17,7 @@ CREATE TABLE [dbo].[Item]
 ,   [Inscription]               NVARCHAR(500)       NULL
 ,   [History]                   NVARCHAR(2000)      NULL
 ,   [Notes]                     NVARCHAR(2000)      NULL
+,   [WebsiteURL]                [dbo].[URL]         NULL
 
 ,   [Height]                    SMALLINT            NULL
 ,   [Width]                     SMALLINT            NULL
@@ -38,7 +39,7 @@ CREATE TABLE [dbo].[Item]
 );
 GO
 
-CREATE UNIQUE INDEX [UX_Item_Reference] ON [dbo].[Item] ([Reference])
+CREATE UNIQUE NONCLUSTERED INDEX [UX_Item_Reference] ON [dbo].[Item] ([Reference])
 GO
 
 CREATE SPATIAL INDEX [SI_Item_Location] ON [dbo].[Item]([Location]) USING GEOGRAPHY_AUTO_GRID

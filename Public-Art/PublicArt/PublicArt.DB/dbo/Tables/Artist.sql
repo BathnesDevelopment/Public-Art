@@ -20,3 +20,6 @@ CREATE TABLE [dbo].[Artist]
 
 );
 GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [UI_Artist_Name] ON [dbo].[Artist]([Name]);
+GO
