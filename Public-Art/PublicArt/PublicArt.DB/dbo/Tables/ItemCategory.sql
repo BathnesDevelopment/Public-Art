@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[ItemCategory]
+﻿/*
+	Name:			[dbo].[ItemCategory]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to link categories to items.
+*/
+CREATE TABLE [dbo].[ItemCategory]
 (
 	[ItemId]		INT		NOT NULL
 ,	[CategoryId]	INT		NOT NULL

@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[ItemEvent]
+﻿/*
+	Name:			[dbo].[ItemEvent]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to hold a dated history of an item.
+*/
+CREATE TABLE [dbo].[ItemEvent]
 (
 	[ItemId]		INT					NOT NULL
 ,	[EventId]		TINYINT				NOT NULL

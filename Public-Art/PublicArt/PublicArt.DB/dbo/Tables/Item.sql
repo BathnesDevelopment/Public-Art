@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[Item]
+﻿/*
+	Name:			[dbo].[Item]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to hold public art items.
+*/
+CREATE TABLE [dbo].[Item]
 (
 	[ItemId]					INT					NOT NULL		IDENTITY(1,1)
 

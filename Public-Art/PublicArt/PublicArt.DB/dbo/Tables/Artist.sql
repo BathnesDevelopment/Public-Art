@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[Artist]
+﻿/*
+	Name:			[dbo].[Artist]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to hold artists.
+*/
+CREATE TABLE [dbo].[Artist]
 (
 	[ArtistId]		INT					NOT NULL		IDENTITY(1,1)
 ,	[Name]			[dbo].[Name]		NOT NULL

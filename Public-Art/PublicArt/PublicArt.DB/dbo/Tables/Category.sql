@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[Category]
+﻿/*
+	Name:			[dbo].[Category]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to hold categories of items.
+*/
+CREATE TABLE [dbo].[Category]
 (
 	[CategoryId]		INT					NOT NULL		IDENTITY(1,1)
 ,	[Description]		NVARCHAR(100)		NOT NULL

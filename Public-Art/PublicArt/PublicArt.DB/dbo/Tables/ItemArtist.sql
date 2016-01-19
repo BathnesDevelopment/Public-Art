@@ -1,4 +1,10 @@
-﻿CREATE TABLE [dbo].[ItemArtist]
+﻿/*
+	Name:			[dbo].[ItemArtist]
+	Author:			Chris Pickford
+	Created:		2016-01-18
+	Description:	Table to link artists to items.
+*/
+CREATE TABLE [dbo].[ItemArtist]
 (
 	[ItemId]		INT		NOT NULL
 ,	[ArtistId]		INT		NOT NULL
