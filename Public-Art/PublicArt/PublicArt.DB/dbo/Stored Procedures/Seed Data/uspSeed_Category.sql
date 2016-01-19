@@ -1,8 +1,8 @@
 ﻿/*
-	Name:			[dbo].[uspSeed_Category]
-	Author:			Chris Pickford
-	Created:		2016-01-19
-	Description:	Populates table with seed data to be executed post-deployment.
+    Name:           [dbo].[uspSeed_Category]
+    Author:         Chris Pickford
+    Created:        2016-01-19
+    Description:    Populates table with seed data to be executed post-deployment.
 */
 CREATE PROCEDURE [dbo].[uspSeed_Category]
 AS
@@ -32,8 +32,8 @@ USING ( VALUES
 ) AS [SOURCE] ([Description])
 ON [TARGET].[Description] = [SOURCE].[Description]
 WHEN NOT MATCHED BY TARGET THEN
-	INSERT ([Description])
-	VALUES ([SOURCE].[Description]);
+    INSERT ([Description])
+    VALUES ([SOURCE].[Description]);
 
 RETURN 0;
 
