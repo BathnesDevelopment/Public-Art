@@ -6,8 +6,10 @@
 */
 CREATE TABLE [dbo].[ItemArtist]
 (
-    [ItemId]        INT     NOT NULL
-,   [ArtistId]      INT     NOT NULL
+    [ItemId]        INT                 NOT NULL
+,   [ArtistId]      INT                 NOT NULL
+
+,   [Notes]         NVARCHAR(1000)      NULL
 
 ,   [rowguid]       UNIQUEIDENTIFIER    NOT NULL        ROWGUIDCOL      CONSTRAINT [DF_ItemArtist_rowguid] DEFAULT (NEWID())
 ,   [ModifiedDate]  DATETIME2           NOT NULL                        CONSTRAINT [DF_ItemArtist_ModifiedDate] DEFAULT (SYSDATETIME())
