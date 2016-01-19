@@ -63,6 +63,8 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="Types" />
+    <Folder Include="Scripts" />
+    <Folder Include="dbo\Stored Procedures\Seed Data" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
@@ -73,11 +75,15 @@
     <Build Include="dbo\Tables\ItemCategory.sql" />
     <Build Include="dbo\Tables\ItemArtist.sql" />
     <Build Include="dbo\Tables\ItemEvent.sql" />
+    <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Category.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <None Include="localhost.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
