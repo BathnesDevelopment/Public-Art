@@ -66,17 +66,15 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Stored Procedures" />
-    <Folder Include="Types" />
     <Folder Include="Scripts" />
     <Folder Include="dbo\Stored Procedures\Seed Data" />
     <Folder Include="Storage" />
     <Folder Include="Storage\Filegroups" />
+    <Folder Include="dbo\Types" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
     <Build Include="dbo\Tables\Artist.sql" />
-    <Build Include="Types\Name.sql" />
-    <Build Include="Types\URL.sql" />
     <Build Include="dbo\Tables\Category.sql" />
     <Build Include="dbo\Tables\ItemCategory.sql" />
     <Build Include="dbo\Tables\ItemArtist.sql" />
@@ -85,6 +83,8 @@
     <Build Include="Storage\Filegroups\PublicArtImages.sql" />
     <Build Include="dbo\Tables\ItemImage.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemImage.sql" />
+    <Build Include="dbo\Types\Name.sql" />
+    <Build Include="dbo\Types\URL.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
