@@ -8,10 +8,13 @@ CREATE TABLE [dbo].[Item]
 (
     [ItemId]                    INT                 NOT NULL        IDENTITY(1,1)
 
-,   [Title]                     [dbo].[Name]        NOT NULL
 ,   [Reference]                 VARCHAR(6)          NOT NULL
+,   [Title]                     [dbo].[Name]        NOT NULL
 ,   [Description]               NVARCHAR(2000)      NOT NULL
+,   [Date]                      SMALLINT            NULL
 
+,   [UnveilingYear]             SMALLINT            NULL
+,   [UnveilingDetails]          NVARCHAR(2000)      NULL
 ,   [Statement]                 NVARCHAR(2000)      NULL
 ,   [Material]                  NVARCHAR(500)       NULL
 ,   [Inscription]               NVARCHAR(500)       NULL
