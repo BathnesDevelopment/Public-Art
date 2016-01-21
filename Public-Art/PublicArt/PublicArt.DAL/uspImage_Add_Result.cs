@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     

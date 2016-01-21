@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PublicArtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PublicArtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Artist">
           <Key>
             <PropertyRef Name="ArtistId" />
@@ -89,9 +89,11 @@
           <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Image">
           <Key>
-            <PropertyRef Name="stream_id" />            
+            <PropertyRef Name="stream_id" />
           </Key>
           <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="file_stream" Type="varbinary(max)" />
@@ -203,7 +205,8 @@
             <End Role="ItemImage" EntitySet="ItemImage" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PublicArtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -217,9 +220,9 @@
           <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
           <Property Name="StartYear" Type="Int16" />
           <Property Name="EndYear" Type="Int16" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="Artist" ToRole="ItemArtist" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -227,9 +230,9 @@
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="Category" ToRole="ItemCategory" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -257,11 +260,11 @@
           <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="Geography" />
           <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
           <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="Item" ToRole="ItemCategory" />
           <NavigationProperty Name="ItemImages" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="Item" ToRole="ItemImage" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemArtist">
           <Key>
@@ -271,10 +274,10 @@
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Artist" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="ItemArtist" ToRole="Artist" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="ItemArtist" ToRole="Item" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemCategory">
           <Key>
@@ -283,10 +286,10 @@
           </Key>
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Category" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="ItemCategory" ToRole="Category" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="ItemCategory" ToRole="Item" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="ItemImage">
           <Key>
@@ -297,10 +300,10 @@
           <Property Name="stream_id" Type="Guid" Nullable="false" />
           <Property Name="Order" Type="Byte" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="ItemImage" ToRole="Item" />
           <NavigationProperty Name="Image" Relationship="PublicArtModel.ItemImageImage" FromRole="ItemImage" ToRole="Image" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -406,7 +409,7 @@
             <Parameter Name="filedata" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="uspImage_Delete">
-          <Parameter Name="docId" Mode="In" Type="Guid" />
+            <Parameter Name="docId" Mode="In" Type="Guid" />
           </FunctionImport>
           <AssociationSet Name="ItemImageImage" Association="PublicArtModel.ItemImageImage">
             <End Role="ItemImage" EntitySet="ItemImages" />
@@ -438,13 +441,13 @@
           <EntitySetMapping Name="Artists">
             <EntityTypeMapping TypeName="PublicArtModel.Artist">
               <MappingFragment StoreEntitySet="Artist">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Biography" ColumnName="Biography" />
                 <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
                 <ScalarProperty Name="StartYear" ColumnName="StartYear" />
                 <ScalarProperty Name="EndYear" ColumnName="EndYear" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -452,9 +455,9 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="PublicArtModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -462,7 +465,6 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="PublicArtModel.Item">
               <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -485,6 +487,7 @@
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -492,10 +495,10 @@
           <EntitySetMapping Name="ItemArtists">
             <EntityTypeMapping TypeName="PublicArtModel.ItemArtist">
               <MappingFragment StoreEntitySet="ItemArtist">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -503,9 +506,9 @@
           <EntitySetMapping Name="ItemCategories">
             <EntityTypeMapping TypeName="PublicArtModel.ItemCategory">
               <MappingFragment StoreEntitySet="ItemCategory">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -513,11 +516,11 @@
           <EntitySetMapping Name="ItemImages">
             <EntityTypeMapping TypeName="PublicArtModel.ItemImage">
               <MappingFragment StoreEntitySet="ItemImage">
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="stream_id" ColumnName="stream_id" />
                 <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>

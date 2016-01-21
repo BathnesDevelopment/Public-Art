@@ -1,4 +1,4 @@
-﻿@model PublicArt.Web.Admin.Models.Artist
+﻿@model PublicArt.DAL.Artist
 
 @{
     ViewBag.Title = "Delete";
@@ -49,14 +49,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.EndYear)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedDate)
         </dd>
 
     </dl>

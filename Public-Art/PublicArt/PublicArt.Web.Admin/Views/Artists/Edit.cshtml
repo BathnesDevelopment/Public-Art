@@ -1,4 +1,4 @@
-﻿@model PublicArt.Web.Admin.Models.Artist
+﻿@model PublicArt.DAL.Artist
 
 @{
     ViewBag.Title = "Edit";
@@ -56,7 +56,7 @@
                 @Html.ValidationMessageFor(model => model.EndYear, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

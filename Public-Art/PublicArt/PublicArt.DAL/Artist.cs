@@ -7,25 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Category
+    public partial class Artist
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Category()
+        public Artist()
         {
-            this.ItemCategories = new HashSet<ItemCategory>();
+            this.ItemArtists = new HashSet<ItemArtist>();
         }
     
-        public int CategoryId { get; set; }
-        public string Description { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
+        public int ArtistId { get; set; }
+        public string Name { get; set; }
+        public string Biography { get; set; }
+        public string WebsiteURL { get; set; }
+        public Nullable<short> StartYear { get; set; }
+        public Nullable<short> EndYear { get; set; }
         public System.Guid rowguid { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemCategory> ItemCategories { get; set; }
+        public virtual ICollection<ItemArtist> ItemArtists { get; set; }
     }
 }
