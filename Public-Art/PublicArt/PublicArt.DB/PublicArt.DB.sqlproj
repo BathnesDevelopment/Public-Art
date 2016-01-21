@@ -23,7 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <NonTransactedFileStreamAccess>FULL</NonTransactedFileStreamAccess>
+    <NonTransactedFileStreamAccess>READ_ONLY</NonTransactedFileStreamAccess>
     <FileStreamDirectoryName>PublicArt</FileStreamDirectoryName>
     <DacApplicationName>PublicArt</DacApplicationName>
     <DefaultFileStreamFilegroup>PublicArtImages</DefaultFileStreamFilegroup>
