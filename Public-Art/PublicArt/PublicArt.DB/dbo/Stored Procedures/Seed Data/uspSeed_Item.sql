@@ -8,7 +8,7 @@
 	                        +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Reference]			), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Title]				), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Description]			), '''', '''''') + '''', 'NULL') + ', '
-                            +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [Date]					), '''', '''''') +   '', 'NULL') + ', '
+                            +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [Date]                 ), '''', '''''') +   '', 'NULL') + ', '
                             +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [UnveilingYear]		), '''', '''''') +   '', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [UnveilingDetails]		), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Statement]			), '''', '''''') + '''', 'NULL') + ', '
@@ -853,6 +853,7 @@ AND NOT EXISTS ( SELECT
                  ,  [TARGET].[StructuralCondition]
                  ,  [TARGET].[Address]
                  ,  [TARGET].[Archived] ) OR
+    -- Geography datatype cannot be used in implicit comparison
     ([TARGET].[Location].[STEquals]([SOURCE].[Location]) = 0 OR
      ([TARGET].[Location] IS NULL AND
       [SOURCE].[Location] IS NOT NULL
@@ -880,7 +881,8 @@ AND NOT EXISTS ( SELECT
 ,   [StructuralCondition]   = [SOURCE].[StructuralCondition]
 ,   [Address]               = [SOURCE].[Address]            
 ,   [Location]              = [SOURCE].[Location]           
-,   [Archived]              = [SOURCE].[Archived];      
+,   [Archived]              = [SOURCE].[Archived]
+,   [ModifiedDate]          = CURRENT_TIMESTAMP;
 
 RETURN 0;
 
