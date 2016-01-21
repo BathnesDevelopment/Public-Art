@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>PublicArt</TargetDatabaseName>
+    <DeployScriptFileName>PublicArt.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=localhost;Integrated Security=True;Pooling=False</TargetConnectionString>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <DropObjectsNotInSource>True</DropObjectsNotInSource>
+    <ExcludeUsers>True</ExcludeUsers>
+    <ExcludeLogins>True</ExcludeLogins>
+    <ExcludeDatabaseRoles>True</ExcludeDatabaseRoles>
+    <ExcludeDatabaseTriggers>True</ExcludeDatabaseTriggers>
+    <ExcludeDatabaseAuditSpecifications>True</ExcludeDatabaseAuditSpecifications>
+    <ExcludeCryptographicProviders>True</ExcludeCryptographicProviders>
+    <ExcludeCredentials>True</ExcludeCredentials>
+    <ExcludeContracts>True</ExcludeContracts>
+    <ExcludeCertificates>True</ExcludeCertificates>
+    <ExcludeBrokerPriorities>True</ExcludeBrokerPriorities>
+    <ExcludeAudits>True</ExcludeAudits>
+    <ExcludeAsymmetricKeys>True</ExcludeAsymmetricKeys>
+    <ExcludeApplicationRoles>True</ExcludeApplicationRoles>
+    <ExcludeSymmetricKeys>True</ExcludeSymmetricKeys>
+    <ExcludeSignatures>True</ExcludeSignatures>
+    <ExcludeServices>True</ExcludeServices>
+    <ExcludeServerTriggers>True</ExcludeServerTriggers>
+    <ExcludeServerRoles>True</ExcludeServerRoles>
+    <ExcludeServerRoleMembership>True</ExcludeServerRoleMembership>
+    <ExcludeServerAuditSpecifications>True</ExcludeServerAuditSpecifications>
+    <ExcludeRoutes>True</ExcludeRoutes>
+    <IgnoreRoleMembership>True</IgnoreRoleMembership>
+    <ExcludeRemoteServiceBindings>True</ExcludeRemoteServiceBindings>
+    <IgnorePermissions>True</IgnorePermissions>
+    <ExcludeLinkedServers>True</ExcludeLinkedServers>
+    <ExcludeLinkedServerLogins>True</ExcludeLinkedServerLogins>
+  </PropertyGroup>
+</Project>
