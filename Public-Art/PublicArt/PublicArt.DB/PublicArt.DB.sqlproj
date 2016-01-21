@@ -88,6 +88,7 @@
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Item.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Artist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemArtist.sql" />
+    <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemCategory.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
