@@ -1,0 +1,584 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PublicArtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="ArtistId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Biography" Type="nvarchar" MaxLength="4000" />
+          <Property Name="WebsiteURL" Type="nvarchar" MaxLength="2083" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Reference" Type="varchar" MaxLength="6" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Date" Type="smallint" />
+          <Property Name="UnveilingYear" Type="smallint" />
+          <Property Name="UnveilingDetails" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Statement" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Material" Type="nvarchar" MaxLength="500" />
+          <Property Name="Inscription" Type="nvarchar" MaxLength="500" />
+          <Property Name="History" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="2000" />
+          <Property Name="WebsiteURL" Type="nvarchar" MaxLength="2083" />
+          <Property Name="Height" Type="smallint" />
+          <Property Name="Width" Type="smallint" />
+          <Property Name="Depth" Type="smallint" />
+          <Property Name="Diameter" Type="smallint" />
+          <Property Name="SurfaceCondition" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StructuralCondition" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Address" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Location" Type="geography" />
+          <Property Name="Archived" Type="bit" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemArtist">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="ArtistId" Type="int" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="1000" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemCategory">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemImage">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Order" Type="tinyint" Nullable="false" />
+          <Property Name="Caption" Type="nvarchar" MaxLength="1000" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="file_stream" Type="varbinary(max)" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="is_directory" Type="bit" Nullable="false" />
+          <Property Name="unc_path" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <Association Name="FK_ItemArtist_ArtistId_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
+          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistId" />
+            </Principal>
+            <Dependent Role="ItemArtist">
+              <PropertyRef Name="ArtistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemArtist_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemArtist">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_CategoryId_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemImage_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemImage">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="uspImage_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="filename" Type="nvarchar" Mode="In" />
+          <Parameter Name="filedata" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="uspImage_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="docId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <EntityContainer Name="PublicArtModelStoreContainer">
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemArtist" EntityType="Self.ItemArtist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemCategory" EntityType="Self.ItemCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemImage" EntityType="Self.ItemImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Image" EntityType="Self.Image" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Image].[stream_id] AS [stream_id], 
+    [Image].[file_stream] AS [file_stream], 
+    [Image].[name] AS [name], 
+    [Image].[is_directory] AS [is_directory], 
+    [Image].[unc_path] AS [unc_path]
+    FROM [dbo].[Image] AS [Image]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ItemArtist_ArtistId_Artist" Association="Self.FK_ItemArtist_ArtistId_Artist">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="ItemArtist" EntitySet="ItemArtist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemArtist_ItemId_Item" Association="Self.FK_ItemArtist_ItemId_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemArtist" EntitySet="ItemArtist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_CategoryId_Category" Association="Self.FK_ItemCategory_CategoryId_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ItemCategory" EntitySet="ItemCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_ItemId_Item" Association="Self.FK_ItemCategory_ItemId_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemCategory" EntitySet="ItemCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemImage_ItemId_Item" Association="Self.FK_ItemImage_ItemId_Item">
+            <End Role="Item" EntitySet="Item" />
+            <End Role="ItemImage" EntitySet="ItemImage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PublicArtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="ArtistId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Biography" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="Artist" ToRole="ItemArtist" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="Category" ToRole="ItemCategory" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reference" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="Int16" />
+          <Property Name="UnveilingYear" Type="Int16" />
+          <Property Name="UnveilingDetails" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Statement" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Material" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Inscription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="History" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <Property Name="Height" Type="Int16" />
+          <Property Name="Width" Type="Int16" />
+          <Property Name="Depth" Type="Int16" />
+          <Property Name="Diameter" Type="Int16" />
+          <Property Name="SurfaceCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StructuralCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="Geography" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
+          <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="Item" ToRole="ItemCategory" />
+          <NavigationProperty Name="ItemImages" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="Item" ToRole="ItemImage" />
+        </EntityType>
+        <EntityType Name="ItemArtist">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ArtistId" Type="Int32" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Artist" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="ItemArtist" ToRole="Artist" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="ItemArtist" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="ItemCategory">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="ItemCategory" ToRole="Category" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="ItemCategory" ToRole="Item" />
+        </EntityType>
+        <EntityType Name="ItemImage">
+          <Key>
+            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="stream_id" Type="Guid" Nullable="false" />
+          <Property Name="Order" Type="Byte" Nullable="false" />
+          <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="ItemImage" ToRole="Item" />
+          <NavigationProperty Name="Image" Relationship="PublicArtModel.ItemImageImage" FromRole="ItemImage" ToRole="Image" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="stream_id" Type="Guid" Nullable="false" />
+          <Property Name="file_stream" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="is_directory" Type="Boolean" Nullable="false" />
+          <Property Name="unc_path" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ItemImages" Relationship="PublicArtModel.ItemImageImage" FromRole="Image" ToRole="ItemImage" />
+        </EntityType>
+        <Association Name="FK_ItemArtist_ArtistId_Artist">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
+          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistId" />
+            </Principal>
+            <Dependent Role="ItemArtist">
+              <PropertyRef Name="ArtistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_CategoryId_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemArtist_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemArtist">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemCategory_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemCategory">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemImage_ItemId_Item">
+          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Item">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ItemImage">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PublicArtEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Items" EntityType="Self.Item" />
+          <EntitySet Name="ItemArtists" EntityType="Self.ItemArtist" />
+          <EntitySet Name="ItemCategories" EntityType="Self.ItemCategory" />
+          <EntitySet Name="ItemImages" EntityType="Self.ItemImage" />
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <AssociationSet Name="FK_ItemArtist_ArtistId_Artist" Association="Self.FK_ItemArtist_ArtistId_Artist">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="ItemArtist" EntitySet="ItemArtists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_CategoryId_Category" Association="Self.FK_ItemCategory_CategoryId_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemArtist_ItemId_Item" Association="Self.FK_ItemArtist_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemArtist" EntitySet="ItemArtists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_ItemId_Item" Association="Self.FK_ItemCategory_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemImage_ItemId_Item" Association="Self.FK_ItemImage_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemImage" EntitySet="ItemImages" />
+          </AssociationSet>
+          <FunctionImport Name="uspImage_Add" ReturnType="Collection(PublicArtModel.uspImage_Add_Result)">
+            <Parameter Name="filename" Mode="In" Type="String" />
+            <Parameter Name="filedata" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="uspImage_Delete">
+            <Parameter Name="docId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <AssociationSet Name="ItemImageImage" Association="PublicArtModel.ItemImageImage">
+            <End Role="ItemImage" EntitySet="ItemImages" />
+            <End Role="Image" EntitySet="Images" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="uspImage_Add_Result">
+          <Property Type="Guid" Name="stream_id" Nullable="false" />
+          <Property Type="String" Name="unc_path" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <Association Name="ItemImageImage">
+          <End Type="PublicArtModel.ItemImage" Role="ItemImage" Multiplicity="*" />
+          <End Type="PublicArtModel.Image" Role="Image" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="stream_id" />
+            </Principal>
+            <Dependent Role="ItemImage">
+              <PropertyRef Name="stream_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PublicArtModelStoreContainer" CdmEntityContainer="PublicArtEntities">
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="PublicArtModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Biography" ColumnName="Biography" />
+                <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="PublicArtModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="PublicArtModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UnveilingYear" ColumnName="UnveilingYear" />
+                <ScalarProperty Name="UnveilingDetails" ColumnName="UnveilingDetails" />
+                <ScalarProperty Name="Statement" ColumnName="Statement" />
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Inscription" ColumnName="Inscription" />
+                <ScalarProperty Name="History" ColumnName="History" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Depth" ColumnName="Depth" />
+                <ScalarProperty Name="Diameter" ColumnName="Diameter" />
+                <ScalarProperty Name="SurfaceCondition" ColumnName="SurfaceCondition" />
+                <ScalarProperty Name="StructuralCondition" ColumnName="StructuralCondition" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemArtists">
+            <EntityTypeMapping TypeName="PublicArtModel.ItemArtist">
+              <MappingFragment StoreEntitySet="ItemArtist">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemCategories">
+            <EntityTypeMapping TypeName="PublicArtModel.ItemCategory">
+              <MappingFragment StoreEntitySet="ItemCategory">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemImages">
+            <EntityTypeMapping TypeName="PublicArtModel.ItemImage">
+              <MappingFragment StoreEntitySet="ItemImage">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="PublicArtModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="is_directory" ColumnName="is_directory" />
+                <ScalarProperty Name="unc_path" ColumnName="unc_path" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="PublicArtModel.Image">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="PublicArtModel.Store.uspImage_Add" >
+                  <ScalarProperty Name="file_stream" ParameterName="filedata" />
+                  <ScalarProperty Name="name" ParameterName="filename" />
+                  <ResultBinding Name="stream_id" ColumnName="stream_id" />
+                  <ResultBinding Name="unc_path" ColumnName="unc_path" />
+                </InsertFunction>
+                <DeleteFunction FunctionName="PublicArtModel.Store.uspImage_Delete" >
+                  <ScalarProperty Name="stream_id" ParameterName="docId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspImage_Add" FunctionName="PublicArtModel.Store.uspImage_Add">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PublicArtModel.uspImage_Add_Result">
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+                <ScalarProperty Name="unc_path" ColumnName="unc_path" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspImage_Delete" FunctionName="PublicArtModel.Store.uspImage_Delete" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
