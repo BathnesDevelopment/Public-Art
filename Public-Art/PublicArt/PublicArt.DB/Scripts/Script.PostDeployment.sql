@@ -11,3 +11,9 @@ Post-Deployment Script Template
 */
 
 EXEC [dbo].[uspSeed_Category];
+EXEC [dbo].[uspSeed_Artist];
+EXEC [dbo].[uspSeed_Item];
+
+EXEC [dbo].[uspSeed_ItemCategory];
+EXEC [dbo].[uspSeed_ItemArtist];
+EXEC [dbo].[uspSeed_ItemImage];
