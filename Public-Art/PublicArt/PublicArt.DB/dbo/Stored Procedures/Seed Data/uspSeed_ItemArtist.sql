@@ -16,7 +16,6 @@
                         INNER JOIN [dbo].[Artist]
                             ON [Artist].[ArtistId] = [ItemArtist].[ArtistId];
 */
-
 CREATE PROCEDURE [dbo].[uspSeed_ItemArtist]
 AS
 

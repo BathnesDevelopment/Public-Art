@@ -275,7 +275,7 @@ USING ( SELECT
 (N'BA178', N'Figurative'),
 (N'BA178', N'Other'),
 (N'BA179', N'Figurative'),
-(N'BA179', N'Photography'),
+(N'BA179', N'Photography')
 
         ) AS [VALUES] ([Reference], [Description])
         INNER JOIN [dbo].[Item]
