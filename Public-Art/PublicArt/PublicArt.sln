@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PublicArt.DB", "PublicArt.DB\PublicArt.DB.sqlproj", "{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicArt.Web.Admin", "PublicArt.Web.Admin\PublicArt.Web.Admin.csproj", "{B5CF3CCA-6459-456F-8C29-93B278E2E7A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B5CF3CCA-6459-456F-8C29-93B278E2E7A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5CF3CCA-6459-456F-8C29-93B278E2E7A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5CF3CCA-6459-456F-8C29-93B278E2E7A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5CF3CCA-6459-456F-8C29-93B278E2E7A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
