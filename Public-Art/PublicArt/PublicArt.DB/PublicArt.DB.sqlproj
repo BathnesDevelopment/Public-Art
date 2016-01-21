@@ -91,6 +91,8 @@
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemArtist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemCategory.sql" />
     <Build Include="dbo\Views\Image.sql" />
+    <Build Include="dbo\Stored Procedures\uspImage_Add.sql" />
+    <Build Include="dbo\Stored Procedures\uspImage_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
