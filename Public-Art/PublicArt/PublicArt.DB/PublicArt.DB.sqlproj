@@ -71,6 +71,7 @@
     <Folder Include="Storage" />
     <Folder Include="Storage\Filegroups" />
     <Folder Include="dbo\Types" />
+    <Folder Include="dbo\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
@@ -79,7 +80,7 @@
     <Build Include="dbo\Tables\ItemCategory.sql" />
     <Build Include="dbo\Tables\ItemArtist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Category.sql" />
-    <Build Include="dbo\Tables\Image.sql" />
+    <Build Include="dbo\Tables\ImageFT.sql" />
     <Build Include="Storage\Filegroups\PublicArtImages.sql" />
     <Build Include="dbo\Tables\ItemImage.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemImage.sql" />
@@ -89,6 +90,7 @@
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Artist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemArtist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemCategory.sql" />
+    <Build Include="dbo\Views\Image.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />

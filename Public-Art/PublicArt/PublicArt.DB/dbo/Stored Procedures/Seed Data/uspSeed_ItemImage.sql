@@ -14,9 +14,9 @@ USING
     (SELECT
         [ItemId]
      ,  [stream_id]
-     ,  [Order] = ROW_NUMBER() OVER (PARTITION BY [Item].[ItemId] ORDER BY [Image].[name])
+     ,  [Order] = ROW_NUMBER() OVER (PARTITION BY [Item].[ItemId] ORDER BY [ImageFT].[name])
      FROM
-        [dbo].[Image]
+        [dbo].[ImageFT]
      INNER JOIN [dbo].[Item]
         ON [Reference] = LEFT([name], LEN([name]) - 6)
     ) AS [SOURCE] ([ItemId], [stream_id], [Order])

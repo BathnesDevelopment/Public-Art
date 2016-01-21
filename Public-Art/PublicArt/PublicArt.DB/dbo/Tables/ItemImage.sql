@@ -17,6 +17,6 @@ CREATE TABLE [dbo].[ItemImage]
 
 ,   CONSTRAINT [PK_ItemImage_ItemId_stream_id] PRIMARY KEY CLUSTERED ([ItemId], [stream_id])
 ,   CONSTRAINT [FK_ItemImage_ItemId_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item]([ItemId])
-,   CONSTRAINT [FK_ItemImage_stream_id_Image] FOREIGN KEY ([stream_id]) REFERENCES [dbo].[Image]([stream_id])
+,   CONSTRAINT [FK_ItemImage_stream_id_Image] FOREIGN KEY ([stream_id]) REFERENCES [dbo].[ImageFT]([stream_id])
 );
 GO

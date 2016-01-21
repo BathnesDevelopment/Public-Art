@@ -14,4 +14,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ItemId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="c86f5053-151c-44d2-92c5-d15bfd1afabc" ChangeDateTime="01/21/2016 13:46:19">
+    <Property Name="ElementName" Value="[dbo].[Image]" />
+    <Property Name="ElementType" Value="SqlFileTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ImageFT]" />
+  </Operation>
 </Operations>
