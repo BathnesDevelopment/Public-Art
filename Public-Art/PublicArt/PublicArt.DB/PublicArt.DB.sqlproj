@@ -87,6 +87,7 @@
     <Build Include="dbo\Types\URL.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Item.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Artist.sql" />
+    <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemArtist.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
