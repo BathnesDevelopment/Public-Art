@@ -7,7 +7,7 @@
 CREATE TABLE [dbo].[ItemImage]
 (
     [ItemId]            INT                 NOT NULL
-,   [path_locator]      HIERARCHYID         NOT NULL
+,   [stream_id]         UNIQUEIDENTIFIER    NOT NULL
 
 ,   [Order]             TINYINT             NOT NULL
 ,   [Caption]           NVARCHAR(1000)      NULL
@@ -15,8 +15,8 @@ CREATE TABLE [dbo].[ItemImage]
 ,   [rowguid]           UNIQUEIDENTIFIER    NOT NULL        ROWGUIDCOL      CONSTRAINT [DF_ItemImage_rowguid] DEFAULT (NEWID())
 ,   [ModifiedDate]      DATETIME2           NOT NULL                        CONSTRAINT [DF_ItemImage_ModifiedDate] DEFAULT (SYSDATETIME())
 
-,   CONSTRAINT [PK_ItemImage_ItemId_path_locator] PRIMARY KEY CLUSTERED ([ItemId], [path_locator])
+,   CONSTRAINT [PK_ItemImage_ItemId_stream_id] PRIMARY KEY CLUSTERED ([ItemId], [stream_id])
 ,   CONSTRAINT [FK_ItemImage_ItemId_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item]([ItemId])
-,   CONSTRAINT [FK_ItemImage_path_locator_Image] FOREIGN KEY ([path_locator]) REFERENCES [dbo].[Image]([path_locator])
+,   CONSTRAINT [FK_ItemImage_stream_id_Image] FOREIGN KEY ([stream_id]) REFERENCES [dbo].[Image]([stream_id])
 );
 GO

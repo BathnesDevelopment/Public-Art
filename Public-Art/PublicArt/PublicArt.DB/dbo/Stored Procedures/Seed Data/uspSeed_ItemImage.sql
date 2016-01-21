@@ -13,24 +13,24 @@ MERGE INTO [dbo].[ItemImage] AS [TARGET]
 USING
     (SELECT
         [ItemId]
-     ,  [path_locator]
+     ,  [stream_id]
      ,  [Order] = ROW_NUMBER() OVER (PARTITION BY [Item].[ItemId] ORDER BY [Image].[name])
      FROM
         [dbo].[Image]
      INNER JOIN [dbo].[Item]
         ON [Reference] = LEFT([name], LEN([name]) - 6)
-    ) AS [SOURCE] ([ItemId], [path_locator], [Order])
+    ) AS [SOURCE] ([ItemId], [stream_id], [Order])
 ON [TARGET].[ItemId] = [SOURCE].[ItemId] AND
-    [TARGET].[path_locator] = [SOURCE].[path_locator]
+    [TARGET].[stream_id] = [SOURCE].[stream_id]
 WHEN NOT MATCHED BY TARGET THEN
     INSERT
            ([ItemId]
-           ,[path_locator]
+           ,[stream_id]
            ,[Order]
            ,[Caption]
            )
     VALUES ([SOURCE].[ItemId]
-           ,[SOURCE].[path_locator]
+           ,[SOURCE].[stream_id]
            ,[SOURCE].[Order]
            ,NULL
            );
