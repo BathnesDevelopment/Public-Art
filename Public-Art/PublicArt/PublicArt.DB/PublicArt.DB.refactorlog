@@ -21,4 +21,18 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[ImageFT]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="23bd82ed-46fd-4fa5-b6db-07d34853e474" ChangeDateTime="01/21/2016 15:44:26">
+    <Property Name="ElementName" Value="[dbo].[Artist].[StartDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Artist]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[StartYear]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="53a82981-6e9a-454a-99e3-66d96efacf8f" ChangeDateTime="01/21/2016 15:45:46">
+    <Property Name="ElementName" Value="[dbo].[Artist].[EndDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Artist]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[EndYear]" />
+  </Operation>
 </Operations>

@@ -17,8 +17,8 @@ namespace PublicArt.Web.Admin.Models
         public int ItemId { get; set; }
         public int ArtistId { get; set; }
         public string Notes { get; set; }
-        public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
+        public System.Guid rowguid { get; set; }
     
         public virtual Artist Artist { get; set; }
         public virtual Item Item { get; set; }

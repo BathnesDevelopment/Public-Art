@@ -24,10 +24,10 @@ namespace PublicArt.Web.Admin.Models
         public string Name { get; set; }
         public string Biography { get; set; }
         public string WebsiteURL { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public System.Guid rowguid { get; set; }
+        public Nullable<short> StartYear { get; set; }
+        public Nullable<short> EndYear { get; set; }
         public System.DateTime ModifiedDate { get; set; }
+        public System.Guid rowguid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemArtist> ItemArtists { get; set; }
