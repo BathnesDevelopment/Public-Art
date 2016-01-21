@@ -7,29 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Artist
+    public partial class Image
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Artist()
+        public Image()
         {
-            this.ItemArtists = new HashSet<ItemArtist>();
+            this.ItemImages = new HashSet<ItemImage>();
         }
     
-        public int ArtistId { get; set; }
-        public string Name { get; set; }
-        public string Biography { get; set; }
-        public string WebsiteURL { get; set; }
-        public Nullable<short> StartYear { get; set; }
-        public Nullable<short> EndYear { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
-        public System.Guid rowguid { get; set; }
+        public System.Guid stream_id { get; set; }
+        public byte[] file_stream { get; set; }
+        public string name { get; set; }
+        public bool is_directory { get; set; }
+        public string unc_path { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemArtist> ItemArtists { get; set; }
+        public virtual ICollection<ItemImage> ItemImages { get; set; }
     }
 }

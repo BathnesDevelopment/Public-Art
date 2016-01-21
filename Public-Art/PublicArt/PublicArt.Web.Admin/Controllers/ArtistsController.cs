@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using PublicArt.Web.Admin.Models;
+using PublicArt.DAL;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -47,7 +47,7 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartDate,EndDate,rowguid,ModifiedDate")] Artist artist)
+        public async Task<ActionResult> Create([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartDate,EndDate,rowguid,ModifiedDate")] Artist artist)
+        public async Task<ActionResult> Edit([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {

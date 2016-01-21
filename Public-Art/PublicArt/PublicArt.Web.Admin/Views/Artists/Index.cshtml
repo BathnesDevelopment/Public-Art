@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PublicArt.Web.Admin.Models.Artist>
+﻿@model IEnumerable<PublicArt.DAL.Artist>
 
 @{
     ViewBag.Title = "Index";
@@ -26,6 +26,9 @@
         <th>
             @Html.DisplayNameFor(model => model.EndYear)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </th>
         <th></th>
     </tr>
 
@@ -45,6 +48,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EndYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedDate)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ArtistId }) |

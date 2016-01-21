@@ -1,4 +1,4 @@
-﻿@model PublicArt.Web.Admin.Models.Item
+﻿@model PublicArt.DAL.Item
 
 @{
     ViewBag.Title = "Details";
@@ -185,10 +185,6 @@
         <dd>
             @Html.DisplayFor(model => model.rowguid)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.ModifiedDate)

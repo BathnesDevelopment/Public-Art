@@ -7,26 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Image
+    public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Image()
+        public Category()
         {
-            this.ItemImages = new HashSet<ItemImage>();
+            this.ItemCategories = new HashSet<ItemCategory>();
         }
     
-        public System.Guid stream_id { get; set; }
-        public byte[] file_stream { get; set; }
-        public string name { get; set; }
-        public bool is_directory { get; set; }
-        public string unc_path { get; set; }
+        public int CategoryId { get; set; }
+        public string Description { get; set; }
+        public System.Guid rowguid { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ItemImage> ItemImages { get; set; }
+        public virtual ICollection<ItemCategory> ItemCategories { get; set; }
     }
 }

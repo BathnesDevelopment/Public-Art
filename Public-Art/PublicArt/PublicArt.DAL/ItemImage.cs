@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     using System.Collections.Generic;
@@ -18,8 +18,8 @@ namespace PublicArt.Web.Admin.Models
         public System.Guid stream_id { get; set; }
         public byte Order { get; set; }
         public string Caption { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
         public System.Guid rowguid { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
         public virtual Item Item { get; set; }
         public virtual Image Image { get; set; }

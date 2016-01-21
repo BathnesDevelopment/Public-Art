@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="eade9f4d23a34303b70c76bb02a18146" Name="Diagram1">
-        <EntityTypeShape EntityType="PublicArtModel.Artist" Width="1.5" PointX="6.5" PointY="2.875" IsExpanded="true" />
+      <Diagram DiagramId="5344ef0eee304fd79dc87f7cc6123a07" Name="Diagram1">
+        <EntityTypeShape EntityType="PublicArtModel.Artist" Width="1.5" PointX="6.5" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PublicArtModel.Category" Width="1.5" PointX="6.5" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PublicArtModel.Item" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PublicArtModel.ItemArtist" Width="1.5" PointX="3.5" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PublicArtModel.ItemCategory" Width="1.5" PointX="3.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.ItemImage" Width="1.5" PointX="3.5" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.Image" Width="1.5" PointX="6.5" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicArtModel.ItemImage" Width="1.5" PointX="3.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PublicArtModel.Image" Width="1.5" PointX="6.5" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ArtistId_Artist" ManuallyRouted="false" />
         <AssociationConnector Association="PublicArtModel.FK_ItemCategory_CategoryId_Category" ManuallyRouted="false" />
         <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ItemId_Item" ManuallyRouted="false" />

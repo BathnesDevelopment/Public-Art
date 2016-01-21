@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BCFE594D-9D7A-4047-B803-848DE63052AF}</ProjectGuid>
+    <ProjectGuid>{428A6C3F-5192-4F68-BE66-4C903EA4E824}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -60,8 +60,6 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -136,45 +134,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Artist.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Category.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Image.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Item.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ItemArtist.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ItemCategory.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ItemImage.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PublicArtModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicArtModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PublicArtModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PublicArtModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PublicArtModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\uspImage_Add_Result.cs">
-      <DependentUpon>PublicArtModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -184,25 +143,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\PublicArtModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PublicArtModel.edmx</DependentUpon>
-      <LastGenOutput>PublicArtModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\PublicArtModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PublicArtModel.edmx</DependentUpon>
-      <LastGenOutput>PublicArtModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\PublicArtModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PublicArtModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\PublicArtModel.edmx.diagram">
-      <DependentUpon>PublicArtModel.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -229,16 +171,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Items\Create.cshtml" />
-    <Content Include="Views\Items\Delete.cshtml" />
-    <Content Include="Views\Items\Details.cshtml" />
-    <Content Include="Views\Items\Edit.cshtml" />
-    <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Artists\Create.cshtml" />
     <Content Include="Views\Artists\Delete.cshtml" />
     <Content Include="Views\Artists\Details.cshtml" />
     <Content Include="Views\Artists\Edit.cshtml" />
     <Content Include="Views\Artists\Index.cshtml" />
+    <Content Include="Views\Items\Create.cshtml" />
+    <Content Include="Views\Items\Delete.cshtml" />
+    <Content Include="Views\Items\Details.cshtml" />
+    <Content Include="Views\Items\Edit.cshtml" />
+    <Content Include="Views\Items\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -252,7 +194,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <ProjectReference Include="..\PublicArt.DAL\PublicArt.DAL.csproj">
+      <Project>{dceb02b8-047e-4a55-b74f-262d04c42540}</Project>
+      <Name>PublicArt.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -270,7 +215,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>53134</DevelopmentServerPort>
+          <DevelopmentServerPort>62318</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:51986/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

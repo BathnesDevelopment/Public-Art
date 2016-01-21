@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PublicArt.Web.Admin.Models
+namespace PublicArt.DAL
 {
     using System;
     using System.Collections.Generic;
@@ -44,8 +44,8 @@ namespace PublicArt.Web.Admin.Models
         public string Address { get; set; }
         public System.Data.Entity.Spatial.DbGeography Location { get; set; }
         public bool Archived { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
         public System.Guid rowguid { get; set; }
+        public System.DateTime ModifiedDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemArtist> ItemArtists { get; set; }
