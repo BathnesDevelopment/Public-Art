@@ -35,4 +35,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[EndYear]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="9c1d364a-f143-4016-aff3-03db320c6494" ChangeDateTime="01/22/2016 13:13:17">
+    <Property Name="ElementName" Value="[dbo].[ImageThumbnail].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ImageThumbnail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="stream_id" />
+  </Operation>
 </Operations>
