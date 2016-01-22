@@ -15,8 +15,8 @@
           <Property Name="WebsiteURL" Type="nvarchar" MaxLength="2083" />
           <Property Name="StartYear" Type="smallint" />
           <Property Name="EndYear" Type="smallint" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -24,8 +24,8 @@
           </Key>
           <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -53,8 +53,8 @@
           <Property Name="Address" Type="nvarchar" MaxLength="1000" />
           <Property Name="Location" Type="geography" />
           <Property Name="Archived" Type="bit" Nullable="false" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="ItemArtist">
           <Key>
@@ -64,8 +64,8 @@
           <Property Name="ItemId" Type="int" Nullable="false" />
           <Property Name="ArtistId" Type="int" Nullable="false" />
           <Property Name="Notes" Type="nvarchar" MaxLength="1000" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="ItemCategory">
           <Key>
@@ -74,8 +74,8 @@
           </Key>
           <Property Name="ItemId" Type="int" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="ItemImage">
           <Key>
@@ -86,8 +86,8 @@
           <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Order" Type="tinyint" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="1000" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -220,8 +220,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
           <Property Name="StartYear" Type="Int16" />
           <Property Name="EndYear" Type="Int16" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="Artist" ToRole="ItemArtist" />
         </EntityType>
         <EntityType Name="Category">
@@ -230,8 +230,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="Category" ToRole="ItemCategory" />
         </EntityType>
         <EntityType Name="Item">
@@ -260,8 +260,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="Geography" />
           <Property Name="Archived" Type="Boolean" Nullable="false" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
           <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="Item" ToRole="ItemCategory" />
           <NavigationProperty Name="ItemImages" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="Item" ToRole="ItemImage" />
@@ -274,8 +274,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="ArtistId" Type="Int32" Nullable="false" />
           <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Artist" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="ItemArtist" ToRole="Artist" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="ItemArtist" ToRole="Item" />
         </EntityType>
@@ -286,8 +286,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           </Key>
           <Property Name="ItemId" Type="Int32" Nullable="false" />
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Category" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="ItemCategory" ToRole="Category" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="ItemCategory" ToRole="Item" />
         </EntityType>
@@ -300,8 +300,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <Property Name="stream_id" Type="Guid" Nullable="false" />
           <Property Name="Order" Type="Byte" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Item" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="ItemImage" ToRole="Item" />
           <NavigationProperty Name="Image" Relationship="PublicArtModel.ItemImageImage" FromRole="ItemImage" ToRole="Image" />
         </EntityType>
