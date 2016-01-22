@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PublicArtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PublicArtModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Artist">
           <Key>
             <PropertyRef Name="ArtistId" />
@@ -26,6 +26,14 @@
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ImageThumbnail">
+          <Key>
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="file_stream" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -94,6 +102,8 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="stream_id" />
+            
+            
           </Key>
           <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="file_stream" Type="varbinary(max)" />
@@ -171,6 +181,7 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
         <EntityContainer Name="PublicArtModelStoreContainer">
           <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImageThumbnail" EntityType="Self.ImageThumbnail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemArtist" EntityType="Self.ItemArtist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemCategory" EntityType="Self.ItemCategory" Schema="dbo" store:Type="Tables" />
@@ -205,8 +216,7 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             <End Role="ItemImage" EntitySet="ItemImage" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PublicArtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -315,6 +325,7 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <Property Name="is_directory" Type="Boolean" Nullable="false" />
           <Property Name="unc_path" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ItemImages" Relationship="PublicArtModel.ItemImageImage" FromRole="Image" ToRole="ItemImage" />
+          <NavigationProperty Name="ImageThumbnail" Relationship="PublicArtModel.ImageImageThumbnail" FromRole="Image" ToRole="ImageThumbnail" />
         </EntityType>
         <Association Name="FK_ItemArtist_ArtistId_Artist">
           <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
@@ -409,11 +420,16 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             <Parameter Name="filedata" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="uspImage_Delete">
-            <Parameter Name="docId" Mode="In" Type="Guid" />
+          <Parameter Name="docId" Mode="In" Type="Guid" />
           </FunctionImport>
           <AssociationSet Name="ItemImageImage" Association="PublicArtModel.ItemImageImage">
             <End Role="ItemImage" EntitySet="ItemImages" />
             <End Role="Image" EntitySet="Images" />
+          </AssociationSet>
+          <EntitySet Name="ImageThumbnails" EntityType="PublicArtModel.ImageThumbnail" />
+          <AssociationSet Name="ImageImageThumbnail" Association="PublicArtModel.ImageImageThumbnail">
+            <End Role="Image" EntitySet="Images" />
+            <End Role="ImageThumbnail" EntitySet="ImageThumbnails" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="uspImage_Add_Result">
@@ -431,6 +447,19 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
               <PropertyRef Name="stream_id" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ImageThumbnail">
+          <Key>
+            <PropertyRef Name="stream_id" />
+          </Key>
+          <Property Name="stream_id" Type="Guid" Nullable="false" />
+          <Property Name="file_stream" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Image" Relationship="PublicArtModel.ImageImageThumbnail" FromRole="ImageThumbnail" ToRole="Image" />
+        </EntityType>
+        <Association Name="ImageImageThumbnail">
+          <End Type="PublicArtModel.Image" Role="Image" Multiplicity="1" />
+          <End Type="PublicArtModel.ImageThumbnail" Role="ImageThumbnail" Multiplicity="0..1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -558,6 +587,15 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="uspImage_Delete" FunctionName="PublicArtModel.Store.uspImage_Delete" />
+          <EntitySetMapping Name="ImageThumbnails">
+            <EntityTypeMapping TypeName="PublicArtModel.ImageThumbnail">
+              <MappingFragment StoreEntitySet="ImageThumbnail">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

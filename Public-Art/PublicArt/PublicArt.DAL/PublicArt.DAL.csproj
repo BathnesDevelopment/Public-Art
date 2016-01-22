@@ -60,6 +60,9 @@
     <Compile Include="Image.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ImageThumbnail.cs">
+      <DependentUpon>PublicArtModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Item.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>

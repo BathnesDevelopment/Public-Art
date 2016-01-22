@@ -18,6 +18,8 @@
         <AssociationConnector Association="PublicArtModel.FK_ItemCategory_ItemId_Item" ManuallyRouted="false" />
         <AssociationConnector Association="PublicArtModel.FK_ItemImage_ItemId_Item" ManuallyRouted="false" />
         <AssociationConnector Association="PublicArtModel.ItemImageImage" />
+        <EntityTypeShape EntityType="PublicArtModel.ImageThumbnail" Width="1.5" PointX="9.5" PointY="5.5" />
+        <AssociationConnector Association="PublicArtModel.ImageImageThumbnail" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

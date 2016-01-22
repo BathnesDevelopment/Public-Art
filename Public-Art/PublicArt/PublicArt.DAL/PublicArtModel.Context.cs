@@ -34,6 +34,7 @@ namespace PublicArt.DAL
         public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<ItemImage> ItemImages { get; set; }
         public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<ImageThumbnail> ImageThumbnails { get; set; }
     
         public virtual ObjectResult<uspImage_Add_Result> uspImage_Add(string filename, byte[] filedata)
         {

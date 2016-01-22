@@ -28,5 +28,6 @@ namespace PublicArt.DAL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ItemImage> ItemImages { get; set; }
+        public virtual ImageThumbnail ImageThumbnail { get; set; }
     }
 }
