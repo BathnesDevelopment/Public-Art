@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
+using PublicArt.Util;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -35,6 +36,34 @@ namespace PublicArt.Web.Admin.Controllers
             return File(image.file_stream, "image/jpg");
         }
 
+        // GET: Images/Thumb/<guid>.jpg
+        [Route("Images/Thumb/{id}.jpg")]
+        public async Task<ActionResult> Thumb(Guid id)
+        {
+            // Try to fetch thumbnail from db
+            var thumb = await db.ImageThumbnails.FindAsync(id);
+            if (thumb != null) return File(thumb.file_stream, "image/jpg");
+
+            // Thumb doesnt exist so fetch main image
+            var image = await db.Images.FindAsync(id);
+            if (image == null) return HttpNotFound();
+
+            // Create new thumbnail from full image
+            thumb = new ImageThumbnail
+            {
+                stream_id = image.stream_id,
+                file_stream = await Thumbnailer.CreateThumbAsync(image.file_stream, 100)
+            };
+
+            // Save to db
+            db.ImageThumbnails.Add(thumb);
+            //db.Entry(image).State = EntityState.Unchanged;
+            await db.SaveChangesAsync();
+
+            // Return the new thumbnail image data
+            return File(thumb.file_stream, "image/jpg");
+        }
+
         // GET: Images/Create
         public ActionResult Create()
         {
@@ -46,11 +75,10 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "stream_id,file_stream,name,is_directory,unc_path")] Image image)
+        public async Task<ActionResult> Create([Bind(Include = "file_stream,name")] Image image)
         {
             if (ModelState.IsValid)
             {
-                image.stream_id = Guid.NewGuid();
                 db.Images.Add(image);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

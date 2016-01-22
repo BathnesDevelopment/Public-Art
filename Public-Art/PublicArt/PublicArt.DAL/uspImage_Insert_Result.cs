@@ -11,7 +11,7 @@ namespace PublicArt.DAL
 {
     using System;
     
-    public partial class uspImage_Add_Result
+    public partial class uspImage_Insert_Result
     {
         public System.Guid stream_id { get; set; }
         public string unc_path { get; set; }

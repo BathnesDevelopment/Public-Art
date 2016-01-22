@@ -36,7 +36,7 @@ namespace PublicArt.DAL
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<ImageThumbnail> ImageThumbnails { get; set; }
     
-        public virtual ObjectResult<uspImage_Add_Result> uspImage_Add(string filename, byte[] filedata)
+        public virtual ObjectResult<uspImage_Insert_Result> uspImage_Insert(string filename, byte[] filedata)
         {
             var filenameParameter = filename != null ?
                 new ObjectParameter("filename", filename) :
@@ -46,7 +46,20 @@ namespace PublicArt.DAL
                 new ObjectParameter("filedata", filedata) :
                 new ObjectParameter("filedata", typeof(byte[]));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspImage_Add_Result>("uspImage_Add", filenameParameter, filedataParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspImage_Insert_Result>("uspImage_Insert", filenameParameter, filedataParameter);
+        }
+    
+        public virtual int uspImage_Update(Nullable<System.Guid> stream_id, byte[] filedata)
+        {
+            var stream_idParameter = stream_id.HasValue ?
+                new ObjectParameter("stream_id", stream_id) :
+                new ObjectParameter("stream_id", typeof(System.Guid));
+    
+            var filedataParameter = filedata != null ?
+                new ObjectParameter("filedata", filedata) :
+                new ObjectParameter("filedata", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspImage_Update", stream_idParameter, filedataParameter);
         }
     
         public virtual int uspImage_Delete(Nullable<System.Guid> docId)

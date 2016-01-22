@@ -220,6 +220,10 @@
       <Project>{dceb02b8-047e-4a55-b74f-262d04c42540}</Project>
       <Name>PublicArt.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PublicArt.Util\PublicArt.Util.csproj">
+      <Project>{db3e7dd4-63d7-4e5a-9e33-063022e60d45}</Project>
+      <Name>PublicArt.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

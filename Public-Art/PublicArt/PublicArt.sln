@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicArt.DAL", "PublicArt.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicArt.Web.Admin", "PublicArt.Web.Admin\PublicArt.Web.Admin.csproj", "{428A6C3F-5192-4F68-BE66-4C903EA4E824}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicArt.Util", "PublicArt.Util\PublicArt.Util.csproj", "{DB3E7DD4-63D7-4E5A-9E33-063022E60D45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,7 +19,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4418AAC6-6CF2-42A8-9C0C-95FE4AF5FD8F}.Release|Any CPU.Deploy.0 = Release|Any CPU
@@ -29,6 +30,10 @@ Global
 		{428A6C3F-5192-4F68-BE66-4C903EA4E824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{428A6C3F-5192-4F68-BE66-4C903EA4E824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{428A6C3F-5192-4F68-BE66-4C903EA4E824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB3E7DD4-63D7-4E5A-9E33-063022E60D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB3E7DD4-63D7-4E5A-9E33-063022E60D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB3E7DD4-63D7-4E5A-9E33-063022E60D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB3E7DD4-63D7-4E5A-9E33-063022E60D45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

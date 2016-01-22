@@ -11,6 +11,7 @@
 </p>
 <table class="table">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.name)
         </th>
@@ -23,13 +24,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            <img src="@Url.Action("Thumb", new {id = item.stream_id})"/>
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.unc_path)
         </td>
         <td>
-            @Html.ActionLink("View", "View", new { id = item.stream_id }) |
+            @Html.ActionLink("View", "View", new {id = item.stream_id}) |
             @Html.ActionLink("Delete", "Delete", new {id = item.stream_id})
         </td>
     </tr>

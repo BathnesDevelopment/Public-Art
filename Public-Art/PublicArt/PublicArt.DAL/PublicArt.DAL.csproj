@@ -91,7 +91,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PublicArtModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="uspImage_Add_Result.cs">
+    <Compile Include="uspImage_Insert_Result.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

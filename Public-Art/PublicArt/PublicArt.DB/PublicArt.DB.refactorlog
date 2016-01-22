@@ -42,4 +42,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="stream_id" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="559af212-ff15-45e5-bc5d-d4b39c29fb4c" ChangeDateTime="01/22/2016 16:05:24">
+    <Property Name="ElementName" Value="[dbo].[uspImage_Add]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspImage_Insert]" />
+  </Operation>
 </Operations>

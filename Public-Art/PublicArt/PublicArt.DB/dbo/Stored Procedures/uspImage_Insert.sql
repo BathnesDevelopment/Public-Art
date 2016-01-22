@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspImage_Add] (
+﻿CREATE PROCEDURE [dbo].[uspImage_Insert] (
      @filename NVARCHAR(255)
     ,@filedata VARBINARY(MAX)
     )

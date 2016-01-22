@@ -97,8 +97,6 @@
           <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="stream_id" />
@@ -171,8 +169,12 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="uspImage_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="uspImage_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="filename" Type="nvarchar" Mode="In" />
+          <Parameter Name="filedata" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="uspImage_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stream_id" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="filedata" Type="varbinary(max)" Mode="In" />
         </Function>
         <Function Name="uspImage_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -415,12 +417,16 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             <End Role="Item" EntitySet="Items" />
             <End Role="ItemImage" EntitySet="ItemImages" />
           </AssociationSet>
-          <FunctionImport Name="uspImage_Add" ReturnType="Collection(PublicArtModel.uspImage_Add_Result)">
+          <FunctionImport Name="uspImage_Insert" ReturnType="Collection(PublicArtModel.uspImage_Insert_Result)">
             <Parameter Name="filename" Mode="In" Type="String" />
             <Parameter Name="filedata" Mode="In" Type="Binary" />
           </FunctionImport>
+          <FunctionImport Name="uspImage_Update">
+            <Parameter Name="stream_id" Mode="In" Type="Guid" />
+            <Parameter Name="filedata" Mode="In" Type="Binary" />
+          </FunctionImport>
           <FunctionImport Name="uspImage_Delete">
-          <Parameter Name="docId" Mode="In" Type="Guid" />
+            <Parameter Name="docId" Mode="In" Type="Guid" />
           </FunctionImport>
           <AssociationSet Name="ItemImageImage" Association="PublicArtModel.ItemImageImage">
             <End Role="ItemImage" EntitySet="ItemImages" />
@@ -428,11 +434,11 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           </AssociationSet>
           <EntitySet Name="ImageThumbnails" EntityType="PublicArtModel.ImageThumbnail" />
           <AssociationSet Name="ImageImageThumbnail" Association="PublicArtModel.ImageImageThumbnail">
-            <End Role="Image" EntitySet="Images" />
-            <End Role="ImageThumbnail" EntitySet="ImageThumbnails" />
+            <End EntitySet="Images" Role="Image" />
+            <End EntitySet="ImageThumbnails" Role="ImageThumbnail" />
           </AssociationSet>
         </EntityContainer>
-        <ComplexType Name="uspImage_Add_Result">
+        <ComplexType Name="uspImage_Insert_Result">
           <Property Type="Guid" Name="stream_id" Nullable="false" />
           <Property Type="String" Name="unc_path" Nullable="true" MaxLength="4000" />
         </ComplexType>
@@ -458,8 +464,16 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
           <NavigationProperty Name="Image" Relationship="PublicArtModel.ImageImageThumbnail" FromRole="ImageThumbnail" ToRole="Image" />
         </EntityType>
         <Association Name="ImageImageThumbnail">
-          <End Type="PublicArtModel.Image" Role="Image" Multiplicity="1" />
-          <End Type="PublicArtModel.ImageThumbnail" Role="ImageThumbnail" Multiplicity="0..1" />
+          <End Type="PublicArtModel.Image" Multiplicity="1" Role="Image" ></End>
+          <End Type="PublicArtModel.ImageThumbnail" Multiplicity="0..1" Role="ImageThumbnail" />
+          <ReferentialConstraint>
+            <Principal Role="Image">
+              <PropertyRef Name="stream_id" />
+            </Principal>
+            <Dependent Role="ImageThumbnail">
+              <PropertyRef Name="stream_id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -566,7 +580,7 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="PublicArtModel.Image">
               <ModificationFunctionMapping>
-                <InsertFunction FunctionName="PublicArtModel.Store.uspImage_Add" >
+                <InsertFunction FunctionName="PublicArtModel.Store.uspImage_Insert" >
                   <ScalarProperty Name="file_stream" ParameterName="filedata" />
                   <ScalarProperty Name="name" ParameterName="filename" />
                   <ResultBinding Name="stream_id" ColumnName="stream_id" />
@@ -575,17 +589,22 @@ warning 6002: The table/view 'PublicArt.dbo.Image' does not have a primary key d
                 <DeleteFunction FunctionName="PublicArtModel.Store.uspImage_Delete" >
                   <ScalarProperty Name="stream_id" ParameterName="docId" />
                 </DeleteFunction>
+                <UpdateFunction FunctionName="PublicArtModel.Store.uspImage_Update">
+                  <ScalarProperty Name="file_stream" ParameterName="filedata" Version="Current" />
+                  <ScalarProperty Name="stream_id" ParameterName="stream_id" Version="Current" />
+                </UpdateFunction>
               </ModificationFunctionMapping>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="uspImage_Add" FunctionName="PublicArtModel.Store.uspImage_Add">
+          <FunctionImportMapping FunctionImportName="uspImage_Insert" FunctionName="PublicArtModel.Store.uspImage_Insert">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="PublicArtModel.uspImage_Add_Result">
+              <ComplexTypeMapping TypeName="PublicArtModel.uspImage_Insert_Result">
                 <ScalarProperty Name="stream_id" ColumnName="stream_id" />
                 <ScalarProperty Name="unc_path" ColumnName="unc_path" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspImage_Update" FunctionName="PublicArtModel.Store.uspImage_Update" />
           <FunctionImportMapping FunctionImportName="uspImage_Delete" FunctionName="PublicArtModel.Store.uspImage_Delete" />
           <EntitySetMapping Name="ImageThumbnails">
             <EntityTypeMapping TypeName="PublicArtModel.ImageThumbnail">
