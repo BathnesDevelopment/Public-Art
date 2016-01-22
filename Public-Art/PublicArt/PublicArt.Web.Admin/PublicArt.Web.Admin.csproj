@@ -134,6 +134,7 @@
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ItemArtistsController.cs" />
     <Compile Include="Controllers\ItemCategoriesController.cs" />
+    <Compile Include="Controllers\ItemImagesController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -199,6 +200,9 @@
     <Content Include="Views\Images\Create.cshtml" />
     <Content Include="Views\Images\Delete.cshtml" />
     <Content Include="Views\Images\Index.cshtml" />
+    <Content Include="Views\ItemImages\Create.cshtml" />
+    <Content Include="Views\ItemImages\Delete.cshtml" />
+    <Content Include="Views\ItemImages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
