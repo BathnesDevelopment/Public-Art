@@ -29,7 +29,8 @@
             @Html.DisplayFor(modelItem => item.unc_path)
         </td>
         <td>
-            @Html.ActionLink("Delete", "Delete", new { id=item.stream_id })
+            @Html.ActionLink("View", "View", new { id = item.stream_id }) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.stream_id})
         </td>
     </tr>
 }

@@ -21,6 +21,20 @@ namespace PublicArt.Web.Admin.Controllers
             return View(await db.Images.ToListAsync());
         }
 
+        // GET: Images/<guid>.jpg
+        [Route("Images/{id}.jpg")]
+        public async Task<ActionResult> View(Guid id)
+        {
+            var image = await db.Images.FindAsync(id);
+
+            if (image == null)
+            {
+                return HttpNotFound();
+            }
+
+            return File(image.file_stream, "image/jpg");
+        }
+
         // GET: Images/Create
         public ActionResult Create()
         {
