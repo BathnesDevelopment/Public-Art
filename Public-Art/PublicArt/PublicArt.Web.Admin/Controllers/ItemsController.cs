@@ -26,9 +26,16 @@ namespace PublicArt.Web.Admin.Controllers
             var viewModels = items.Select(x => new ItemIndexViewModel()
             {
                 ItemId = x.ItemId,
+                ThumbnailGuid = x.ItemImages.OrderBy(i => i.Order).Select(i => i.stream_id).FirstOrDefault(),
                 Reference = x.Reference,
                 Title = x.Title.ShortenIfTooLong(40),
-                ThumbnailGuid = x.ItemImages.OrderBy(i => i.Order).Select(i => i.stream_id).FirstOrDefault(),
+                Artists = x.ItemArtists.Select(a => new ItemIndexArtistsViewModel()
+                {
+                    ArtistId = a.ArtistId,
+                    Name = a.Artist.Name,
+                    Notes = a.Notes
+                }),
+                Categories = x.ItemCategories.ToDictionary(c => c.CategoryId, c => c.Category.Description),
                 ModifiedDate = x.ModifiedDate
             });
             return View(viewModels);

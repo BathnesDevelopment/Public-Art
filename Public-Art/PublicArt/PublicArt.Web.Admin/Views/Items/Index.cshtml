@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="ItemsTable">
+<table class="table table-striped table-bordered" id="ItemsTable">
     <thead>
     <tr>
         <th></th>
@@ -20,8 +20,10 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @*Html.DisplayNameFor(model => model.ItemArtists.)*@
-            Artist(s)
+            @Html.DisplayNameFor(model => model.Artists)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Categories)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ModifiedDate)
@@ -52,10 +54,23 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    Artist Name
+                    @foreach (var artist in item.Artists)
+                    {
+                        <p>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}) <small>@artist.Notes</small>
+                        </p>
+                    }
                 </td>
                 <td>
-                    @item.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                    @foreach (var cat in item.Categories)
+                    {
+                        <span class="label label-default">
+                            @*Html.ActionLink(cat.Value, "Index", "ItemCategories", new { CategoryId = cat.Key })*@
+                            @cat.Value
+                        </span>
+                    }
+                </td>
+                <td>
+                    <small>@item.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")</small>
                 </td>
             </tr>
         }
@@ -67,13 +82,16 @@
     <script>
         $(document).ready(function () {
             $('#ItemsTable').DataTable({
+                "stateSave": true,
                 "order": [[1, "asc"]],
+                "autoWidth": true,
                 "columns": [
                     { "width": "100px", "orderable": false, "searchable": false },
-                    { "width": "100px" },
+                    { "width": "80px" },
                     null,
-                    null,
-                    { "type": "date" }
+                    { "orderable": false },
+                    { "orderable": false },
+                    { "width": "100px", "type": "date" }
                 ]
             });
         });
