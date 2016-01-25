@@ -9,7 +9,8 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="ItemsTable">
+    <thead>
     <tr>
         <th></th>
         <th>
@@ -18,38 +19,63 @@
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.ItemArtists.)
-        </th>*@
+        <th>
+            @*Html.DisplayNameFor(model => model.ItemArtists.)*@
+            Artist(s)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.ModifiedDate)
         </th>
     </tr>
+    </thead>
+    <tbody>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @if (item.ThumbnailGuid != null)
-            {
-                <a href="@Url.Action("Edit", new {id = item.ItemId})">
-                    <img src="@Url.Action("Thumb", "Images", new {id = item.ThumbnailGuid})" alt="@item.Reference" />
-                </a>
-            }
-            else
-            {
-                <p>No Image</p>
-            }
-        </td>
-        <td>
-            @Html.ActionLink(item.Reference, "Edit", new { id = item.ItemId })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ModifiedDate)
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.ThumbnailGuid != Guid.Empty)
+                {
+                        <a href="@Url.Action("Edit", new {id = item.ItemId})">
+                            <img src="@Url.Action("Thumb", "Images", new {id = item.ThumbnailGuid})" alt="@item.Reference" />
+                        </a>
+                    }
+                    else
+                    {
+                        <p>No Image</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink(item.Reference, "Edit", new { id = item.ItemId })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    Artist Name
+                </td>
+                <td>
+                    @item.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#ItemsTable').DataTable({
+                "order": [[1, "asc"]],
+                "columns": [
+                    { "width": "100px", "orderable": false, "searchable": false },
+                    { "width": "100px" },
+                    null,
+                    null,
+                    { "type": "date" }
+                ]
+            });
+        });
+    </script>
+}
