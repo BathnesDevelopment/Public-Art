@@ -9,11 +9,14 @@ namespace PublicArt.Web.Admin.ViewModels
         [Key]
         public int ItemId { get; set; }
 
-        [Display(Name = "Reference", ShortName = "Ref.")]
+        [Display(Name = "Ref.")]
         public string Reference { get; set; }
 
         [Display(Name = "Title")]
         public string Title { get; set; }
+
+        [Display(Name = "Year")]
+        public short? Date { get; set; }
 
         [Display(Name = "Artist(s)")]
         public IEnumerable<ItemIndexArtistsViewModel> Artists { get; set; }
@@ -26,17 +29,5 @@ namespace PublicArt.Web.Admin.ViewModels
 
         [Display(Name = "Modified")]
         public DateTime ModifiedDate { get; set; }
-    }
-
-    public class ItemIndexArtistsViewModel
-    {
-        [Key]
-        public int ArtistId { get; set; }
-
-        [Display(Name = "Name")]
-        public string Name { get; set; }
-
-        [Display(Name = "Notes")]
-        public string Notes { get; set; }
     }
 }

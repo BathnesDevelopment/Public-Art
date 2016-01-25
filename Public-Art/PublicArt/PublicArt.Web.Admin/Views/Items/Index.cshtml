@@ -23,6 +23,9 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Artists)
         </th>
         <th>
@@ -57,11 +60,14 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
                     @foreach (var artist in item.Artists)
                     {
                         @*Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId})*@
                         <p>
-                            <em>@artist.Name</em> <small>@artist.Notes</small>
+                            <a href="#">@artist.Name</a> <small>@artist.Notes</small>
                         </p>
                     }
                 </td>
@@ -92,6 +98,7 @@
                     { "width": "100px", "orderable": false, "searchable": false },
                     { "width": "80px" },
                     null,
+                    { "type": "num"},
                     { "orderable": false },
                     { "orderable": false },
                     { "width": "100px", "type": "date" }

@@ -29,6 +29,7 @@ namespace PublicArt.Web.Admin.Controllers
                 ThumbnailGuid = x.ItemImages.OrderBy(i => i.Order).Select(i => i.stream_id).FirstOrDefault(),
                 Reference = x.Reference,
                 Title = x.Title.ShortenIfTooLong(40),
+                Date = x.Date,
                 Artists = x.ItemArtists.Select(a => new ItemIndexArtistsViewModel()
                 {
                     ArtistId = a.ArtistId,
