@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using ImageProcessor;
 using ImageProcessor.Imaging;
 
-namespace PublicArt.Util
+namespace PublicArt.Util.Imaging
 {
     public static class Thumbnailer
     {
         public static Task<byte[]> CreateThumbAsync(byte[] imageBytes, int maxWidth)
         {
             const int quality = 70;
-            var size = new System.Drawing.Size(maxWidth, 0);
+            var size = new Size(maxWidth, 0);
 
             var task = Task<byte[]>.Factory.StartNew(() =>
             {
@@ -34,6 +30,5 @@ namespace PublicArt.Util
 
             return task;
         }
-
     }
 }

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Util;
+using PublicArt.Util.Imaging;
 
 namespace PublicArt.Web.Admin.Controllers
 {
