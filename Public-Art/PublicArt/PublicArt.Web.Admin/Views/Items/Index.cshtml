@@ -9,6 +9,9 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+<p>
+    <span id="clearfilter" class="pseudolink">Reset table filter</span>
+</p>
 <table class="table table-striped table-bordered" id="ItemsTable">
     <thead>
     <tr>
@@ -56,17 +59,17 @@
                 <td>
                     @foreach (var artist in item.Artists)
                     {
-                        <p>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}) <small>@artist.Notes</small>
+                        @*Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId})*@
+                        <p>
+                            <em>@artist.Name</em> <small>@artist.Notes</small>
                         </p>
                     }
                 </td>
                 <td>
                     @foreach (var cat in item.Categories)
                     {
-                        <span class="label label-default">
-                            @*Html.ActionLink(cat.Value, "Index", "ItemCategories", new { CategoryId = cat.Key })*@
-                            @cat.Value
-                        </span>
+                        @*Html.ActionLink(cat.Value, "Index", "ItemCategories", new { CategoryId = cat.Key })*@
+                        <span class="label label-default category-filter hover-pointer" data-category="@cat.Value">@cat.Value</span>
                     }
                 </td>
                 <td>
@@ -81,7 +84,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#ItemsTable').DataTable({
+            var $ItemsTable = $('#ItemsTable').DataTable({
                 "stateSave": true,
                 "order": [[1, "asc"]],
                 "autoWidth": true,
@@ -93,6 +96,20 @@
                     { "orderable": false },
                     { "width": "100px", "type": "date" }
                 ]
+            });
+
+            $('#ItemsTable').on('click', '.category-filter', function () {
+                var $this = $(this);
+                console.log('Filtering', $ItemsTable, 'on', $this.data('category'));
+                $ItemsTable.column([4]).search($this.data('category')).draw();
+            });
+
+            $('#clearfilter').on('click', function() {
+                $ItemsTable
+                    .search('')
+                    .columns().search('')
+                    .draw();
+                console.log('Filter cleared on', $ItemsTable);
             });
         });
     </script>

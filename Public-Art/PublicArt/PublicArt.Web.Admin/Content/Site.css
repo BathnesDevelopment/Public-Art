@@ -22,3 +22,28 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+/* Override display on bootstrap label elements to give some spacing */
+.label {
+    display: inline-block;
+}
+
+/* Helper classes */
+.hover-pointer:hover {
+    cursor: pointer;
+}
+.pseudolink {
+    color: #428bca;
+    cursor: pointer;
+    text-decoration: none;
+}
+.pseudolink:hover {
+    color: #2a6496;
+    text-decoration: underline;
+}
+.pseudolink:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
