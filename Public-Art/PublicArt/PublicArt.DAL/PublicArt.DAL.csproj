@@ -57,6 +57,7 @@
     <Compile Include="Category.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PartialClasses.cs" />
     <Compile Include="Image.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>
@@ -75,6 +76,7 @@
     <Compile Include="ItemImage.cs">
       <DependentUpon>PublicArtModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicArtModel.Context.cs">
       <AutoGen>True</AutoGen>
