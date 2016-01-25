@@ -38,7 +38,7 @@
             }
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Reference)
+            @Html.ActionLink(item.Reference, "Edit", new { id = item.ItemId })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
@@ -47,8 +47,7 @@
             @Html.DisplayFor(modelItem => item.ModifiedDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {id = item.ItemId}) |
-            @Html.ActionLink("Details", "Details", new {id = item.ItemId}) |
+             |
             @Html.ActionLink("Delete", "Delete", new {id = item.ItemId})
         </td>
     </tr>
