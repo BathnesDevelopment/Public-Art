@@ -1,5 +1,4 @@
-﻿@using PublicArt.DAL
-@model IEnumerable<Item>
+﻿@model IEnumerable<PublicArt.Web.Admin.ViewModels.ItemIndexViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -19,18 +18,22 @@
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.ItemArtists.)
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.ModifiedDate)
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @if (item.HasImages)
+            @if (item.ThumbnailGuid != null)
             {
-                <img src="@Url.Action("Thumb", "Images", new {id = item.ItemImages.OrderBy(x => x.Order).First().stream_id})" alt="@item.Reference"/>
+                <a href="@Url.Action("Edit", new {id = item.ItemId})">
+                    <img src="@Url.Action("Thumb", "Images", new {id = item.ThumbnailGuid})" alt="@item.Reference" />
+                </a>
             }
             else
             {
@@ -45,10 +48,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ModifiedDate)
-        </td>
-        <td>
-             |
-            @Html.ActionLink("Delete", "Delete", new {id = item.ItemId})
         </td>
     </tr>
 }

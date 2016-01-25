@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
+using PublicArt.Web.Admin.ViewModels;
+using PublicArt.Util.Extensions;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -20,7 +22,16 @@ namespace PublicArt.Web.Admin.Controllers
         [Route]
         public async Task<ActionResult> Index()
         {
-            return View(await db.Items.ToListAsync());
+            var items = await db.Items.ToListAsync();
+            var viewModels = items.Select(x => new ItemIndexViewModel()
+            {
+                ItemId = x.ItemId,
+                Reference = x.Reference,
+                Title = x.Title.ShortenIfTooLong(40),
+                ThumbnailGuid = x.ItemImages.OrderBy(i => i.Order).Select(i => i.stream_id).FirstOrDefault(),
+                ModifiedDate = x.ModifiedDate
+            });
+            return View(viewModels);
         }
 
         // GET: Items/Create
