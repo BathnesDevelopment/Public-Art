@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PublicArt.DAL.Item>
+﻿@using PublicArt.DAL
+@model IEnumerable<Item>
 
 @{
     ViewBag.Title = "Index";
@@ -11,17 +12,12 @@
 </p>
 <table class="table">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Reference)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Archived)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ModifiedDate)
@@ -32,24 +28,28 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @if (item.HasImages)
+            {
+                <img src="@Url.Action("Thumb", "Images", new {id = item.ItemImages.OrderBy(x => x.Order).First().stream_id})" alt="@item.Reference"/>
+            }
+            else
+            {
+                <p>No Image</p>
+            }
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Reference)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Archived)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ModifiedDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ItemId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ItemId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ItemId })
+            @Html.ActionLink("Edit", "Edit", new {id = item.ItemId}) |
+            @Html.ActionLink("Details", "Details", new {id = item.ItemId}) |
+            @Html.ActionLink("Delete", "Delete", new {id = item.ItemId})
         </td>
     </tr>
 }
