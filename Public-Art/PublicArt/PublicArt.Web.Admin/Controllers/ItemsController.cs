@@ -130,6 +130,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 var item = await db.Items.FindAsync(itemViewModel.ItemId);
 
+                // TODO: Implement automapper for viewmodels
                 //item.Reference = itemViewModel.Reference;
                 item.Title = itemViewModel.Title;
                 item.Description = itemViewModel.Description;
@@ -154,6 +155,8 @@ namespace PublicArt.Web.Admin.Controllers
                 item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
                     ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
                     : null;
+
+                item.ModifiedDate = DateTime.Now;
 
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
