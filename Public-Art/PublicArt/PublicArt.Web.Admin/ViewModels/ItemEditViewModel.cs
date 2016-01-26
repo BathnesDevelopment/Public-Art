@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using PublicArt.Util.DataAnnotations;
 
 namespace PublicArt.Web.Admin.ViewModels
 {
     public class ItemEditViewModel
     {
         [Key]
-        [ReadOnly(true)]
         public int ItemId { get; set; }
 
-        [Display(Name = "Ref.")]
+        [Display(Name = "Reference")]
         [StringLength(6)]
-        [Required]
         public string Reference { get; set; }
 
         [Display(Name = "Title")]
@@ -93,10 +92,12 @@ namespace PublicArt.Web.Admin.ViewModels
 
         [Display(Name = "Latitude")]
         [Range(-90.0, 90.0)]
+        [RequiredIfPropertyPopulated("Longitude")]
         public double? Latitude { get; set; }
 
         [Display(Name = "Longitude")]
         [Range(-180.0, 180.0)]
+        [RequiredIfPropertyPopulated("Latitude")]
         public double? Longitude { get; set; }
 
         [Display(Name = "Archived")]

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Web.Admin.ViewModels;
 using PublicArt.Util.Extensions;
+using PublicArt.Util.Spatial;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -123,15 +124,41 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id:int}")]
-        public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Location,Archived")] Item item)
+        public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Archived,Artists,Categories,Images")] ItemEditViewModel itemViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(item).State = EntityState.Modified;
+                var item = await db.Items.FindAsync(itemViewModel.ItemId);
+
+                //item.Reference = itemViewModel.Reference;
+                item.Title = itemViewModel.Title;
+                item.Description = itemViewModel.Description;
+                item.Date = itemViewModel.Date;
+                item.UnveilingYear = itemViewModel.UnveilingYear;
+                item.UnveilingDetails = itemViewModel.UnveilingDetails;
+                item.Statement = itemViewModel.Statement;
+                item.Material = itemViewModel.Material;
+                item.Inscription = itemViewModel.Inscription;
+                item.History = itemViewModel.History;
+                item.Notes = itemViewModel.Notes;
+                item.WebsiteURL = itemViewModel.WebsiteUrl;
+                item.Height = itemViewModel.Height;
+                item.Width = itemViewModel.Width;
+                item.Depth = itemViewModel.Depth;
+                item.Diameter = itemViewModel.Diameter;
+                item.SurfaceCondition = itemViewModel.SurfaceCondition;
+                item.StructuralCondition = itemViewModel.StructuralCondition;
+                item.Address = itemViewModel.Address;
+                item.Archived = itemViewModel.Archived;
+
+                item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
+                    ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
+                    : null;
+
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(item);
+            return View(itemViewModel);
         }
 
         // GET: Items/5/Delete
