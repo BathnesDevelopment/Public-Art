@@ -72,11 +72,49 @@ namespace PublicArt.Web.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             Item item = await db.Items.FindAsync(id);
+
             if (item == null)
             {
                 return HttpNotFound();
             }
-            return View(item);
+
+            var viewModel = new ItemEditViewModel
+            {
+                ItemId = item.ItemId,
+                Reference = item.Reference,
+                Title = item.Title,
+                Description = item.Description,
+                Date = item.Date,
+                UnveilingYear = item.UnveilingYear,
+                UnveilingDetails = item.UnveilingDetails,
+                Statement = item.Statement,
+                Material = item.Material,
+                Inscription = item.Inscription,
+                History = item.History,
+                Notes = item.Notes,
+                WebsiteUrl = item.WebsiteURL,
+                Height = item.Height,
+                Width = item.Width,
+                Depth = item.Depth,
+                Diameter = item.Diameter,
+                SurfaceCondition = item.SurfaceCondition,
+                StructuralCondition = item.StructuralCondition,
+                Address = item.Address,
+                Latitude = item.Location?.Latitude,
+                Longitude = item.Location?.Longitude,
+                Archived = item.Archived,
+                ModifiedDate = item.ModifiedDate,
+                Artists = item.ItemArtists.Select(a => new ItemIndexArtistsViewModel()
+                {
+                    ArtistId = a.ArtistId,
+                    Name = a.Artist.Name,
+                    Notes = a.Notes
+                }),
+                Categories = item.ItemCategories.ToDictionary(c => c.CategoryId, c => c.Category.Description),
+                Images = item.ItemImages.ToDictionary(i => i.stream_id, i => i.Caption)
+            };
+
+            return View(viewModel);
         }
 
         // POST: Items/5
