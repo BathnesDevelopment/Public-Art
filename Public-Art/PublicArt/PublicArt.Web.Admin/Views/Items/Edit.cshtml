@@ -6,6 +6,22 @@
 }
 
 <h2>Editing @Model.Reference</h2>
+<hr/>
+
+<div class="row">
+@foreach (var img in Model.Images)
+{
+    <div class="col-xs-4 col-md-2">
+        <div class="thumbnail">
+            <img class="img-responsive" src="@Url.Action("Thumb", "Images", new {id = img.Key})" alt="@img.Value"/>
+            <div class="caption">
+                <p><em>@img.Value</em></p>
+            </div>
+        </div>
+    </div>
+}
+</div>
+
 <hr />
 
 @using (Html.BeginForm())
