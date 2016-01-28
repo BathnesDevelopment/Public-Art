@@ -45,7 +45,7 @@
                     @if (item.ThumbnailGuid != Guid.Empty)
                 {
                         <a href="@Url.Action("Edit", new {id = item.ItemId})">
-                            <img src="@Url.Action("Thumb", "Images", new {id = item.ThumbnailGuid})" alt="@item.Reference" />
+                            <img src="@Url.Action("Thumb", "ItemImages", new {id = item.ThumbnailGuid, w = 100})" alt="@item.Reference" />
                         </a>
                     }
                     else

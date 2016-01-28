@@ -16,7 +16,7 @@
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Inscription]			), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [History]				), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Notes]				), '''', '''''') + '''', 'NULL') + ', '
-                            +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [WebsiteURL]			), '''', '''''') + '''', 'NULL') + ', '
+                            +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [WebsiteUrl]			), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [Height]				), '''', '''''') +   '', 'NULL') + ', '
                             +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [Width]				), '''', '''''') +   '', 'NULL') + ', '
                             +  ISNULL(      + REPLACE(CONVERT(NVARCHAR(MAX), [Depth]				), '''', '''''') +   '', 'NULL') + ', '
@@ -749,7 +749,7 @@ The photographs use a range of papers, some from India made from cotton rags coa
 ,   [Inscription]        
 ,   [History]            
 ,   [Notes]              
-,   [WebsiteURL]         
+,   [WebsiteUrl]         
 ,   [Height]             
 ,   [Width]              
 ,   [Depth]              
@@ -775,7 +775,7 @@ WHEN NOT MATCHED BY TARGET THEN
     ,   [Inscription]        
     ,   [History]            
     ,   [Notes]              
-    ,   [WebsiteURL]         
+    ,   [WebsiteUrl]         
     ,   [Height]             
     ,   [Width]              
     ,   [Depth]              
@@ -798,7 +798,7 @@ WHEN NOT MATCHED BY TARGET THEN
     ,   [SOURCE].[Inscription]        
     ,   [SOURCE].[History]            
     ,   [SOURCE].[Notes]              
-    ,   [SOURCE].[WebsiteURL]         
+    ,   [SOURCE].[WebsiteUrl]         
     ,   [SOURCE].[Height]             
     ,   [SOURCE].[Width]              
     ,   [SOURCE].[Depth]              
@@ -822,7 +822,7 @@ AND NOT EXISTS ( SELECT
                  ,  [SOURCE].[Inscription]
                  ,  [SOURCE].[History]
                  ,  [SOURCE].[Notes]
-                 ,  [SOURCE].[WebsiteURL]
+                 ,  [SOURCE].[WebsiteUrl]
                  ,  [SOURCE].[Height]
                  ,  [SOURCE].[Width]
                  ,  [SOURCE].[Depth]
@@ -844,7 +844,7 @@ AND NOT EXISTS ( SELECT
                  ,  [TARGET].[Inscription]
                  ,  [TARGET].[History]
                  ,  [TARGET].[Notes]
-                 ,  [TARGET].[WebsiteURL]
+                 ,  [TARGET].[WebsiteUrl]
                  ,  [TARGET].[Height]
                  ,  [TARGET].[Width]
                  ,  [TARGET].[Depth]
@@ -872,7 +872,7 @@ AND NOT EXISTS ( SELECT
 ,   [Inscription]           = [SOURCE].[Inscription]        
 ,   [History]               = [SOURCE].[History]            
 ,   [Notes]                 = [SOURCE].[Notes]              
-,   [WebsiteURL]            = [SOURCE].[WebsiteURL]         
+,   [WebsiteUrl]            = [SOURCE].[WebsiteUrl]         
 ,   [Height]                = [SOURCE].[Height]             
 ,   [Width]                 = [SOURCE].[Width]              
 ,   [Depth]                 = [SOURCE].[Depth]              

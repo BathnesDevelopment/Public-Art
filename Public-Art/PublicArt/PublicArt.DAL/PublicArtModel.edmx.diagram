@@ -5,21 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="5344ef0eee304fd79dc87f7cc6123a07" Name="Diagram1">
-        <EntityTypeShape EntityType="PublicArtModel.Artist" Width="1.5" PointX="6.5" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.Category" Width="1.5" PointX="6.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.Item" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.ItemArtist" Width="1.5" PointX="3.5" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.ItemCategory" Width="1.5" PointX="3.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.ItemImage" Width="1.5" PointX="3.5" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PublicArtModel.Image" Width="1.5" PointX="6.5" PointY="5.5" IsExpanded="true" />
-        <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ArtistId_Artist" ManuallyRouted="false" />
-        <AssociationConnector Association="PublicArtModel.FK_ItemCategory_CategoryId_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ItemId_Item" ManuallyRouted="false" />
-        <AssociationConnector Association="PublicArtModel.FK_ItemCategory_ItemId_Item" ManuallyRouted="false" />
-        <AssociationConnector Association="PublicArtModel.FK_ItemImage_ItemId_Item" ManuallyRouted="false" />
-        <AssociationConnector Association="PublicArtModel.ItemImageImage" />
-        <EntityTypeShape EntityType="PublicArtModel.ImageThumbnail" Width="1.5" PointX="9.5" PointY="5.5" />
-        <AssociationConnector Association="PublicArtModel.ImageImageThumbnail" />
+        <EntityTypeShape EntityType="PublicArtModel.Category" Width="1.5" PointX="6.5" PointY="3.375" />
+        <EntityTypeShape EntityType="PublicArtModel.ImageThumbnail" Width="1.5" PointX="6.5" PointY="5.5" />
+        <EntityTypeShape EntityType="PublicArtModel.ItemArtist" Width="1.5" PointX="3.5" PointY="0.5" />
+        <EntityTypeShape EntityType="PublicArtModel.ItemCategory" Width="1.5" PointX="3.5" PointY="3" />
+        <EntityTypeShape EntityType="PublicArtModel.ItemImage" Width="1.5" PointX="3.5" PointY="5.25" />
+        <AssociationConnector Association="PublicArtModel.FK_ItemCategory_CategoryId_Category" />
+        <AssociationConnector Association="PublicArtModel.FK_ImageThumbnail_stream_id_ItemImage" />
+        <EntityTypeShape EntityType="PublicArtModel.Artist" Width="1.5" PointX="6.5" PointY="0.5" />
+        <EntityTypeShape EntityType="PublicArtModel.Item" Width="1.5" PointX="0.5" PointY="0.5" />
+        <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ArtistId_Artist" />
+        <AssociationConnector Association="PublicArtModel.FK_ItemArtist_ItemId_Item" />
+        <AssociationConnector Association="PublicArtModel.FK_ItemCategory_ItemId_Item" />
+        <AssociationConnector Association="PublicArtModel.FK_ItemImage_ItemId_Item" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

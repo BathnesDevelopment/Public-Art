@@ -23,7 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <NonTransactedFileStreamAccess>READ_ONLY</NonTransactedFileStreamAccess>
+    <NonTransactedFileStreamAccess>FULL</NonTransactedFileStreamAccess>
     <FileStreamDirectoryName>PublicArt</FileStreamDirectoryName>
     <DacApplicationName>PublicArt</DacApplicationName>
     <DefaultFileStreamFilegroup>PublicArtImages</DefaultFileStreamFilegroup>
@@ -71,7 +71,7 @@
     <Folder Include="Storage" />
     <Folder Include="Storage\Filegroups" />
     <Folder Include="dbo\Types" />
-    <Folder Include="dbo\Views" />
+    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
@@ -90,11 +90,14 @@
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_Artist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemArtist.sql" />
     <Build Include="dbo\Stored Procedures\Seed Data\uspSeed_ItemCategory.sql" />
-    <Build Include="dbo\Views\Image.sql" />
-    <Build Include="dbo\Stored Procedures\uspImage_Insert.sql" />
-    <Build Include="dbo\Stored Procedures\uspImage_Delete.sql" />
     <Build Include="dbo\Tables\ImageThumbnail.sql" />
-    <Build Include="dbo\Stored Procedures\uspImage_Update.sql" />
+    <Build Include="dbo\Triggers\TR_Artist_Update.sql" />
+    <Build Include="dbo\Triggers\TR_Category_Update.sql" />
+    <Build Include="dbo\Triggers\TR_ItemCategory_Update.sql" />
+    <Build Include="dbo\Triggers\TR_ItemImage_Update.sql" />
+    <Build Include="dbo\Triggers\TR_ItemArtist_Update.sql" />
+    <Build Include="dbo\Triggers\TR_Item_Update.sql" />
+    <Build Include="dbo\Triggers\TR_ImageThumbnail_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />

@@ -49,4 +49,18 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspImage_Insert]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="597dc883-382c-4701-a6c5-4e21c00ee777" ChangeDateTime="01/28/2016 13:21:56">
+    <Property Name="ElementName" Value="[dbo].[Item].[WebsiteURL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Item]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[WebsiteUrl]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e9ac1790-cb42-4d23-8343-f92df7aeab44" ChangeDateTime="01/28/2016 13:23:39">
+    <Property Name="ElementName" Value="[dbo].[Artist].[WebsiteURL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Artist]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[WebsiteUrl]" />
+  </Operation>
 </Operations>

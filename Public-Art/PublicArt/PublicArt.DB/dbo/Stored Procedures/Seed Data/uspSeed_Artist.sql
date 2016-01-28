@@ -7,7 +7,7 @@
                         SELECT N'('
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Name]			), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [Biography]	), '''', '''''') + '''', 'NULL') + ', '
-                            +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [WebsiteURL]	), '''', '''''') + '''', 'NULL') + ', '
+                            +  ISNULL('N''' + REPLACE(CONVERT(NVARCHAR(MAX), [WebsiteUrl]	), '''', '''''') + '''', 'NULL') + ', '
                             +  ISNULL(                CONVERT(NVARCHAR(MAX), [StartYear]	)                      , 'NULL') + ', '
                             +  ISNULL(                CONVERT(NVARCHAR(MAX), [EndYear]		)                      , 'NULL')
                             + N'),'
@@ -187,7 +187,7 @@ USING ( VALUES
 ) AS [SOURCE] (
     [Name]
 ,   [Biography]
-,   [WebsiteURL]
+,   [WebsiteUrl]
 ,   [StartYear]
 ,   [EndYear]
 )
@@ -197,14 +197,14 @@ WHEN NOT MATCHED BY TARGET THEN
     INSERT (    
         [Name]
     ,   [Biography]
-    ,   [WebsiteURL]
+    ,   [WebsiteUrl]
     ,   [StartYear]
     ,   [EndYear]  
     )
     VALUES (
         [SOURCE].[Name]
     ,   [SOURCE].[Biography]
-    ,   [SOURCE].[WebsiteURL]
+    ,   [SOURCE].[WebsiteUrl]
     ,   [SOURCE].[StartYear]
     ,   [SOURCE].[EndYear]
     )
@@ -212,20 +212,20 @@ WHEN MATCHED
 AND NOT EXISTS ( SELECT
                     [SOURCE].[Name]
                 ,   [SOURCE].[Biography]
-                ,   [SOURCE].[WebsiteURL]
+                ,   [SOURCE].[WebsiteUrl]
                 ,   [SOURCE].[StartYear]
                 ,   [SOURCE].[EndYear]
                  INTERSECT
                  SELECT
                     [TARGET].[Name]
                 ,   [TARGET].[Biography]
-                ,   [TARGET].[WebsiteURL]
+                ,   [TARGET].[WebsiteUrl]
                 ,   [TARGET].[StartYear]
                 ,   [TARGET].[EndYear]
     ) THEN UPDATE SET
         [Name]          = [SOURCE].[Name]              
     ,   [Biography]     = [SOURCE].[Biography]        
-    ,   [WebsiteURL]    = [SOURCE].[WebsiteURL]               
+    ,   [WebsiteUrl]    = [SOURCE].[WebsiteUrl]               
     ,   [StartYear]     = [SOURCE].[StartYear]      
     ,   [EndYear]       = [SOURCE].[EndYear]   
     ,   [ModifiedDate]  = CURRENT_TIMESTAMP;

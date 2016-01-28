@@ -14,14 +14,21 @@ namespace PublicArt.DAL
     
     public partial class ItemImage
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ItemImage()
+        {
+            this.ImageThumbnails = new HashSet<ImageThumbnail>();
+        }
+    
         public int ItemId { get; set; }
         public System.Guid stream_id { get; set; }
-        public byte Order { get; set; }
+        public byte[] file_stream { get; set; }
+        public bool Primary { get; set; }
         public string Caption { get; set; }
-        public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ImageThumbnail> ImageThumbnails { get; set; }
         public virtual Item Item { get; set; }
-        public virtual Image Image { get; set; }
     }
 }

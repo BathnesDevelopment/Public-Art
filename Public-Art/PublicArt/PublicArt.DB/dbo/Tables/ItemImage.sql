@@ -6,17 +6,21 @@
 */
 CREATE TABLE [dbo].[ItemImage]
 (
-    [ItemId]            INT                 NOT NULL
-,   [stream_id]         UNIQUEIDENTIFIER    NOT NULL
+    [ItemId]            INT                         NOT NULL
+,   [stream_id]         UNIQUEIDENTIFIER            NOT NULL    ROWGUIDCOL      CONSTRAINT [DF_ItemImage_stream_id] DEFAULT (NEWID())
 
-,   [Order]             TINYINT             NOT NULL
-,   [Caption]           NVARCHAR(1000)      NULL
+,   [file_stream]       VARBINARY(MAX)  FILESTREAM  NOT NULL        
 
-,   [rowguid]           UNIQUEIDENTIFIER    NOT NULL        ROWGUIDCOL      CONSTRAINT [DF_ItemImage_rowguid] DEFAULT (NEWID())
-,   [ModifiedDate]      DATETIME2           NOT NULL                        CONSTRAINT [DF_ItemImage_ModifiedDate] DEFAULT (SYSDATETIME())
+,   [Primary]           BIT                         NOT NULL
+,   [Caption]           NVARCHAR(1000)              NULL
 
-,   CONSTRAINT [PK_ItemImage_ItemId_stream_id] PRIMARY KEY CLUSTERED ([ItemId], [stream_id])
+,   [ModifiedDate]      DATETIME2                   NOT NULL                    CONSTRAINT [DF_ItemImage_ModifiedDate] DEFAULT (SYSDATETIME())
+
+,   CONSTRAINT [PK_ItemImage_ItemId_stream_id] UNIQUE CLUSTERED ([ItemId], [stream_id])
+,   CONSTRAINT [UI_ItemImage_stream_id] PRIMARY KEY NONCLUSTERED ([stream_id])
 ,   CONSTRAINT [FK_ItemImage_ItemId_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item]([ItemId])
-,   CONSTRAINT [FK_ItemImage_stream_id_Image] FOREIGN KEY ([stream_id]) REFERENCES [dbo].[ImageFT]([stream_id])
 );
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [UXF_ItemImage_ItemId_Primary] ON [dbo].[ItemImage] ([ItemId]) WHERE [Primary] = 1;
 GO

@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[Item]
 ,   [Inscription]               NVARCHAR(500)       NULL
 ,   [History]                   NVARCHAR(2000)      NULL
 ,   [Notes]                     NVARCHAR(2000)      NULL
-,   [WebsiteURL]                [dbo].[URL]         NULL
+,   [WebsiteUrl]                [dbo].[URL]         NULL
 
 ,   [Height]                    SMALLINT            NULL
 ,   [Width]                     SMALLINT            NULL

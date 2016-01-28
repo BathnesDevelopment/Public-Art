@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[Artist]
     [ArtistId]      INT                 NOT NULL        IDENTITY(1,1)
 ,   [Name]          [dbo].[Name]        NOT NULL
 ,   [Biography]     NVARCHAR(4000)      NULL
-,   [WebsiteURL]    [dbo].[URL]         NULL
+,   [WebsiteUrl]    [dbo].[URL]         NULL
 ,   [StartYear]     SMALLINT            NULL
 ,   [EndYear]       SMALLINT            NULL
 

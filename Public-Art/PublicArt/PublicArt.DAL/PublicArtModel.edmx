@@ -30,10 +30,13 @@
         <EntityType Name="ImageThumbnail">
           <Key>
             <PropertyRef Name="stream_id" />
+            <PropertyRef Name="magnitude" />
           </Key>
           <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="magnitude" Type="int" Nullable="false" />
           <Property Name="file_stream" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Item">
           <Key>
@@ -87,28 +90,27 @@
         </EntityType>
         <EntityType Name="ItemImage">
           <Key>
-            <PropertyRef Name="ItemId" />
             <PropertyRef Name="stream_id" />
           </Key>
           <Property Name="ItemId" Type="int" Nullable="false" />
-          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Order" Type="tinyint" Nullable="false" />
+          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="file_stream" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Primary" Type="bit" Nullable="false" />
           <Property Name="Caption" Type="nvarchar" MaxLength="1000" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="stream_id" />
-            
-            
-          </Key>
-          <Property Name="stream_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="file_stream" Type="varbinary(max)" />
-          <Property Name="name" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="is_directory" Type="bit" Nullable="false" />
-          <Property Name="unc_path" Type="nvarchar" MaxLength="4000" />
-        </EntityType>
+        <Association Name="FK_ImageThumbnail_stream_id_ItemImage">
+          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="1" />
+          <End Role="ImageThumbnail" Type="Self.ImageThumbnail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemImage">
+              <PropertyRef Name="stream_id" />
+            </Principal>
+            <Dependent Role="ImageThumbnail">
+              <PropertyRef Name="stream_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ItemArtist_ArtistId_Artist">
           <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
           <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
@@ -169,17 +171,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="uspImage_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="filename" Type="nvarchar" Mode="In" />
-          <Parameter Name="filedata" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="uspImage_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="stream_id" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="filedata" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="uspImage_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="docId" Type="uniqueidentifier" Mode="In" />
-        </Function>
         <EntityContainer Name="PublicArtModelStoreContainer">
           <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
@@ -188,15 +179,10 @@
           <EntitySet Name="ItemArtist" EntityType="Self.ItemArtist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemCategory" EntityType="Self.ItemCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ItemImage" EntityType="Self.ItemImage" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Image" EntityType="Self.Image" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Image].[stream_id] AS [stream_id], 
-    [Image].[file_stream] AS [file_stream], 
-    [Image].[name] AS [name], 
-    [Image].[is_directory] AS [is_directory], 
-    [Image].[unc_path] AS [unc_path]
-    FROM [dbo].[Image] AS [Image]</DefiningQuery>
-          </EntitySet>
+          <AssociationSet Name="FK_ImageThumbnail_stream_id_ItemImage" Association="Self.FK_ImageThumbnail_stream_id_ItemImage">
+            <End Role="ItemImage" EntitySet="ItemImage" />
+            <End Role="ImageThumbnail" EntitySet="ImageThumbnail" />
+          </AssociationSet>
           <AssociationSet Name="FK_ItemArtist_ArtistId_Artist" Association="Self.FK_ItemArtist_ArtistId_Artist">
             <End Role="Artist" EntitySet="Artist" />
             <End Role="ItemArtist" EntitySet="ItemArtist" />
@@ -222,61 +208,75 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PublicArtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Artist">
-          <Key>
-            <PropertyRef Name="ArtistId" />
-          </Key>
-          <Property Name="ArtistId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Biography" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
-          <Property Name="StartYear" Type="Int16" />
-          <Property Name="EndYear" Type="Int16" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="Artist" ToRole="ItemArtist" />
-        </EntityType>
+        <EntityContainer Name="PublicArtEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="uspImage_Insert" ReturnType="Collection(PublicArtModel.uspImage_Insert_Result)">
+            <Parameter Name="filename" Mode="In" Type="String" />
+            <Parameter Name="filedata" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="uspImage_Update">
+            <Parameter Name="stream_id" Mode="In" Type="Guid" />
+            <Parameter Name="filedata" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="uspImage_Delete">
+          <Parameter Name="docId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <EntitySet Name="Categories" EntityType="PublicArtModel.Category" />
+          <EntitySet Name="ImageThumbnails" EntityType="PublicArtModel.ImageThumbnail" />
+          <EntitySet Name="ItemArtists" EntityType="PublicArtModel.ItemArtist" />
+          <EntitySet Name="ItemCategories" EntityType="PublicArtModel.ItemCategory" />
+          <EntitySet Name="ItemImages" EntityType="PublicArtModel.ItemImage" />
+          <AssociationSet Name="FK_ItemCategory_CategoryId_Category" Association="PublicArtModel.FK_ItemCategory_CategoryId_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImageThumbnail_stream_id_ItemImage" Association="PublicArtModel.FK_ImageThumbnail_stream_id_ItemImage">
+            <End Role="ItemImage" EntitySet="ItemImages" />
+            <End Role="ImageThumbnail" EntitySet="ImageThumbnails" />
+          </AssociationSet>
+          <EntitySet Name="Artists" EntityType="PublicArtModel.Artist" />
+          <EntitySet Name="Items" EntityType="PublicArtModel.Item" />
+          <AssociationSet Name="FK_ItemArtist_ArtistId_Artist" Association="PublicArtModel.FK_ItemArtist_ArtistId_Artist">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="ItemArtist" EntitySet="ItemArtists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemArtist_ItemId_Item" Association="PublicArtModel.FK_ItemArtist_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemArtist" EntitySet="ItemArtists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemCategory_ItemId_Item" Association="PublicArtModel.FK_ItemCategory_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemCategory" EntitySet="ItemCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemImage_ItemId_Item" Association="PublicArtModel.FK_ItemImage_ItemId_Item">
+            <End Role="Item" EntitySet="Items" />
+            <End Role="ItemImage" EntitySet="ItemImages" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="uspImage_Insert_Result">
+          <Property Type="Guid" Name="stream_id" Nullable="false" />
+          <Property Type="String" Name="unc_path" Nullable="true" MaxLength="4000" />
+        </ComplexType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="Category" ToRole="ItemCategory" />
+          <NavigationProperty Name="ItemCategories" Relationship="PublicArtModel.FK_ItemCategory_CategoryId_Category" FromRole="Category" ToRole="ItemCategory" />
         </EntityType>
-        <EntityType Name="Item">
+        <EntityType Name="ImageThumbnail">
           <Key>
-            <PropertyRef Name="ItemId" />
+            <PropertyRef Name="stream_id" />
+            <PropertyRef Name="magnitude" />
           </Key>
-          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Reference" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Date" Type="Int16" />
-          <Property Name="UnveilingYear" Type="Int16" />
-          <Property Name="UnveilingDetails" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Statement" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Material" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Inscription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="History" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="Notes" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
-          <Property Name="Height" Type="Int16" />
-          <Property Name="Width" Type="Int16" />
-          <Property Name="Depth" Type="Int16" />
-          <Property Name="Diameter" Type="Int16" />
-          <Property Name="SurfaceCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="StructuralCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Location" Type="Geography" />
-          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <Property Name="stream_id" Type="Guid" Nullable="false" />
+          <Property Name="magnitude" Type="Int32" Nullable="false" />
+          <Property Name="file_stream" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="ItemArtists" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
-          <NavigationProperty Name="ItemCategories" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="Item" ToRole="ItemCategory" />
-          <NavigationProperty Name="ItemImages" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="Item" ToRole="ItemImage" />
+          <NavigationProperty Name="ItemImage" Relationship="PublicArtModel.FK_ImageThumbnail_stream_id_ItemImage" FromRole="ImageThumbnail" ToRole="ItemImage" />
         </EntityType>
         <EntityType Name="ItemArtist">
           <Key>
@@ -288,8 +288,8 @@
           <Property Name="Notes" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Artist" Relationship="Self.FK_ItemArtist_ArtistId_Artist" FromRole="ItemArtist" ToRole="Artist" />
-          <NavigationProperty Name="Item" Relationship="Self.FK_ItemArtist_ItemId_Item" FromRole="ItemArtist" ToRole="Item" />
+          <NavigationProperty Name="Artist" Relationship="PublicArtModel.FK_ItemArtist_ArtistId_Artist" FromRole="ItemArtist" ToRole="Artist" />
+          <NavigationProperty Name="Item" Relationship="PublicArtModel.FK_ItemArtist_ItemId_Item" FromRole="ItemArtist" ToRole="Item" />
         </EntityType>
         <EntityType Name="ItemCategory">
           <Key>
@@ -300,50 +300,25 @@
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
           <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Category" Relationship="Self.FK_ItemCategory_CategoryId_Category" FromRole="ItemCategory" ToRole="Category" />
-          <NavigationProperty Name="Item" Relationship="Self.FK_ItemCategory_ItemId_Item" FromRole="ItemCategory" ToRole="Item" />
+          <NavigationProperty Name="Category" Relationship="PublicArtModel.FK_ItemCategory_CategoryId_Category" FromRole="ItemCategory" ToRole="Category" />
+          <NavigationProperty Name="Item" Relationship="PublicArtModel.FK_ItemCategory_ItemId_Item" FromRole="ItemCategory" ToRole="Item" />
         </EntityType>
         <EntityType Name="ItemImage">
           <Key>
-            <PropertyRef Name="ItemId" />
             <PropertyRef Name="stream_id" />
           </Key>
           <Property Name="ItemId" Type="Int32" Nullable="false" />
-          <Property Name="stream_id" Type="Guid" Nullable="false" />
-          <Property Name="Order" Type="Byte" Nullable="false" />
+          <Property Name="stream_id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="file_stream" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Primary" Type="Boolean" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Item" Relationship="Self.FK_ItemImage_ItemId_Item" FromRole="ItemImage" ToRole="Item" />
-          <NavigationProperty Name="Image" Relationship="PublicArtModel.ItemImageImage" FromRole="ItemImage" ToRole="Image" />
+          <NavigationProperty Name="ImageThumbnails" Relationship="PublicArtModel.FK_ImageThumbnail_stream_id_ItemImage" FromRole="ItemImage" ToRole="ImageThumbnail" />
+          <NavigationProperty Name="Item" Relationship="PublicArtModel.FK_ItemImage_ItemId_Item" FromRole="ItemImage" ToRole="Item" />
         </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="stream_id" />
-          </Key>
-          <Property Name="stream_id" Type="Guid" Nullable="false" />
-          <Property Name="file_stream" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="is_directory" Type="Boolean" Nullable="false" />
-          <Property Name="unc_path" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ItemImages" Relationship="PublicArtModel.ItemImageImage" FromRole="Image" ToRole="ItemImage" />
-          <NavigationProperty Name="ImageThumbnail" Relationship="PublicArtModel.ImageImageThumbnail" FromRole="Image" ToRole="ImageThumbnail" />
-        </EntityType>
-        <Association Name="FK_ItemArtist_ArtistId_Artist">
-          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
-          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Artist">
-              <PropertyRef Name="ArtistId" />
-            </Principal>
-            <Dependent Role="ItemArtist">
-              <PropertyRef Name="ArtistId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ItemCategory_CategoryId_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
-          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <End Type="PublicArtModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="PublicArtModel.ItemCategory" Role="ItemCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Category">
               <PropertyRef Name="CategoryId" />
@@ -353,9 +328,79 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ImageThumbnail_stream_id_ItemImage">
+          <End Type="PublicArtModel.ItemImage" Role="ItemImage" Multiplicity="1" />
+          <End Type="PublicArtModel.ImageThumbnail" Role="ImageThumbnail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemImage">
+              <PropertyRef Name="stream_id" />
+            </Principal>
+            <Dependent Role="ImageThumbnail">
+              <PropertyRef Name="stream_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistId" />
+          </Key>
+          <Property Name="ArtistId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Biography" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="WebsiteURL" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <Property Name="StartYear" Type="Int16" />
+          <Property Name="EndYear" Type="Int16" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ItemArtists" Relationship="PublicArtModel.FK_ItemArtist_ArtistId_Artist" FromRole="Artist" ToRole="ItemArtist" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Reference" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="Int16" />
+          <Property Name="UnveilingYear" Type="Int16" />
+          <Property Name="UnveilingDetails" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Statement" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Material" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Inscription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="History" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="WebsiteUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <Property Name="Height" Type="Int16" />
+          <Property Name="Width" Type="Int16" />
+          <Property Name="Depth" Type="Int16" />
+          <Property Name="Diameter" Type="Int16" />
+          <Property Name="SurfaceCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StructuralCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="Geography" />
+          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ItemArtists" Relationship="PublicArtModel.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
+          <NavigationProperty Name="ItemCategories" Relationship="PublicArtModel.FK_ItemCategory_ItemId_Item" FromRole="Item" ToRole="ItemCategory" />
+          <NavigationProperty Name="ItemImages" Relationship="PublicArtModel.FK_ItemImage_ItemId_Item" FromRole="Item" ToRole="ItemImage" />
+        </EntityType>
+        <Association Name="FK_ItemArtist_ArtistId_Artist">
+          <End Type="PublicArtModel.Artist" Role="Artist" Multiplicity="1" />
+          <End Type="PublicArtModel.ItemArtist" Role="ItemArtist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistId" />
+            </Principal>
+            <Dependent Role="ItemArtist">
+              <PropertyRef Name="ArtistId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ItemArtist_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
-          <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.ItemArtist" Role="ItemArtist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ItemId" />
@@ -366,8 +411,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemCategory_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
-          <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.ItemCategory" Role="ItemCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ItemId" />
@@ -378,8 +423,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemImage_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
-          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="*" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.ItemImage" Role="ItemImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
               <PropertyRef Name="ItemId" />
@@ -389,229 +434,107 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PublicArtEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Artists" EntityType="Self.Artist" />
-          <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="Items" EntityType="Self.Item" />
-          <EntitySet Name="ItemArtists" EntityType="Self.ItemArtist" />
-          <EntitySet Name="ItemCategories" EntityType="Self.ItemCategory" />
-          <EntitySet Name="ItemImages" EntityType="Self.ItemImage" />
-          <EntitySet Name="Images" EntityType="Self.Image" />
-          <AssociationSet Name="FK_ItemArtist_ArtistId_Artist" Association="Self.FK_ItemArtist_ArtistId_Artist">
-            <End Role="Artist" EntitySet="Artists" />
-            <End Role="ItemArtist" EntitySet="ItemArtists" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemCategory_CategoryId_Category" Association="Self.FK_ItemCategory_CategoryId_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="ItemCategory" EntitySet="ItemCategories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemArtist_ItemId_Item" Association="Self.FK_ItemArtist_ItemId_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="ItemArtist" EntitySet="ItemArtists" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemCategory_ItemId_Item" Association="Self.FK_ItemCategory_ItemId_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="ItemCategory" EntitySet="ItemCategories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ItemImage_ItemId_Item" Association="Self.FK_ItemImage_ItemId_Item">
-            <End Role="Item" EntitySet="Items" />
-            <End Role="ItemImage" EntitySet="ItemImages" />
-          </AssociationSet>
-          <FunctionImport Name="uspImage_Insert" ReturnType="Collection(PublicArtModel.uspImage_Insert_Result)">
-            <Parameter Name="filename" Mode="In" Type="String" />
-            <Parameter Name="filedata" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="uspImage_Update">
-            <Parameter Name="stream_id" Mode="In" Type="Guid" />
-            <Parameter Name="filedata" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="uspImage_Delete">
-            <Parameter Name="docId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <AssociationSet Name="ItemImageImage" Association="PublicArtModel.ItemImageImage">
-            <End Role="ItemImage" EntitySet="ItemImages" />
-            <End Role="Image" EntitySet="Images" />
-          </AssociationSet>
-          <EntitySet Name="ImageThumbnails" EntityType="PublicArtModel.ImageThumbnail" />
-          <AssociationSet Name="ImageImageThumbnail" Association="PublicArtModel.ImageImageThumbnail">
-            <End EntitySet="Images" Role="Image" />
-            <End EntitySet="ImageThumbnails" Role="ImageThumbnail" />
-          </AssociationSet>
-        </EntityContainer>
-        <ComplexType Name="uspImage_Insert_Result">
-          <Property Type="Guid" Name="stream_id" Nullable="false" />
-          <Property Type="String" Name="unc_path" Nullable="true" MaxLength="4000" />
-        </ComplexType>
-        <Association Name="ItemImageImage">
-          <End Type="PublicArtModel.ItemImage" Role="ItemImage" Multiplicity="*" />
-          <End Type="PublicArtModel.Image" Role="Image" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="stream_id" />
-            </Principal>
-            <Dependent Role="ItemImage">
-              <PropertyRef Name="stream_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="ImageThumbnail">
-          <Key>
-            <PropertyRef Name="stream_id" />
-          </Key>
-          <Property Name="stream_id" Type="Guid" Nullable="false" />
-          <Property Name="file_stream" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" />
-          <NavigationProperty Name="Image" Relationship="PublicArtModel.ImageImageThumbnail" FromRole="ImageThumbnail" ToRole="Image" />
-        </EntityType>
-        <Association Name="ImageImageThumbnail">
-          <End Type="PublicArtModel.Image" Multiplicity="1" Role="Image" ></End>
-          <End Type="PublicArtModel.ImageThumbnail" Multiplicity="0..1" Role="ImageThumbnail" />
-          <ReferentialConstraint>
-            <Principal Role="Image">
-              <PropertyRef Name="stream_id" />
-            </Principal>
-            <Dependent Role="ImageThumbnail">
-              <PropertyRef Name="stream_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PublicArtModelStoreContainer" CdmEntityContainer="PublicArtEntities">
-          <EntitySetMapping Name="Artists">
-            <EntityTypeMapping TypeName="PublicArtModel.Artist">
-              <MappingFragment StoreEntitySet="Artist">
-                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Biography" ColumnName="Biography" />
-                <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
-                <ScalarProperty Name="StartYear" ColumnName="StartYear" />
-                <ScalarProperty Name="EndYear" ColumnName="EndYear" />
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="PublicArtModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Items">
-            <EntityTypeMapping TypeName="PublicArtModel.Item">
-              <MappingFragment StoreEntitySet="Item">
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="Reference" ColumnName="Reference" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="UnveilingYear" ColumnName="UnveilingYear" />
-                <ScalarProperty Name="UnveilingDetails" ColumnName="UnveilingDetails" />
-                <ScalarProperty Name="Statement" ColumnName="Statement" />
-                <ScalarProperty Name="Material" ColumnName="Material" />
-                <ScalarProperty Name="Inscription" ColumnName="Inscription" />
-                <ScalarProperty Name="History" ColumnName="History" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
-                <ScalarProperty Name="Width" ColumnName="Width" />
-                <ScalarProperty Name="Depth" ColumnName="Depth" />
-                <ScalarProperty Name="Diameter" ColumnName="Diameter" />
-                <ScalarProperty Name="SurfaceCondition" ColumnName="SurfaceCondition" />
-                <ScalarProperty Name="StructuralCondition" ColumnName="StructuralCondition" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Location" ColumnName="Location" />
-                <ScalarProperty Name="Archived" ColumnName="Archived" />
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+          <EntitySetMapping Name="ImageThumbnails">
+            <EntityTypeMapping TypeName="PublicArtModel.ImageThumbnail">
+              <MappingFragment StoreEntitySet="ImageThumbnail">
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
+                <ScalarProperty Name="magnitude" ColumnName="magnitude" />
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ItemArtists">
             <EntityTypeMapping TypeName="PublicArtModel.ItemArtist">
               <MappingFragment StoreEntitySet="ItemArtist">
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ItemCategories">
             <EntityTypeMapping TypeName="PublicArtModel.ItemCategory">
               <MappingFragment StoreEntitySet="ItemCategory">
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ItemImages">
             <EntityTypeMapping TypeName="PublicArtModel.ItemImage">
               <MappingFragment StoreEntitySet="ItemImage">
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
-                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="Primary" ColumnName="Primary" />
+                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
+                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="PublicArtModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="rowguid" ColumnName="rowguid" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="EndYear" ColumnName="EndYear" />
+                <ScalarProperty Name="StartYear" ColumnName="StartYear" />
+                <ScalarProperty Name="WebsiteURL" ColumnName="WebsiteURL" />
+                <ScalarProperty Name="Biography" ColumnName="Biography" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ArtistId" ColumnName="ArtistId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Images">
-            <EntityTypeMapping TypeName="PublicArtModel.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
-                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="is_directory" ColumnName="is_directory" />
-                <ScalarProperty Name="unc_path" ColumnName="unc_path" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="PublicArtModel.Image">
-              <ModificationFunctionMapping>
-                <InsertFunction FunctionName="PublicArtModel.Store.uspImage_Insert" >
-                  <ScalarProperty Name="file_stream" ParameterName="filedata" />
-                  <ScalarProperty Name="name" ParameterName="filename" />
-                  <ResultBinding Name="stream_id" ColumnName="stream_id" />
-                  <ResultBinding Name="unc_path" ColumnName="unc_path" />
-                </InsertFunction>
-                <DeleteFunction FunctionName="PublicArtModel.Store.uspImage_Delete" >
-                  <ScalarProperty Name="stream_id" ParameterName="docId" />
-                </DeleteFunction>
-                <UpdateFunction FunctionName="PublicArtModel.Store.uspImage_Update">
-                  <ScalarProperty Name="file_stream" ParameterName="filedata" Version="Current" />
-                  <ScalarProperty Name="stream_id" ParameterName="stream_id" Version="Current" />
-                </UpdateFunction>
-              </ModificationFunctionMapping>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="uspImage_Insert" FunctionName="PublicArtModel.Store.uspImage_Insert">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="PublicArtModel.uspImage_Insert_Result">
-                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
-                <ScalarProperty Name="unc_path" ColumnName="unc_path" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="uspImage_Update" FunctionName="PublicArtModel.Store.uspImage_Update" />
-          <FunctionImportMapping FunctionImportName="uspImage_Delete" FunctionName="PublicArtModel.Store.uspImage_Delete" />
-          <EntitySetMapping Name="ImageThumbnails">
-            <EntityTypeMapping TypeName="PublicArtModel.ImageThumbnail">
-              <MappingFragment StoreEntitySet="ImageThumbnail">
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="PublicArtModel.Item">
+              <MappingFragment StoreEntitySet="Item">
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="file_stream" ColumnName="file_stream" />
-                <ScalarProperty Name="stream_id" ColumnName="stream_id" />
+                <ScalarProperty Name="rowguid" ColumnName="rowguid" />
+                <ScalarProperty Name="Archived" ColumnName="Archived" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="StructuralCondition" ColumnName="StructuralCondition" />
+                <ScalarProperty Name="SurfaceCondition" ColumnName="SurfaceCondition" />
+                <ScalarProperty Name="Diameter" ColumnName="Diameter" />
+                <ScalarProperty Name="Depth" ColumnName="Depth" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="WebsiteUrl" ColumnName="WebsiteURL" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="History" ColumnName="History" />
+                <ScalarProperty Name="Inscription" ColumnName="Inscription" />
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Statement" ColumnName="Statement" />
+                <ScalarProperty Name="UnveilingDetails" ColumnName="UnveilingDetails" />
+                <ScalarProperty Name="UnveilingYear" ColumnName="UnveilingYear" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Reference" ColumnName="Reference" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

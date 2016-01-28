@@ -27,7 +27,7 @@ namespace PublicArt.Web.Admin.Controllers
             var viewModels = items.Select(x => new ItemIndexViewModel()
             {
                 ItemId = x.ItemId,
-                ThumbnailGuid = x.ItemImages.OrderBy(i => i.Order).Select(i => i.stream_id).FirstOrDefault(),
+                ThumbnailGuid = x.ItemImages.Where(i => i.Primary).Select(i => i.stream_id).FirstOrDefault(),
                 Reference = x.Reference,
                 Title = x.Title.ShortenIfTooLong(40),
                 Date = x.Date,
@@ -93,7 +93,7 @@ namespace PublicArt.Web.Admin.Controllers
                 Inscription = item.Inscription,
                 History = item.History,
                 Notes = item.Notes,
-                WebsiteUrl = item.WebsiteURL,
+                WebsiteUrl = item.WebsiteUrl,
                 Height = item.Height,
                 Width = item.Width,
                 Depth = item.Depth,
@@ -142,7 +142,7 @@ namespace PublicArt.Web.Admin.Controllers
                 item.Inscription = itemViewModel.Inscription;
                 item.History = itemViewModel.History;
                 item.Notes = itemViewModel.Notes;
-                item.WebsiteURL = itemViewModel.WebsiteUrl;
+                item.WebsiteUrl = itemViewModel.WebsiteUrl;
                 item.Height = itemViewModel.Height;
                 item.Width = itemViewModel.Width;
                 item.Depth = itemViewModel.Depth;

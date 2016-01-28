@@ -34,7 +34,7 @@ namespace PublicArt.DAL
         public string Inscription { get; set; }
         public string History { get; set; }
         public string Notes { get; set; }
-        public string WebsiteURL { get; set; }
+        public string WebsiteUrl { get; set; }
         public Nullable<short> Height { get; set; }
         public Nullable<short> Width { get; set; }
         public Nullable<short> Depth { get; set; }

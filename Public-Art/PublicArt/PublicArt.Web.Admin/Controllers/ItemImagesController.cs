@@ -1,78 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PublicArt.DAL;
+using PublicArt.Util.Imaging;
 
 namespace PublicArt.Web.Admin.Controllers
 {
+    [RoutePrefix("Images")]
     public class ItemImagesController : Controller
     {
-        private PublicArtEntities db = new PublicArtEntities();
+        private readonly PublicArtEntities db = new PublicArtEntities();
 
-        // GET: ItemImages
-        public async Task<ActionResult> Index()
+        // GET: Images/<guid>.jpg
+        [Route("{id}.jpg")]
+        public async Task<ActionResult> Image(Guid id)
         {
-            var itemImages = db.ItemImages.Include(i => i.Item).Include(i => i.Image);
-            return View(await itemImages.ToListAsync());
+            var image = await db.ItemImages.FindAsync(id);
+
+            if (image == null)
+            {
+                return HttpNotFound();
+            }
+
+            return File(image.file_stream, "image/jpg");
         }
 
-        // GET: ItemImages/Create
-        public ActionResult Create()
+        // GET: Images/Thumb/<guid>.jpg?w=100
+        [Route("Thumb/{id}.jpg")]
+        // TODO: Parameterize default thumbnail magnitude
+        // TODO: Sanitize w parameter input to prevent abuse
+        public async Task<ActionResult> Thumb(Guid id, int w = 100)
         {
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Reference");
-            ViewBag.stream_id = new SelectList(db.Images, "stream_id", "name");
-            return View();
+            // Try to fetch thumbnail from db
+            var thumb = await db.ImageThumbnails.FindAsync(id, w);
+            if (thumb != null) return File(thumb.file_stream, "image/jpg");
+
+            // Thumb doesnt exist so fetch main image
+            var image = await db.ItemImages.FindAsync(id);
+            if (image == null) return HttpNotFound();
+
+            // Create new thumbnail from full image
+            thumb = new ImageThumbnail
+            {
+                stream_id = image.stream_id,
+                magnitude = w,
+                file_stream = await Thumbnailer.CreateThumbAsync(image.file_stream, w)
+            };
+
+            // Save to db
+            db.ImageThumbnails.Add(thumb);
+            //db.Entry(image).State = EntityState.Unchanged;
+            await db.SaveChangesAsync();
+
+            // Return the new thumbnail image data
+            return File(thumb.file_stream, "image/jpg");
         }
 
-        // POST: ItemImages/Create
+        // POST: Images/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ItemId,stream_id,Order,Caption,rowguid,ModifiedDate")] ItemImage itemImage)
+        [Route("Create")]
+        public async Task<ActionResult> Create(
+            [Bind(Include = "ItemId,Primary,Caption,file_stream")] ItemImage itemImage)
         {
-            if (ModelState.IsValid)
-            {
-                db.ItemImages.Add(itemImage);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+            if (!ModelState.IsValid) return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Reference", itemImage.ItemId);
-            ViewBag.stream_id = new SelectList(db.Images, "stream_id", "name", itemImage.stream_id);
-            return View(itemImage);
+            db.ItemImages.Add(itemImage);
+            await db.SaveChangesAsync();
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            Request.Headers.Add("Location", Url.Action("Image", new { id = itemImage.stream_id }));
+
+            return new HttpStatusCodeResult(HttpStatusCode.Created);
         }
 
-        // GET: ItemImages/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ItemImage itemImage = await db.ItemImages.FindAsync(id);
-            if (itemImage == null)
-            {
-                return HttpNotFound();
-            }
-            return View(itemImage);
-        }
-
-        // POST: ItemImages/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Images/<guid>.jpg/Delete/
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        [Route("{id}.jpg/Delete")]
+        public async Task<ActionResult> Delete(Guid id)
         {
-            ItemImage itemImage = await db.ItemImages.FindAsync(id);
+            if (!ModelState.IsValid) return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+            var itemImage = await db.ItemImages.FindAsync(id);
             db.ItemImages.Remove(itemImage);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            return new HttpStatusCodeResult(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)

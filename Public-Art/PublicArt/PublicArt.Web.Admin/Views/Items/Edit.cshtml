@@ -13,10 +13,14 @@
 {
     <div class="col-xs-4 col-md-2">
         <div class="thumbnail">
-            <img class="img-responsive" src="@Url.Action("Thumb", "Images", new {id = img.Key})" alt="@img.Value"/>
+            <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = img.Key, w = 200})" alt="@img.Value"/>
+            @if (!string.IsNullOrEmpty(img.Value))
+            {
             <div class="caption">
-                <p><em>@img.Value</em></p>
+                <p><em>@img.Value</em>
+                </p>
             </div>
+            }
         </div>
     </div>
 }

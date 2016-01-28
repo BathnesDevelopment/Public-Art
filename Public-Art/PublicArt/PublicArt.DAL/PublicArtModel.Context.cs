@@ -27,14 +27,13 @@ namespace PublicArt.DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ImageThumbnail> ImageThumbnails { get; set; }
         public virtual DbSet<ItemArtist> ItemArtists { get; set; }
         public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<ItemImage> ItemImages { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
-        public virtual DbSet<ImageThumbnail> ImageThumbnails { get; set; }
+        public virtual DbSet<Artist> Artists { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
     
         public virtual ObjectResult<uspImage_Insert_Result> uspImage_Insert(string filename, byte[] filedata)
         {

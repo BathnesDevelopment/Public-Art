@@ -15,9 +15,11 @@ namespace PublicArt.DAL
     public partial class ImageThumbnail
     {
         public System.Guid stream_id { get; set; }
+        public int magnitude { get; set; }
         public byte[] file_stream { get; set; }
+        public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual Image Image { get; set; }
+        public virtual ItemImage ItemImage { get; set; }
     }
 }
