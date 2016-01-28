@@ -22,6 +22,7 @@ namespace PublicArt.Web.Admin.ViewModels
 
         [Display(Name = "Description")]
         [StringLength(4000)]
+        [DataType(DataType.MultilineText)]
         [Required]
         public string Description { get; set; }
 
@@ -35,31 +36,38 @@ namespace PublicArt.Web.Admin.ViewModels
 
         [Display(Name = "Unveiling Details")]
         [StringLength(4000)]
+        [DataType(DataType.MultilineText)]
         public string UnveilingDetails { get; set; }
 
         [Display(Name = "Statement")]
         [StringLength(4000)]
+        [DataType(DataType.MultilineText)]
         public string Statement { get; set; }
 
         [Display(Name = "Material")]
         [StringLength(1000)]
+        [DataType(DataType.MultilineText)]
         public string Material { get; set; }
 
         [Display(Name = "Inscription")]
         [StringLength(1000)]
+        [DataType(DataType.MultilineText)]
         public string Inscription { get; set; }
 
         [Display(Name = "History")]
         [StringLength(4000)]
+        [DataType(DataType.MultilineText)]
         public string History { get; set; }
 
         [Display(Name = "Notes")]
         [StringLength(4000)]
+        [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
 
         [Display(Name = "Website")]
         [Url]
         [StringLength(2083)]
+        [DataType(DataType.Url)]
         public string WebsiteUrl { get; set; }
 
         [Display(Name = "Height (cm)")]
@@ -80,14 +88,17 @@ namespace PublicArt.Web.Admin.ViewModels
 
         [Display(Name = "Surface Condition")]
         [StringLength(2000)]
+        [DataType(DataType.MultilineText)]
         public string SurfaceCondition { get; set; }
 
         [Display(Name = "Structural Condition")]
         [StringLength(2000)]
+        [DataType(DataType.MultilineText)]
         public string StructuralCondition { get; set; }
 
         [Display(Name = "Address")]
         [StringLength(2000)]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Latitude")]
