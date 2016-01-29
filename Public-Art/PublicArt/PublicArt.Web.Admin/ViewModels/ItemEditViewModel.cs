@@ -119,12 +119,12 @@ namespace PublicArt.Web.Admin.ViewModels
         public DateTime ModifiedDate { get; set; }
 
         [Display(Name = "Artist(s)")]
-        public IEnumerable<ItemIndexArtistsViewModel> Artists { get; set; }
+        public IEnumerable<ItemEditArtistViewModel> Artists { get; set; }
 
         [Display(Name = "Categories")]
         public IDictionary<int, string> Categories { get; set; }
 
         [Display(Name = "Images")]
-        public IDictionary<Guid, string> Images { get; set; }
+        public IEnumerable<ItemEditItemImageViewModel> Images { get; set; }
     }
 }

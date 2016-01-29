@@ -31,7 +31,7 @@ namespace PublicArt.Web.Admin.Controllers
                 Reference = x.Reference,
                 Title = x.Title.ShortenIfTooLong(40),
                 Date = x.Date,
-                Artists = x.ItemArtists.Select(a => new ItemIndexArtistsViewModel()
+                Artists = x.ItemArtists.Select(a => new ItemIndexArtistViewModel()
                 {
                     ArtistId = a.ArtistId,
                     Name = a.Artist.Name,
@@ -105,14 +105,19 @@ namespace PublicArt.Web.Admin.Controllers
                 Longitude = item.Location?.Longitude,
                 Archived = item.Archived,
                 ModifiedDate = item.ModifiedDate,
-                Artists = item.ItemArtists.Select(a => new ItemIndexArtistsViewModel()
+                Artists = item.ItemArtists.Select(a => new ItemEditArtistViewModel()
                 {
                     ArtistId = a.ArtistId,
                     Name = a.Artist.Name,
                     Notes = a.Notes
                 }),
                 Categories = item.ItemCategories.ToDictionary(c => c.CategoryId, c => c.Category.Description),
-                Images = item.ItemImages.ToDictionary(i => i.stream_id, i => i.Caption)
+                Images = item.ItemImages.Select (i => new ItemEditItemImageViewModel()
+                {
+                    stream_id = i.stream_id,
+                    Primary = i.Primary,
+                    Caption = i.Caption
+                })
             };
 
             return View(viewModel);
@@ -155,8 +160,6 @@ namespace PublicArt.Web.Admin.Controllers
                 item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
                     ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
                     : null;
-
-                item.ModifiedDate = DateTime.Now;
 
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");

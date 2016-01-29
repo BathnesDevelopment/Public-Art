@@ -17,13 +17,16 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
-    /*max-width: 280px;*/
-    max-width: 60%;
-}
+    max-width: 600px;
+}*/
 
+.ItemImageCaptionTextArea {
+    width: 100%;
+    height: 100%;
+}
 
 /* Override display on bootstrap label elements to give some spacing */
 .label {
@@ -47,4 +50,15 @@ textarea {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
+}
+
+.collapsable .panel-heading h3:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
+  float: right;
+  color: grey;
+}
+
+.collapsable .panel-heading.collapsed h3:after {
+  content: "\e080";
 }

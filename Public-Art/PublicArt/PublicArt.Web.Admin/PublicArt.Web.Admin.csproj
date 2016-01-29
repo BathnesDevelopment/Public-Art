@@ -138,9 +138,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ItemEditItemImageViewModel.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemEditArtistViewModel.cs" />
-    <Compile Include="ViewModels\ItemIndexArtistsViewModel.cs" />
+    <Compile Include="ViewModels\ItemIndexArtistViewModel.cs" />
     <Compile Include="ViewModels\ItemIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +366,7 @@
     <Content Include="Views\ItemArtists\Delete.cshtml" />
     <Content Include="Views\ItemArtists\Index.cshtml" />
     <Content Include="Scripts\jquery-2.2.0.min.map" />
+    <Content Include="Views\Shared\EditorTemplates\ItemEditItemImageViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

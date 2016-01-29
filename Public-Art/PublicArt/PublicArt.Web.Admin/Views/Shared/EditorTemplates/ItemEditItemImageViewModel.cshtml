@@ -1,0 +1,15 @@
+﻿@model PublicArt.Web.Admin.ViewModels.ItemEditItemImageViewModel
+
+<tr>
+    <td>
+        <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = Model.stream_id, w = 200})" alt="@Model.Caption"/>
+    </td>
+    <td>
+        @Html.TextAreaFor(x => x.Caption, new { @class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
+    </td>
+    <td>
+        @Html.HiddenFor(x => x.Primary)
+        <p><a class="btn btn-default btn-block ItemImagePrimary" data-controlid="@Html.IdFor(x => x.Primary)">Primary</a></p>
+        <p><a href="#" class="btn btn-danger btn-sm btn-block" role="button">Delete</a></p>
+    </td>
+</tr>

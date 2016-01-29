@@ -19,7 +19,7 @@ namespace PublicArt.Web.Admin.ViewModels
         public short? Date { get; set; }
 
         [Display(Name = "Artist(s)")]
-        public IEnumerable<ItemIndexArtistsViewModel> Artists { get; set; }
+        public IEnumerable<ItemIndexArtistViewModel> Artists { get; set; }
 
         [Display(Name = "Categories")]
         public IDictionary<int, string> Categories { get; set; }

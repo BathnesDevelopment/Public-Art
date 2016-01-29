@@ -2,7 +2,7 @@
 
 namespace PublicArt.Web.Admin.ViewModels
 {
-    public class ItemIndexArtistsViewModel
+    public class ItemIndexArtistViewModel
     {
         [Key]
         public int ArtistId { get; set; }
