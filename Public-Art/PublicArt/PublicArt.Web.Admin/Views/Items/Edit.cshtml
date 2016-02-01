@@ -7,230 +7,235 @@
 <h2>Editing @Model.Reference</h2>
 <hr/>
 
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="panel panel-default collapsable">
-        <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
-            <h3 class="panel-title">Item Images</h3>
-        </div>
-        <div id="imagePanelCollapse" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <table class="table table-condensed">
-                    <colgroup>
-                        <col class="col-sm-1">
-                        <col class="col-sm-8">
-                        <col class="col-sm-1">
-                    </colgroup>
-                    <tbody>
-                        @Html.EditorFor(x => x.Images)
-                    </tbody>
-                </table>
+    <div class="row">
+    <div class="col-md-5 col-md-push-7">
+        <div class="panel panel-default collapsable">
+            <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
+                <h3 class="panel-title">Item Images</h3>
             </div>
-        </div>
-        <div class="panel-footer clearfix">
-            <div class="pull-right">
-                <div class="form-inline">
-                    <div class="form-group">
-                        <input type="file" class="form-control" id="newImageFile" accept=".jpg,.jpeg"/>
+            <div id="imagePanelCollapse" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <colgroup>
+                            <col class="col-sm-2">
+                            <col class="col-sm-7">
+                            <col class="col-sm-1">
+                        </colgroup>
+                        <tbody>
+                        @Html.EditorFor(x => x.Images)
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-right">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <input type="file" class="form-control" id="newImageFile" accept=".jpg,.jpeg"/>
+                        </div>
+                        <button type="button" class="btn btn-success" id="newImageUpload">Upload</button>
                     </div>
-                    <button type="button" class="btn btn-success" id="newImageUpload">Upload</button>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-7 col-md-pull-5">
 
-    <hr />
+        <div class="form-horizontal">
 
-    <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.ItemId)
 
-        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-        @Html.HiddenFor(model => model.ItemId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Date, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Date, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Date, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Date, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UnveilingYear, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UnveilingYear, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.UnveilingYear, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnveilingYear, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UnveilingYear, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.UnveilingYear, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UnveilingDetails, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UnveilingDetails, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.UnveilingDetails, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnveilingDetails, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UnveilingDetails, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.UnveilingDetails, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Statement, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Statement, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Statement, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Statement, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Statement, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Statement, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Material, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Material, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Material, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Material, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Inscription, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Inscription, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Inscription, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Inscription, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Inscription, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Inscription, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.History, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.History, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.History, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.History, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.History, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.History, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Notes, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Notes, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Notes, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Notes, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Notes, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Notes, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.WebsiteUrl, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.WebsiteUrl, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.WebsiteUrl, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.WebsiteUrl, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.WebsiteUrl, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.WebsiteUrl, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Height, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Height, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Height, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Height, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Height, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Height, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Width, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Width, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Width, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Width, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Width, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Width, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Depth, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Depth, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Depth, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Depth, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Depth, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Depth, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Diameter, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Diameter, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Diameter, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Diameter, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Diameter, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Diameter, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SurfaceCondition, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SurfaceCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.SurfaceCondition, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.SurfaceCondition, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SurfaceCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.SurfaceCondition, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StructuralCondition, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StructuralCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.StructuralCondition, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.StructuralCondition, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.StructuralCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.StructuralCondition, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
-                @Html.ValidationMessageFor(model => model.Address, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.ValidationMessageFor(model => model.Address, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Latitude, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Latitude, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Latitude, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Latitude, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Latitude, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Latitude, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Longitude, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Longitude, new {htmlAttributes = new {@class = "form-control"}})
-                @Html.ValidationMessageFor(model => model.Longitude, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Longitude, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Longitude, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Longitude, "", new {@class = "text-danger"})
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Archived)
-                    @Html.ValidationMessageFor(model => model.Archived, "", new {@class = "text-danger"})
+            <div class="form-group">
+                @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Archived)
+                        @Html.ValidationMessageFor(model => model.Archived, "", new {@class = "text-danger"})
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default"/>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-lg btn-success" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -301,27 +306,27 @@
                         .done(function() {
                             location.reload(true);
                         })
-                        .fail(function (jqXHR, textStatus, errorThrown) {
+                        .fail(function(jqXHR, textStatus, errorThrown) {
                             alert('Upload failed!');
                             console.log('failed');
                             console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
                         });
                 });
 
-                Page.ele.$itemImageDelete.click(function () {
+                Page.ele.$itemImageDelete.click(function() {
                     var $this = $(this);
 
                     console.log($(this).data('deleteuri'), $(this));
 
                     if (confirm('Are you sure you want to delete this image?')) {
                         var request = $.ajax({
-                            url: $this.data('deleteuri'),
-                            type: 'POST'
-                        })
-                            .done(function () {
+                                url: $this.data('deleteuri'),
+                                type: 'POST'
+                            })
+                            .done(function() {
                                 location.reload(true);
                             })
-                            .fail(function (jqXHR, textStatus, errorThrown) {
+                            .fail(function(jqXHR, textStatus, errorThrown) {
                                 alert('Delete failed!');
                                 console.log('failed');
                                 console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
