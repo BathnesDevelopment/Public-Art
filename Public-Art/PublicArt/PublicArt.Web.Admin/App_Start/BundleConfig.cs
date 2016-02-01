@@ -36,6 +36,15 @@ namespace PublicArt.Web.Admin
                        //"~/Content/DataTables/css/jquery.dataTables.min.css"
                        "~/Content/DataTables/css/dataTables.bootstrap.min.css"
             ));
+
+            bundles.Add(new ScriptBundle("~/bundles/featherlight").Include(
+                        "~/Scripts/featherlight.min.js"
+            ));
+
+            bundles.Add(new StyleBundle("~/Content/featherlight").Include(
+                       //"~/Content/DataTables/css/jquery.dataTables.min.css"
+                       "~/Content/featherlight.min.css"
+            ));
         }
     }
 }

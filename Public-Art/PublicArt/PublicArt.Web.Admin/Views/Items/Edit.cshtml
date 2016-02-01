@@ -21,9 +21,9 @@
             <div class="panel-body">
                 <table class="table table-condensed">
                     <colgroup>
-                        <col class="col-md-3">
-                        <col class="col-md-8">
-                        <col class="col-md-1">
+                        <col class="col-sm-1">
+                        <col class="col-sm-8">
+                        <col class="col-sm-1">
                     </colgroup>
                     <tbody>
                         @Html.EditorFor(x => x.Images)
@@ -235,98 +235,105 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function() {
-            var $ItemImagePrimary = $('.ItemImagePrimary'),
-                $newImageFile = $('#newImageFile'),
-                $newImageUpload = $('#newImageUpload'),
-                imageFile = null;
-
-            var updatePrimaryButtons = function() {
-                $ItemImagePrimary
-                    .removeClass('btn-primary')
-                    .addClass('btn-default')
-                    .each(function() {
-                        var $this = $(this);
-                        //console.log($this, $('#' + $this.data('controlid')).val());
-                        if ($('#' + $this.data('controlid')).val() === 'True') {
-                            $this.removeClass('btn-default').addClass('btn-primary');
-                        }
-                    });
-            };
-
-            $ItemImagePrimary.click(function() {
-                $ItemImagePrimary
-                    .each(function() {
-                        $('#' + $(this).data('controlid')).val('False');
-                    });
-                $('#' + $(this)
-                    .data('controlid')
-                ).val('True');
-                updatePrimaryButtons();
-            });
-
-            updatePrimaryButtons();
-
-            $newImageUpload.addClass('disabled');
-
-            $newImageFile.on('change', function() {
-                //imageFile = this.files;
-                if (this.files.length > 0) {
-                    imageFile = this.files[0];
-                    $newImageUpload.removeClass('disabled');
-                } else {
-                    imageFile = null;
-                    $newImageUpload.addClass('disabled');
+        var Page = {
+            init: function() {
+                Page.initHandlers();
+                Page.func.updatePrimaryButtons();
+                Page.ele.$newImageUpload.addClass('disabled');
+                Page.ele.$imageThumbLink.featherlight();
+            },
+            ele: {
+                $ItemImagePrimary: $('.ItemImagePrimary'),
+                $newImageFile: $('#newImageFile'),
+                $newImageUpload: $('#newImageUpload'),
+                $itemImageDelete: $('.itemImageDelete'),
+                $imageThumbLink: $('.imageThumbLink')
+            },
+            func: {
+                updatePrimaryButtons: function() {
+                    Page.ele.$ItemImagePrimary
+                        .removeClass('btn-primary')
+                        .addClass('btn-default')
+                        .each(function() {
+                            var $this = $(this);
+                            if ($('#' + $this.data('controlid')).val() === 'True') {
+                                $this.removeClass('btn-default').addClass('btn-primary');
+                            }
+                        });
                 }
-            });
+            },
+            initHandlers: function() {
+                Page.ele.$ItemImagePrimary.click(function() {
+                    Page.ele.$ItemImagePrimary
+                        .each(function() {
+                            $('#' + $(this).data('controlid')).val('False');
+                        });
+                    $('#' + $(this)
+                        .data('controlid')
+                    ).val('True');
+                    Page.func.updatePrimaryButtons();
+                });
 
-            $newImageUpload.click(function() {
-                if ($newImageUpload.hasClass('disabled')) return false;
+                Page.ele.$newImageFile.on('change', function() {
+                    if (this.files.length > 0) {
+                        Page.imageFile = this.files[0];
+                        Page.ele.$newImageUpload.removeClass('disabled');
+                    } else {
+                        Page.imageFile = null;
+                        Page.ele.$newImageUpload.addClass('disabled');
+                    }
+                });
 
-                var data = new FormData();
-                data.append('file', imageFile);
-                console.log('imageFile', imageFile);
-                console.log('data', data);
+                Page.ele.$newImageUpload.click(function() {
+                    if (Page.ele.$newImageUpload.hasClass('disabled')) return false;
 
-                var request = $.ajax({
-                        url: '@Url.Action("Upload", "ItemImages", new {itemId = Model.ItemId})',
-                        type: 'POST',
-                        data: data,
-                        cache: false,
-                        processData: false,
-                        contentType: false
-                    })
-                    .done(function() {
-                        location.reload(true);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        alert('Upload failed!');
-                        console.log('failed');
-                        console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
-                    });
-            });
+                    var data = new FormData();
+                    data.append('file', Page.imageFile);
 
-            $('.itemImageDelete').click(function () {
-                var $this = $(this);
-
-                console.log($(this).data('deleteuri'), $(this));
-
-                if (confirm('Are you sure you want to delete this image?')) {
                     var request = $.ajax({
-                        url: $this.data('deleteuri'),
-                        type: 'POST'
-                    })
-                    .done(function () {
-                        location.reload(true);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        alert('Delete failed!');
-                        console.log('failed');
-                        console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
-                    });
-                }
-            });
+                            url: '@Url.Action("Upload", "ItemImages", new {itemId = Model.ItemId})',
+                            type: 'POST',
+                            data: data,
+                            cache: false,
+                            processData: false,
+                            contentType: false
+                        })
+                        .done(function() {
+                            location.reload(true);
+                        })
+                        .fail(function (jqXHR, textStatus, errorThrown) {
+                            alert('Upload failed!');
+                            console.log('failed');
+                            console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                        });
+                });
 
+                Page.ele.$itemImageDelete.click(function () {
+                    var $this = $(this);
+
+                    console.log($(this).data('deleteuri'), $(this));
+
+                    if (confirm('Are you sure you want to delete this image?')) {
+                        var request = $.ajax({
+                            url: $this.data('deleteuri'),
+                            type: 'POST'
+                        })
+                            .done(function () {
+                                location.reload(true);
+                            })
+                            .fail(function (jqXHR, textStatus, errorThrown) {
+                                alert('Delete failed!');
+                                console.log('failed');
+                                console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                            });
+                    }
+                });
+            },
+            imageFile: null
+        };
+
+        $(document).ready(function() {
+            Page.init();
         });
     </script>
 }

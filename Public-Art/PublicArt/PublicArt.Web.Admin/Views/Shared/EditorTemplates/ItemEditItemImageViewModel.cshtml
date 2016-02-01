@@ -2,7 +2,9 @@
 
 <tr>
     <td>
-        <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = Model.stream_id, w = 200})" alt="@Model.Caption"/>
+        <a href="@Url.Action("Image", "ItemImages", new {id = Model.stream_id})" class="imageThumbLink">
+            <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = Model.stream_id })" alt="@Model.Caption" />
+        </a>
     </td>
     <td>
         @Html.TextAreaFor(x => x.Caption, new { @class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
