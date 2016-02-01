@@ -35,10 +35,9 @@
             <div class="pull-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        @Html.HiddenFor(model => model.ItemId)
-                        <input type="file" class="form-control" id="newImage"/>
+                        <input type="file" class="form-control" id="newImageFile" accept=".jpg,.jpeg"/>
                     </div>
-                    <button type="button" class="btn btn-success" id="imageUpload">Upload</button>
+                    <button type="button" class="btn btn-success" id="newImageUpload">Upload</button>
                 </div>
             </div>
         </div>
@@ -236,21 +235,24 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $(document).ready(function () {
-            var $ItemImagePrimary = $('.ItemImagePrimary');
+        $(document).ready(function() {
+            var $ItemImagePrimary = $('.ItemImagePrimary'),
+                $newImageFile = $('#newImageFile'),
+                $newImageUpload = $('#newImageUpload'),
+                imageFile = null;
 
             var updatePrimaryButtons = function() {
                 $ItemImagePrimary
                     .removeClass('btn-primary')
                     .addClass('btn-default')
-                    .each(function () {
+                    .each(function() {
                         var $this = $(this);
                         //console.log($this, $('#' + $this.data('controlid')).val());
                         if ($('#' + $this.data('controlid')).val() === 'True') {
                             $this.removeClass('btn-default').addClass('btn-primary');
                         }
                     });
-            }
+            };
 
             $ItemImagePrimary.click(function() {
                 $ItemImagePrimary
@@ -264,6 +266,67 @@
             });
 
             updatePrimaryButtons();
+
+            $newImageUpload.addClass('disabled');
+
+            $newImageFile.on('change', function() {
+                //imageFile = this.files;
+                if (this.files.length > 0) {
+                    imageFile = this.files[0];
+                    $newImageUpload.removeClass('disabled');
+                } else {
+                    imageFile = null;
+                    $newImageUpload.addClass('disabled');
+                }
+            });
+
+            $newImageUpload.click(function() {
+                if ($newImageUpload.hasClass('disabled')) return false;
+
+                var data = new FormData();
+                data.append('file', imageFile);
+                console.log('imageFile', imageFile);
+                console.log('data', data);
+
+                var request = $.ajax({
+                        url: '@Url.Action("Upload", "ItemImages", new {itemId = Model.ItemId})',
+                        type: 'POST',
+                        data: data,
+                        cache: false,
+                        processData: false,
+                        contentType: false
+                    })
+                    .done(function() {
+                        location.reload(true);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        alert('Upload failed!');
+                        console.log('failed');
+                        console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                    });
+            });
+
+            $('.itemImageDelete').click(function () {
+                var $this = $(this);
+
+                console.log($(this).data('deleteuri'), $(this));
+
+                if (confirm('Are you sure you want to delete this image?')) {
+                    var request = $.ajax({
+                        url: $this.data('deleteuri'),
+                        type: 'POST'
+                    })
+                    .done(function () {
+                        location.reload(true);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        alert('Delete failed!');
+                        console.log('failed');
+                        console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                    });
+                }
+            });
+
         });
     </script>
 }

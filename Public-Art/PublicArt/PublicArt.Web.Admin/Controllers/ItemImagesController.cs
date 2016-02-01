@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Util.Imaging;
@@ -57,39 +60,51 @@ namespace PublicArt.Web.Admin.Controllers
             return File(thumb.file_stream, "image/jpg");
         }
 
-        // POST: Images/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Create")]
-        public async Task<ActionResult> Create(
-            [Bind(Include = "ItemId,Primary,Caption,file_stream")] ItemImage itemImage)
+        [Route("Upload/{itemId:int}")]
+        public async Task<ActionResult> Upload(int itemId, HttpPostedFileBase file)
         {
-            if (!ModelState.IsValid) return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            if (file == null || file.ContentLength == 0)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
-            db.ItemImages.Add(itemImage);
+            if (file.ContentType != "image/jpeg")
+                return new HttpStatusCodeResult(HttpStatusCode.NotImplemented);
+
+            var item = await db.Items.FindAsync(itemId);
+            if (item == null) return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+            byte[] bytes = null;
+            using (var reader = new BinaryReader(file.InputStream))
+            {
+                bytes = reader.ReadBytes(file.ContentLength);
+            }
+
+            var itemImage = db.ItemImages.Add(new ItemImage
+            {
+                Item = item,
+                file_stream = bytes,
+                Primary = ! item.ItemImages.Any()
+            });
             await db.SaveChangesAsync();
 
             // ReSharper disable once AssignNullToNotNullAttribute
-            Request.Headers.Add("Location", Url.Action("Image", new { id = itemImage.stream_id }));
+            Request.Headers.Add("Location", Url.Action("Image", new {id = itemImage.stream_id}));
 
             return new HttpStatusCodeResult(HttpStatusCode.Created);
         }
 
-        // POST: Images/<guid>.jpg/Delete/
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("{id}.jpg/Delete")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            if (!ModelState.IsValid) return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-
             var itemImage = await db.ItemImages.FindAsync(id);
+
+            if (itemImage == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
             db.ItemImages.Remove(itemImage);
             await db.SaveChangesAsync();
 
-            return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)
