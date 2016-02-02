@@ -27,23 +27,17 @@ namespace PublicArt.Web.Admin
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
-                       "~/Scripts/DataTables/jquery.dataTables.min.js",
-                       "~/Scripts/DataTables/dataTables.bootstrap.min.js"
+            bundles.Add(new ScriptBundle("~/bundles/thirdparty").Include(
+                "~/Scripts/DataTables/jquery.dataTables.min.js",
+                "~/Scripts/DataTables/dataTables.bootstrap.min.js",
+                "~/Scripts/featherlight.min.js",
+                "~/Scripts/leaflet-0.7.3.min.js"
             ));
 
-            bundles.Add(new StyleBundle("~/Content/datatables").Include(
-                       //"~/Content/DataTables/css/jquery.dataTables.min.css"
-                       "~/Content/DataTables/css/dataTables.bootstrap.min.css"
-            ));
-
-            bundles.Add(new ScriptBundle("~/bundles/featherlight").Include(
-                        "~/Scripts/featherlight.min.js"
-            ));
-
-            bundles.Add(new StyleBundle("~/Content/featherlight").Include(
-                       //"~/Content/DataTables/css/jquery.dataTables.min.css"
-                       "~/Content/featherlight.min.css"
+            bundles.Add(new StyleBundle("~/Content/thirdparty").Include(
+                "~/Content/DataTables/css/dataTables.bootstrap.min.css",
+                "~/Content/featherlight.min.css",
+                "~/Content/leaflet.css"
             ));
         }
     }

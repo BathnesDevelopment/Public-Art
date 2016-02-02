@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/datatables")
-    @Styles.Render("~/Content/featherlight")
-    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/thirdparty")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -40,8 +38,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/datatables")
-    @Scripts.Render("~/bundles/featherlight")
+    @Scripts.Render("~/bundles/thirdparty")
     @RenderSection("scripts", required: false)
 </body>
 </html>

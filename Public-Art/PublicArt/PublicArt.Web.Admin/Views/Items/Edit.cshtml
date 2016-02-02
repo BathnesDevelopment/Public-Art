@@ -210,6 +210,8 @@
                 </div>
             </div>
 
+            <div id="leafletmap"></div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
@@ -246,13 +248,16 @@
                 Page.func.updatePrimaryButtons();
                 Page.ele.$newImageUpload.addClass('disabled');
                 Page.ele.$imageThumbLink.featherlight();
+                Page.initLeaflet();
             },
             ele: {
                 $ItemImagePrimary: $('.ItemImagePrimary'),
                 $newImageFile: $('#newImageFile'),
                 $newImageUpload: $('#newImageUpload'),
                 $itemImageDelete: $('.itemImageDelete'),
-                $imageThumbLink: $('.imageThumbLink')
+                $imageThumbLink: $('.imageThumbLink'),
+                $inLatitude: $('#Latitude'),
+                $inLongitude: $('#Longitude')
             },
             func: {
                 updatePrimaryButtons: function() {
@@ -265,6 +270,32 @@
                                 $this.removeClass('btn-default').addClass('btn-primary');
                             }
                         });
+                },
+                roundToDP: function(i, d) {
+                    return Math.round(i * Math.pow(10, d)) / Math.pow(10, d);
+                },
+                getLatLngFromInput() {
+                    if (Page.ele.$inLatitude.val() && Page.ele.$inLongitude.val())
+                        return [Page.ele.$inLatitude.val(), Page.ele.$inLongitude.val()];
+                    return false;
+                },
+                setInputFromLatLng(latLng) {
+                    Page.ele.$inLatitude.val(Page.func.roundToDP(latLng.lat, 6));
+                    Page.ele.$inLongitude.val(Page.func.roundToDP(latLng.lng, 6));
+                },
+                createMarker(latLng) {
+                    console.log('creating marker at:', latLng);
+                    Page.marker = L.marker(latLng, { icon: L.icon({
+                        iconUrl: '/Content/images/marker-icon.png',
+                        shadowUrl: '/Content/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    }), draggable: true }).addTo(Page.map);
+                    Page.marker.on('dragend', function(e) {
+                        Page.func.setInputFromLatLng(this.getLatLng());
+                    });
                 }
             },
             initHandlers: function() {
@@ -334,7 +365,25 @@
                     }
                 });
             },
-            imageFile: null
+            imageFile: null,
+            initLeaflet: function() {
+                Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(Page.map);
+
+                if (Page.func.getLatLngFromInput()) {
+                    Page.func.createMarker(Page.func.getLatLngFromInput());
+                } else {
+                    Page.map.addOneTimeEventListener('click', function (e) {
+                        Page.func.createMarker(e.latlng);
+                        Page.func.setInputFromLatLng(e.latlng);
+                    });
+                }
+            },
+            map: null,
+            marker: null
         };
 
         $(document).ready(function() {

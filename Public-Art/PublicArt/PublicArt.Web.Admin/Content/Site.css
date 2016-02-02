@@ -62,3 +62,7 @@ textarea {
 .collapsable .panel-heading.collapsed h3:after {
   content: "\e080";
 }
+
+#leafletmap {
+    height: 300px;
+}

@@ -156,7 +156,7 @@ namespace PublicArt.Web.Admin.Controllers
             item.StructuralCondition = itemViewModel.StructuralCondition;
             item.Address = itemViewModel.Address;
             item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
-                ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
+                ? Geography.CreateFromLatLng(itemViewModel.Longitude.Value, itemViewModel.Latitude.Value)
                 : null;
             item.Archived = itemViewModel.Archived;
 
