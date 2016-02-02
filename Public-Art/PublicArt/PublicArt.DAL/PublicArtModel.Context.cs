@@ -35,39 +35,17 @@ namespace PublicArt.DAL
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Item> Items { get; set; }
     
-        public virtual ObjectResult<uspImage_Insert_Result> uspImage_Insert(string filename, byte[] filedata)
+        public virtual int SetPrimaryItemImage(Nullable<int> itemId, Nullable<System.Guid> stream_id)
         {
-            var filenameParameter = filename != null ?
-                new ObjectParameter("filename", filename) :
-                new ObjectParameter("filename", typeof(string));
+            var itemIdParameter = itemId.HasValue ?
+                new ObjectParameter("itemId", itemId) :
+                new ObjectParameter("itemId", typeof(int));
     
-            var filedataParameter = filedata != null ?
-                new ObjectParameter("filedata", filedata) :
-                new ObjectParameter("filedata", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspImage_Insert_Result>("uspImage_Insert", filenameParameter, filedataParameter);
-        }
-    
-        public virtual int uspImage_Update(Nullable<System.Guid> stream_id, byte[] filedata)
-        {
             var stream_idParameter = stream_id.HasValue ?
                 new ObjectParameter("stream_id", stream_id) :
                 new ObjectParameter("stream_id", typeof(System.Guid));
     
-            var filedataParameter = filedata != null ?
-                new ObjectParameter("filedata", filedata) :
-                new ObjectParameter("filedata", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspImage_Update", stream_idParameter, filedataParameter);
-        }
-    
-        public virtual int uspImage_Delete(Nullable<System.Guid> docId)
-        {
-            var docIdParameter = docId.HasValue ?
-                new ObjectParameter("docId", docId) :
-                new ObjectParameter("docId", typeof(System.Guid));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspImage_Delete", docIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SetPrimaryItemImage", itemIdParameter, stream_idParameter);
         }
     }
 }

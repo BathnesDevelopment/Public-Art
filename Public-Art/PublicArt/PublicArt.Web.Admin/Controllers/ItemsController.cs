@@ -162,20 +162,16 @@ namespace PublicArt.Web.Admin.Controllers
 
             await db.SaveChangesAsync();
 
-            foreach (var img in itemViewModel.Images.Where(i => ! i.Primary))
+            foreach (var img in itemViewModel.Images)
             {
                 var itemImage = item.ItemImages.First(i => i.stream_id == img.stream_id);
-
-                itemImage.Primary = img.Primary;
                 itemImage.Caption = img.Caption;
             }
 
             await db.SaveChangesAsync();
 
-            var primaryImage = itemViewModel.Images.First(i => i.Primary);
-            var itemImagePrimary = item.ItemImages.First(i => i.stream_id == primaryImage.stream_id);
-            itemImagePrimary.Primary = primaryImage.Primary;
-            itemImagePrimary.Caption = primaryImage.Caption;
+            // Set primary
+            db.SetPrimaryItemImage(item.ItemId, itemViewModel.Images.First(i => i.Primary).stream_id);
 
             await db.SaveChangesAsync();
 

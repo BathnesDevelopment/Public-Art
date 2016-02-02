@@ -98,6 +98,7 @@
     <Build Include="dbo\Triggers\TR_ItemArtist_Update.sql" />
     <Build Include="dbo\Triggers\TR_Item_Update.sql" />
     <Build Include="dbo\Triggers\TR_ImageThumbnail_Update.sql" />
+    <Build Include="dbo\Stored Procedures\uspItemImage_SetPrimary.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />

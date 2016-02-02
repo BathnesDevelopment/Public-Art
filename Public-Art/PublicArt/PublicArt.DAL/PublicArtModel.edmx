@@ -100,7 +100,9 @@
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <Association Name="FK_ImageThumbnail_stream_id_ItemImage">
-          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="1" />
+          <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ImageThumbnail" Type="Self.ImageThumbnail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ItemImage">
@@ -171,6 +173,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="uspItemImage_SetPrimary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="itemId" Type="int" Mode="In" />
+          <Parameter Name="stream_id" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <EntityContainer Name="PublicArtModelStoreContainer">
           <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
@@ -209,17 +215,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="PublicArtModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="PublicArtEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="uspImage_Insert" ReturnType="Collection(PublicArtModel.uspImage_Insert_Result)">
-            <Parameter Name="filename" Mode="In" Type="String" />
-            <Parameter Name="filedata" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="uspImage_Update">
-            <Parameter Name="stream_id" Mode="In" Type="Guid" />
-            <Parameter Name="filedata" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="uspImage_Delete">
-          <Parameter Name="docId" Mode="In" Type="Guid" />
-          </FunctionImport>
           <EntitySet Name="Categories" EntityType="PublicArtModel.Category" />
           <EntitySet Name="ImageThumbnails" EntityType="PublicArtModel.ImageThumbnail" />
           <EntitySet Name="ItemArtists" EntityType="PublicArtModel.ItemArtist" />
@@ -251,11 +246,11 @@
             <End Role="Item" EntitySet="Items" />
             <End Role="ItemImage" EntitySet="ItemImages" />
           </AssociationSet>
+          <FunctionImport Name="SetPrimaryItemImage">
+            <Parameter Name="itemId" Mode="In" Type="Int32" />
+            <Parameter Name="stream_id" Mode="In" Type="Guid" />
+          </FunctionImport>
           </EntityContainer>
-        <ComplexType Name="uspImage_Insert_Result">
-          <Property Type="Guid" Name="stream_id" Nullable="false" />
-          <Property Type="String" Name="unc_path" Nullable="true" MaxLength="4000" />
-        </ComplexType>
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="CategoryId" />
@@ -538,6 +533,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SetPrimaryItemImage" FunctionName="PublicArtModel.Store.uspItemImage_SetPrimary" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
