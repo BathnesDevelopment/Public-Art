@@ -10,8 +10,11 @@
         @Html.TextAreaFor(x => x.Caption, new { @class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
     </td>
     <td>
+        @Html.HiddenFor(x => x.stream_id)
         @Html.HiddenFor(x => x.Primary)
-        <p><a class="btn btn-default btn-block ItemImagePrimary" data-controlid="@Html.IdFor(x => x.Primary)">Primary</a></p>
-        <p><a href="#" class="btn btn-danger btn-sm btn-block itemImageDelete" data-deleteuri="@Url.Action("Delete", "ItemImages", new { id = Model.stream_id })" role="button">Delete</a></p>
+        <p><a class="btn btn-default btn-block ItemImagePrimary" data-controlid="@Html.IdFor(x => x.Primary)">Primary</a>
+        </p>
+        <p><a href="#" class="btn btn-danger btn-sm btn-block itemImageDelete" data-deleteuri="@Url.Action("Delete", "ItemImages", new {id = Model.stream_id})" role="button">Delete</a>
+        </p>
     </td>
 </tr>

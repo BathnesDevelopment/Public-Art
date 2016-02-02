@@ -131,40 +131,55 @@ namespace PublicArt.Web.Admin.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Archived,Artists,Categories,Images")] ItemEditViewModel itemViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(itemViewModel);
+
+            var item = await db.Items.FindAsync(itemViewModel.ItemId);
+
+            // TODO: Implement automapper for viewmodels
+            //item.Reference = itemViewModel.Reference;
+            item.Title = itemViewModel.Title;
+            item.Description = itemViewModel.Description;
+            item.Date = itemViewModel.Date;
+            item.UnveilingYear = itemViewModel.UnveilingYear;
+            item.UnveilingDetails = itemViewModel.UnveilingDetails;
+            item.Statement = itemViewModel.Statement;
+            item.Material = itemViewModel.Material;
+            item.Inscription = itemViewModel.Inscription;
+            item.History = itemViewModel.History;
+            item.Notes = itemViewModel.Notes;
+            item.WebsiteUrl = itemViewModel.WebsiteUrl;
+            item.Height = itemViewModel.Height;
+            item.Width = itemViewModel.Width;
+            item.Depth = itemViewModel.Depth;
+            item.Diameter = itemViewModel.Diameter;
+            item.SurfaceCondition = itemViewModel.SurfaceCondition;
+            item.StructuralCondition = itemViewModel.StructuralCondition;
+            item.Address = itemViewModel.Address;
+            item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
+                ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
+                : null;
+            item.Archived = itemViewModel.Archived;
+
+            await db.SaveChangesAsync();
+
+            foreach (var img in itemViewModel.Images.Where(i => ! i.Primary))
             {
-                var item = await db.Items.FindAsync(itemViewModel.ItemId);
+                var itemImage = item.ItemImages.First(i => i.stream_id == img.stream_id);
 
-                // TODO: Implement automapper for viewmodels
-                //item.Reference = itemViewModel.Reference;
-                item.Title = itemViewModel.Title;
-                item.Description = itemViewModel.Description;
-                item.Date = itemViewModel.Date;
-                item.UnveilingYear = itemViewModel.UnveilingYear;
-                item.UnveilingDetails = itemViewModel.UnveilingDetails;
-                item.Statement = itemViewModel.Statement;
-                item.Material = itemViewModel.Material;
-                item.Inscription = itemViewModel.Inscription;
-                item.History = itemViewModel.History;
-                item.Notes = itemViewModel.Notes;
-                item.WebsiteUrl = itemViewModel.WebsiteUrl;
-                item.Height = itemViewModel.Height;
-                item.Width = itemViewModel.Width;
-                item.Depth = itemViewModel.Depth;
-                item.Diameter = itemViewModel.Diameter;
-                item.SurfaceCondition = itemViewModel.SurfaceCondition;
-                item.StructuralCondition = itemViewModel.StructuralCondition;
-                item.Address = itemViewModel.Address;
-                item.Archived = itemViewModel.Archived;
-
-                item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
-                    ? Geography.CreateFromLatLng(itemViewModel.Latitude.Value, itemViewModel.Longitude.Value)
-                    : null;
-
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                itemImage.Primary = img.Primary;
+                itemImage.Caption = img.Caption;
             }
-            return View(itemViewModel);
+
+            await db.SaveChangesAsync();
+
+            var primaryImage = itemViewModel.Images.First(i => i.Primary);
+            var itemImagePrimary = item.ItemImages.First(i => i.stream_id == primaryImage.stream_id);
+            itemImagePrimary.Primary = primaryImage.Primary;
+            itemImagePrimary.Caption = primaryImage.Caption;
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Items/5/Delete
