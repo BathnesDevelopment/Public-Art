@@ -195,22 +195,14 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Latitude, new {@class = "control-label col-md-2"})
+                @Html.HiddenFor(model => model.Latitude)
+                @Html.HiddenFor(model => model.Longitude)
+                @Html.Label("Location", new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Latitude, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Latitude, "", new {@class = "text-danger"})
+                    <div id="leafletmap"></div>
+                    <p><small>Click map to place marker. Drag marker to move. <span class="pseudolink" id="removeMapMarker">Click here to delete marker</span>.</small></p>
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Longitude, new {@class = "control-label col-md-2"})
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Longitude, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Longitude, "", new {@class = "text-danger"})
-                </div>
-            </div>
-
-            <div id="leafletmap"></div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
@@ -257,7 +249,8 @@
                 $itemImageDelete: $('.itemImageDelete'),
                 $imageThumbLink: $('.imageThumbLink'),
                 $inLatitude: $('#Latitude'),
-                $inLongitude: $('#Longitude')
+                $inLongitude: $('#Longitude'),
+                $removeMapMarker: $('#removeMapMarker')
             },
             func: {
                 updatePrimaryButtons: function() {
@@ -295,6 +288,15 @@
                     }), draggable: true }).addTo(Page.map);
                     Page.marker.on('dragend', function(e) {
                         Page.func.setInputFromLatLng(this.getLatLng());
+                    });
+                },
+                removeMarker() {
+                    Page.map.removeLayer(Page.marker);
+                    Page.ele.$inLatitude.val('');
+                    Page.ele.$inLongitude.val('');
+                    Page.map.addOneTimeEventListener('click', function (e) {
+                        Page.func.createMarker(e.latlng);
+                        Page.func.setInputFromLatLng(e.latlng);
                     });
                 }
             },
@@ -363,6 +365,10 @@
                                 console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
                             });
                     }
+                });
+
+                Page.ele.$removeMapMarker.click(function() {
+                    Page.func.removeMarker();
                 });
             },
             imageFile: null,
