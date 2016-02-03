@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<PublicArt.Web.Admin.ViewModels.ItemIndexViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Item Index";
 }
 
 <h2>Index</h2>
@@ -108,7 +108,7 @@
             $('#ItemsTable').on('click', '.category-filter', function () {
                 var $this = $(this);
                 console.log('Filtering', $ItemsTable, 'on', $this.data('category'));
-                $ItemsTable.column([4]).search($this.data('category')).draw();
+                $ItemsTable.column([5]).search($this.data('category')).draw();
             });
 
             $('#clearfilter').on('click', function() {
