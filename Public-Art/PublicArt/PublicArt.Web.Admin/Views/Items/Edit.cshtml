@@ -49,7 +49,22 @@
             </div>
             <div id="imagePanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <p>blah blah</p>
+                    <div class="form-inline">
+                        <div class="col-xs-5">
+                            <select class="form-control">
+                                @foreach (var a in Model.ArtistDictionary)
+                                {
+                                    <option value="@a.Key">@a.Value</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="Notes (optional)"/>
+                        </div>
+                        <div class="col-xs-2">
+                            <button class="btn">Add</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
