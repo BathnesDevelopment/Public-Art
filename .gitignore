@@ -211,3 +211,7 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+# PublicArt specific ignores
+PublicArtCatalogueImages.zip
+localhost.publish.xml
