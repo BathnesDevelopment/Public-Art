@@ -42,6 +42,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-default collapsable">
+            <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
+                <h3 class="panel-title">Item Artists</h3>
+            </div>
+            <div id="imagePanelCollapse" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>blah blah</p>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-7 col-md-pull-5">
 
@@ -208,8 +219,7 @@
                 @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
                     <div class="checkbox">
-                        @Html.EditorFor(model => model.Archived)
-                        @Html.ValidationMessageFor(model => model.Archived, "", new {@class = "text-danger"})
+                        @Html.CheckBoxFor(model => model.Archived, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_onstyle = "danger", data_offstyle = "info"})
                     </div>
                 </div>
             </div>
@@ -232,7 +242,7 @@
     
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
     <script>
         var Page = {
             init: function() {
