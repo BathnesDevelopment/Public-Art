@@ -15,7 +15,8 @@
     <div class="col-md-5 col-md-push-7">
         <div class="panel panel-default collapsable">
             <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
-                <h3 class="panel-title"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Images
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Images
                 </h3>
             </div>
             <div id="imagePanelCollapse" class="panel-collapse collapse in">
@@ -50,7 +51,8 @@
 
         <div class="panel panel-default collapsable">
             <div class="panel-heading" data-toggle="collapse" data-target="#artistsPanelCollapse">
-                <h3 class="panel-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Artists
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Artists
                 </h3>
             </div>
             <div id="artistsPanelCollapse" class="panel-collapse collapse in">
@@ -59,8 +61,9 @@
                         @foreach (var artist in Model.Artists)
                         {
                             <li class="list-group-item">
-                                <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new { id = artist.ArtistId }, null)</strong> <small>@artist.Notes</small>
-                                <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}, null)</strong> <small>@artist.Notes</small>
+                                <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
                             </li>
                         }
                     </ul>
@@ -81,17 +84,46 @@
                                 </span>
 
                             <span class="input-group-btn">
-                                            <input type="text" class="form-control input-sm" id="newArtistNotes" placeholder="Notes (optional)" autocomplete="off" />
-                                        </span>
+                                    <input type="text" class="form-control input-sm" id="newArtistNotes" placeholder="Notes (optional)" autocomplete="off" />
+                                </span>
                             <span class="input-group-btn">
-                                            <button type="button" class="btn btn-success btn-sm" id="newArtistAdd">Add</button>
-                                        </span>
+                                    <button type="button" class="btn btn-success btn-sm" id="newArtistAdd">Add</button>
+                                </span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="panel panel-default collapsable">
+            <div class="panel-heading" data-toggle="collapse" data-target="#artistsPanelCollapse">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Categories
+                </h3>
+            </div>
+            <div id="artistsPanelCollapse" class="panel-collapse collapse in">
+                <div class="panel-body categorypanel">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <h4><span class="label label-default">@category.Value</span></h4>
+                    }
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-right">
+                    <div class="form-inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control input-sm" id="newItemCategory" placeholder="Category" autocomplete="off" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-sm" id="newArtistAdd">Add</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+
     <div class="col-md-7 col-md-pull-5">
 
         <div class="form-horizontal">
@@ -246,10 +278,12 @@
             <div class="form-group">
                 @Html.HiddenFor(model => model.Latitude)
                 @Html.HiddenFor(model => model.Longitude)
-                @Html.Label("Location", new { @class = "control-label col-md-2" })
+                @Html.Label("Location", new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
                     <div id="leafletmap"></div>
-                    <p><small>Click map to place marker. Drag marker to move. <span class="pseudolink" id="removeMapMarker">Click here to delete marker</span>.</small></p>
+                    <p>
+                        <small>Click map to place marker. Drag marker to move. <span class="pseudolink" id="removeMapMarker">Click here to delete marker</span>.</small>
+                    </p>
                 </div>
             </div>
 
@@ -267,7 +301,7 @@
     <div class="row">
         <div class="col-md-2 col-md-offset-10">
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-lg btn-success" />
+                <input type="submit" value="Save" class="btn btn-lg btn-success"/>
             </div>
         </div>
     </div>
@@ -453,9 +487,9 @@
                 Page.ele.$itemArtistDelete.click(function() {
                     if (confirm('Are you sure you want to remove this artist from the item?')) {
                         $.ajax({
-                            url: $(this).data('deleteuri'),
-                            type: 'POST'
-                        })
+                                url: $(this).data('deleteuri'),
+                                type: 'POST'
+                            })
                             .done(function() {
                                 location.reload(true);
                             })
@@ -471,29 +505,28 @@
                     Page.func.removeMarker();
                 });
             },
-        imageFile: null,
+            imageFile: null,
             initLeaflet:
+                function() {
+                    Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
+                    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(Page.map);
 
-        function() {
-            Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(Page.map);
-
-            if (Page.func.getLatLngFromInput()) {
-                Page.func.createMarker(Page.func.getLatLngFromInput());
-            } else {
-                Page.map.addOneTimeEventListener('click', function(e) {
-                    Page.func.createMarker(e.latlng);
-                    Page.func.setInputFromLatLng(e.latlng);
-                });
-            }
-        },
-        map: null,
+                    if (Page.func.getLatLngFromInput()) {
+                        Page.func.createMarker(Page.func.getLatLngFromInput());
+                    } else {
+                        Page.map.addOneTimeEventListener('click', function(e) {
+                            Page.func.createMarker(e.latlng);
+                            Page.func.setInputFromLatLng(e.latlng);
+                        });
+                    }
+                },
+            map: null,
             marker:
-        null
-    };
+                null
+        };
 
         $(document).ready(function() {
             Page.init();

@@ -121,7 +121,7 @@ namespace PublicArt.Web.Admin.Controllers
             };
 
             viewModel.ArtistDictionary = await db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name);
-            viewModel.CategoryDictionary = await db.Categories.OrderBy(c => c.Description).ToDictionaryAsync(c => c.CategoryId, c => c.Description);
+            //viewModel.CategoryDictionary = await db.Categories.OrderBy(c => c.Description).ToDictionaryAsync(c => c.CategoryId, c => c.Description);
 
             return View(viewModel);
         }

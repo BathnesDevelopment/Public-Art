@@ -8,111 +8,37 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
+using PublicArt.Web.Admin.ViewModels;
 
 namespace PublicArt.Web.Admin.Controllers
 {
+    [RoutePrefix("Categories")]
     public class CategoriesController : Controller
     {
-        private PublicArtEntities db = new PublicArtEntities();
+        private readonly PublicArtEntities _db = new PublicArtEntities();
 
-        // GET: Categories
+        // TODO: Make route categories.json
+        [Route()]
         public async Task<ActionResult> Index()
         {
-            return View(await db.Categories.ToListAsync());
+            var categories = await _db.Categories.Select(c => new CategoryViewModel()
+            {
+                Id = c.CategoryId,
+                Description = c.Description
+            }).ToListAsync();
+
+            return Json(categories, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Categories/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = await db.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // GET: Categories/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Categories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Description")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Categories.Add(category);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(category);
-        }
-
-        // GET: Categories/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = await db.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
-
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "CategoryId,Description,rowguid,ModifiedDate")] Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(category).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(category);
-        }
-
-        // GET: Categories/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = await db.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
 
         // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            Category category = await db.Categories.FindAsync(id);
-            db.Categories.Remove(category);
-            await db.SaveChangesAsync();
+            Category category = await _db.Categories.FindAsync(id);
+            _db.Categories.Remove(category);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +46,7 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

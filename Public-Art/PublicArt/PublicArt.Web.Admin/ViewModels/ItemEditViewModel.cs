@@ -129,6 +129,5 @@ namespace PublicArt.Web.Admin.ViewModels
 
         public IDictionary<int, string> ArtistDictionary { get; set; }
 
-        public IDictionary<int, string> CategoryDictionary { get; set; }
     }
 }

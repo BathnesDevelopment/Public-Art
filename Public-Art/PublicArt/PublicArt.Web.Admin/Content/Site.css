@@ -74,3 +74,8 @@ textarea {
 #newArtistId {
     max-width: 140px;
 }
+
+.categorypanel h4 {
+    display: inline-block;
+    font-weight: normal;
+}
