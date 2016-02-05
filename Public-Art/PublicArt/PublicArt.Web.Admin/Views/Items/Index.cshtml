@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<PublicArt.Web.Admin.ViewModels.ItemIndexViewModel>
 
 @{
-    ViewBag.Title = "Item Index";
+    ViewBag.Title = "Items";
 }
 
-<h2>Index</h2>
+<div class="jumbotron">
+    <h1>Catalogue Items</h1>
+    <div class="btn-group" role="group">
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success", role = "button" })
+        <button class="btn btn-default" href="#" role="button">Reset table filter</button>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<p>
-    <span id="clearfilter" class="pseudolink">Reset table filter</span>
-</p>
 <table class="table table-striped table-bordered" id="ItemsTable">
     <thead>
     <tr>

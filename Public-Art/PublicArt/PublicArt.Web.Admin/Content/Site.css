@@ -70,3 +70,7 @@ textarea {
 #leafletmap {
     height: 300px;
 }
+
+#newArtistId {
+    max-width: 140px;
+}

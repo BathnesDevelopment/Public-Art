@@ -15,7 +15,8 @@
     <div class="col-md-5 col-md-push-7">
         <div class="panel panel-default collapsable">
             <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
-                <h3 class="panel-title">Item Images</h3>
+                <h3 class="panel-title"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Images
+                </h3>
             </div>
             <div id="imagePanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
@@ -34,35 +35,57 @@
             <div class="panel-footer clearfix">
                 <div class="pull-right">
                     <div class="form-inline">
-                        <div class="form-group">
-                            <input type="file" class="form-control" id="newImageFile" accept=".jpg,.jpeg"/>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <input type="file" class="form-control input-sm" id="newImageFile" accept=".jpg,.jpeg" />
+                            </span>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-sm" id="newImageUpload">Upload</button>
+                            </span>
                         </div>
-                        <button type="button" class="btn btn-success" id="newImageUpload">Upload</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="panel panel-default collapsable">
-            <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
-                <h3 class="panel-title">Item Artists</h3>
+            <div class="panel-heading" data-toggle="collapse" data-target="#artistsPanelCollapse">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Artists
+                </h3>
             </div>
-            <div id="imagePanelCollapse" class="panel-collapse collapse in">
+            <div id="artistsPanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
+                    <ul class="list-group">
+                        @foreach (var artist in Model.Artists)
+                        {
+                            <li class="list-group-item">
+                                <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new { id = artist.ArtistId }, null)</strong> <small>@artist.Notes</small>
+                                <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-right">
                     <div class="form-inline">
-                        <div class="col-xs-5">
-                            <select class="form-control">
-                                @foreach (var a in Model.ArtistDictionary)
-                                {
-                                    <option value="@a.Key">@a.Value</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="Notes (optional)"/>
-                        </div>
-                        <div class="col-xs-2">
-                            <button class="btn">Add</button>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                    <select class="form-control input-sm" id="newArtistId" required>
+                                        <option value="" disabled hidden selected>Artist...</option>
+                                        @foreach (var a in Model.ArtistDictionary)
+                                        {
+                                            <option value="@a.Key">@a.Value</option>
+                                        }
+                                    </select>
+                                </span>
+
+                            <span class="input-group-btn">
+                                            <input type="text" class="form-control input-sm" id="newArtistNotes" placeholder="Notes (optional)" autocomplete="off" />
+                                        </span>
+                            <span class="input-group-btn">
+                                            <button type="button" class="btn btn-success btn-sm" id="newArtistAdd">Add</button>
+                                        </span>
                         </div>
                     </div>
                 </div>
@@ -250,12 +273,6 @@
     </div>
 }
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
-
-    
-
 @section Scripts {
     @*@Scripts.Render("~/bundles/jqueryval")*@
     <script>
@@ -264,6 +281,7 @@
                 Page.initHandlers();
                 Page.func.updatePrimaryButtons();
                 Page.ele.$newImageUpload.addClass('disabled');
+                Page.ele.$newArtistAdd.addClass('disabled');
                 Page.ele.$imageThumbLink.featherlight();
                 Page.initLeaflet();
             },
@@ -271,6 +289,10 @@
                 $ItemImagePrimary: $('.ItemImagePrimary'),
                 $newImageFile: $('#newImageFile'),
                 $newImageUpload: $('#newImageUpload'),
+                $newArtistId: $('#newArtistId'),
+                $newArtistNotes: $('#newArtistNotes'),
+                $newArtistAdd: $('#newArtistAdd'),
+                $itemArtistDelete: $('.itemArtistDelete'),
                 $itemImageDelete: $('.itemImageDelete'),
                 $imageThumbLink: $('.imageThumbLink'),
                 $inLatitude: $('#Latitude'),
@@ -303,15 +325,18 @@
                 },
                 createMarker(latLng) {
                     console.log('creating marker at:', latLng);
-                    Page.marker = L.marker(latLng, { icon: L.icon({
-                        iconUrl: '/Content/images/marker-icon.png',
-                        shadowUrl: '/Content/images/marker-shadow.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34],
-                        shadowSize: [41, 41]
-                    }), draggable: true }).addTo(Page.map);
-                    Page.marker.on('dragend', function(e) {
+                    Page.marker = L.marker(latLng, {
+                        icon: L.icon({
+                            iconUrl: '/Content/images/marker-icon.png',
+                            shadowUrl: '/Content/images/marker-shadow.png',
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        }),
+                        draggable: true
+                    }).addTo(Page.map);
+                    Page.marker.on('dragend', function() {
                         Page.func.setInputFromLatLng(this.getLatLng());
                     });
                 },
@@ -319,7 +344,7 @@
                     Page.map.removeLayer(Page.marker);
                     Page.ele.$inLatitude.val('');
                     Page.ele.$inLongitude.val('');
-                    Page.map.addOneTimeEventListener('click', function (e) {
+                    Page.map.addOneTimeEventListener('click', function(e) {
                         Page.func.createMarker(e.latlng);
                         Page.func.setInputFromLatLng(e.latlng);
                     });
@@ -353,7 +378,7 @@
                     var data = new FormData();
                     data.append('file', Page.imageFile);
 
-                    var request = $.ajax({
+                    $.ajax({
                             url: '@Url.Action("Upload", "ItemImages", new {itemId = Model.ItemId})',
                             type: 'POST',
                             data: data,
@@ -364,30 +389,80 @@
                         .done(function() {
                             location.reload(true);
                         })
-                        .fail(function(jqXHR, textStatus, errorThrown) {
+                        .fail(function(jqXhr, textStatus, errorThrown) {
                             alert('Upload failed!');
                             console.log('failed');
-                            console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                            console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
                         });
+                    return true;
                 });
 
                 Page.ele.$itemImageDelete.click(function() {
-                    var $this = $(this);
-
-                    console.log($(this).data('deleteuri'), $(this));
-
                     if (confirm('Are you sure you want to delete this image?')) {
-                        var request = $.ajax({
-                                url: $this.data('deleteuri'),
+                        $.ajax({
+                                url: Page.ele.$itemImageDelete.data('deleteuri'),
                                 type: 'POST'
                             })
                             .done(function() {
                                 location.reload(true);
                             })
-                            .fail(function(jqXHR, textStatus, errorThrown) {
+                            .fail(function(jqXhr, textStatus, errorThrown) {
                                 alert('Delete failed!');
                                 console.log('failed');
-                                console.log('jqXHR:', jqXHR, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                                console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                            });
+                    }
+                });
+
+                Page.ele.$newArtistId.on('change', function() {
+                    if ($(this).val() !== '') {
+                        Page.ele.$newArtistAdd.removeClass('disabled');
+                    } else {
+                        Page.ele.$newArtistAdd.addClass('disabled');
+                    }
+                });
+
+                Page.ele.$newArtistAdd.click(function() {
+                    if (Page.ele.$newArtistAdd.hasClass('disabled')) return false;
+
+                    var data = new FormData();
+                    data.append('ItemId', @Model.ItemId);
+                    data.append('ArtistId', Page.ele.$newArtistId.val());
+                    data.append('Notes', Page.ele.$newArtistNotes.val());
+
+                    $.ajax({
+                            url: '@Url.Action("Create", "ItemArtists")',
+                            type: 'POST',
+                            data: data,
+                            cache: false,
+                            processData: false,
+                            contentType: false
+                        })
+                        .done(function() {
+                            location.reload(true);
+                        })
+                        .fail(function(jqXhr, textStatus, errorThrown) {
+                            alert('Add ItemArtist failed!');
+                            console.log('failed');
+                            console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                        });
+
+                    return true;
+                });
+
+                Page.ele.$itemArtistDelete.click(function() {
+                    if (confirm('Are you sure you want to remove this artist from the item?')) {
+                        $.ajax({
+                            url: $(this).data('deleteuri'),
+                            type: 'POST'
+                        })
+                            .done(function() {
+                                location.reload(true);
+                            })
+                            .fail(function(jqXhr, textStatus, errorThrown) {
+                                alert('Delete failed!');
+                                console.log('failed');
+                                console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
                             });
                     }
                 });
@@ -396,26 +471,29 @@
                     Page.func.removeMarker();
                 });
             },
-            imageFile: null,
-            initLeaflet: function() {
-                Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(Page.map);
+        imageFile: null,
+            initLeaflet:
 
-                if (Page.func.getLatLngFromInput()) {
-                    Page.func.createMarker(Page.func.getLatLngFromInput());
-                } else {
-                    Page.map.addOneTimeEventListener('click', function (e) {
-                        Page.func.createMarker(e.latlng);
-                        Page.func.setInputFromLatLng(e.latlng);
-                    });
-                }
-            },
-            map: null,
-            marker: null
-        };
+        function() {
+            Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(Page.map);
+
+            if (Page.func.getLatLngFromInput()) {
+                Page.func.createMarker(Page.func.getLatLngFromInput());
+            } else {
+                Page.map.addOneTimeEventListener('click', function(e) {
+                    Page.func.createMarker(e.latlng);
+                    Page.func.setInputFromLatLng(e.latlng);
+                });
+            }
+        },
+        map: null,
+            marker:
+        null
+    };
 
         $(document).ready(function() {
             Page.init();
