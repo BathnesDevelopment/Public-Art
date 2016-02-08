@@ -63,7 +63,8 @@
                             <li class="list-group-item">
                                 <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}, null)</strong> <small>@artist.Notes</small>
                                 <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span></button>
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </li>
                         }
                     </ul>
@@ -102,10 +103,15 @@
             </div>
             <div id="artistsPanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body categorypanel">
-                    @foreach (var category in Model.Categories)
-                    {
-                        <h4><span class="label label-default">@category.Value</span></h4>
-                    }
+                    <ul class="list-inline">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li class="label label-info categorytag">
+                                @category.Value
+                                <a class="itemCategoryDelete" href="#" data-deleteuri="@Url.Action("Delete", "ItemCategories", new { itemId = Model.ItemId, categoryId = category.Key })">×</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
             <div class="panel-footer clearfix">
@@ -114,7 +120,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control input-sm" id="newItemCategory" placeholder="Category" autocomplete="off" />
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-success btn-sm" id="newArtistAdd">Add</button>
+                                <button type="button" class="btn btn-success btn-sm" id="newCategoryAdd">Add</button>
                             </span>
                         </div>
                     </div>
@@ -316,6 +322,7 @@
                 Page.func.updatePrimaryButtons();
                 Page.ele.$newImageUpload.addClass('disabled');
                 Page.ele.$newArtistAdd.addClass('disabled');
+                Page.ele.$newCategoryAdd.addClass('disabled');
                 Page.ele.$imageThumbLink.featherlight();
                 Page.initLeaflet();
             },
@@ -326,8 +333,11 @@
                 $newArtistId: $('#newArtistId'),
                 $newArtistNotes: $('#newArtistNotes'),
                 $newArtistAdd: $('#newArtistAdd'),
+                $newCategoryAdd: $('#newCategoryAdd'),
+                $newItemCategory: $('#newItemCategory'),
                 $itemArtistDelete: $('.itemArtistDelete'),
                 $itemImageDelete: $('.itemImageDelete'),
+                $itemCategoryDelete: $('.itemCategoryDelete'),
                 $imageThumbLink: $('.imageThumbLink'),
                 $inLatitude: $('#Latitude'),
                 $inLongitude: $('#Longitude'),
@@ -501,6 +511,58 @@
                     }
                 });
 
+                Page.ele.$newItemCategory.on('change', function() {
+                    if ($(this).val() !== '') {
+                        Page.ele.$newCategoryAdd.removeClass('disabled');
+                    } else {
+                        Page.ele.$newCategoryAdd.addClass('disabled');
+                    }
+                });
+
+                Page.ele.$newCategoryAdd.click(function() {
+                    if (Page.ele.$newCategoryAdd.hasClass('disabled')) return false;
+
+                    var data = new FormData();
+                    data.append('itemId', @Model.ItemId);
+                    data.append('categoryName', Page.ele.$newItemCategory.val());
+
+                    $.ajax({
+                        url: '@Url.Action("Create", "ItemCategories")',
+                            type: 'POST',
+                            data: data,
+                            cache: false,
+                            processData: false,
+                            contentType: false
+                        })
+                        .done(function() {
+                            location.reload(true);
+                        })
+                        .fail(function(jqXhr, textStatus, errorThrown) {
+                            alert('Add ItemCategory failed!');
+                            console.log('failed');
+                            console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                        });
+
+                    return true;
+                });
+
+                Page.ele.$itemCategoryDelete.click(function() {
+                    if (confirm('Are you sure you want to remove this category?')) {
+                        $.ajax({
+                                url: $(this).data('deleteuri'),
+                                type: 'POST'
+                            })
+                            .done(function() {
+                                location.reload(true);
+                            })
+                            .fail(function(jqXhr, textStatus, errorThrown) {
+                                alert('Delete failed!');
+                                console.log('failed');
+                                console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                            });
+                    }
+                });
+
                 Page.ele.$removeMapMarker.click(function() {
                     Page.func.removeMarker();
                 });
@@ -524,8 +586,7 @@
                     }
                 },
             map: null,
-            marker:
-                null
+            marker: null
         };
 
         $(document).ready(function() {

@@ -75,7 +75,22 @@ textarea {
     max-width: 140px;
 }
 
-.categorypanel h4 {
-    display: inline-block;
+.categorytag {
+    font-size: 1.1em;
     font-weight: normal;
+    margin: 4px;
 }
+
+    .categorytag > a {
+        opacity: 0.5;
+        padding: 0;
+        cursor: pointer;
+        font-size: 1.1em;
+        color: inherit;
+    }
+
+    .categorytag > a:hover {
+        opacity: 0.9;
+        text-decoration: inherit;
+    }
+

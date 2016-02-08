@@ -11,75 +11,70 @@ using PublicArt.DAL;
 
 namespace PublicArt.Web.Admin.Controllers
 {
+    [RoutePrefix("ItemCategories")]
     public class ItemCategoriesController : Controller
     {
-        private PublicArtEntities db = new PublicArtEntities();
-
-        // GET: ItemCategories
-        public async Task<ActionResult> Index()
-        {
-            var itemCategories = db.ItemCategories.Include(i => i.Category).Include(i => i.Item);
-            return View(await itemCategories.ToListAsync());
-        }
-
-        // GET: ItemCategories/Create
-        public ActionResult Create()
-        {
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Description");
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Reference");
-            return View();
-        }
-
-        // POST: ItemCategories/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        private readonly PublicArtEntities _db = new PublicArtEntities();
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ItemId,CategoryId,rowguid,ModifiedDate")] ItemCategory itemCategory)
+        [Route("Create")]
+        public async Task<ActionResult> Create(int itemId, string categoryName)
         {
-            if (ModelState.IsValid)
+            var item = await _db.Items.FindAsync(itemId);
+
+            // Item doesn't exist - error
+            if (item == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Description == categoryName);
+
+            if (category == null)
             {
-                db.ItemCategories.Add(itemCategory);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                // No category exists with this name so create it
+                category = new Category()
+                {
+                    Description = categoryName
+                };
+
+                _db.Categories.Add(category);
+
+                await _db.SaveChangesAsync();
             }
 
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Description", itemCategory.CategoryId);
-            ViewBag.ItemId = new SelectList(db.Items, "ItemId", "Reference", itemCategory.ItemId);
-            return View(itemCategory);
-        }
+            // If category association already exists just return OK
+            if (item.ItemCategories.Any(c => c.CategoryId == category.CategoryId))
+                return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 
-        // GET: ItemCategories/Delete/5
-        public async Task<ActionResult> Delete(int? id)
-        {
-            if (id == null)
+            var itemCategory = new ItemCategory()
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ItemCategory itemCategory = await db.ItemCategories.FindAsync(id);
-            if (itemCategory == null)
-            {
-                return HttpNotFound();
-            }
-            return View(itemCategory);
+                ItemId = item.ItemId,
+                CategoryId = category.CategoryId
+            };
+            _db.ItemCategories.Add(itemCategory);
+
+            await _db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.NoContent);
         }
 
         // POST: ItemCategories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        [Route("Delete")]
+        public async Task<ActionResult> Delete(int itemId, int categoryId)
         {
-            ItemCategory itemCategory = await db.ItemCategories.FindAsync(id);
-            db.ItemCategories.Remove(itemCategory);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+            var itemCategory = await _db.ItemCategories.FindAsync(itemId, categoryId);
+            if (itemCategory == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            _db.ItemCategories.Remove(itemCategory);
+            await _db.SaveChangesAsync();
+
+            return new HttpStatusCodeResult(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -17,15 +17,10 @@ namespace PublicArt.Web.Admin.Controllers
     {
         private readonly PublicArtEntities _db = new PublicArtEntities();
 
-        // TODO: Make route categories.json
-        [Route()]
-        public async Task<ActionResult> Index()
+        [Route("all.json")]
+        public async Task<ActionResult> GetAll()
         {
-            var categories = await _db.Categories.Select(c => new CategoryViewModel()
-            {
-                Id = c.CategoryId,
-                Description = c.Description
-            }).ToListAsync();
+            var categories = await _db.Categories.Select(c => c.Description).ToListAsync();
 
             return Json(categories, JsonRequestBehavior.AllowGet);
         }
