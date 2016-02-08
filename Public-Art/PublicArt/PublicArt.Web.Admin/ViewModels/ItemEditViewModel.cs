@@ -26,7 +26,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Required]
         public string Description { get; set; }
 
-        [Display(Name = "Year")]
+        [Display(Name = "Created")]
         [Range(1000, 2200)]
         public short? Date { get; set; }
 
