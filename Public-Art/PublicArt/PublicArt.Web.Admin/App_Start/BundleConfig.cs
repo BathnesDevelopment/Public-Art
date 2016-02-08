@@ -37,14 +37,16 @@ namespace PublicArt.Web.Admin
                 "~/Scripts/DataTables/dataTables.bootstrap.min.js",
                 "~/Scripts/bootstrap-toggle.min.js",
                 "~/Scripts/featherlight.min.js",
-                "~/Scripts/leaflet-0.7.3.min.js"
+                "~/Scripts/leaflet-0.7.3.min.js",
+                "~/Scripts/jquery-ui.min.js"
             ));
 
             bundles.Add(new StyleBundle("~/Content/thirdparty").Include(
                 "~/Content/DataTables/css/dataTables.bootstrap.min.css",
                 "~/Content/bootstrap-toggle.min.css",
                 "~/Content/featherlight.min.css",
-                "~/Content/leaflet.css"
+                "~/Content/leaflet.css",
+                "~/Content/jquery-ui.min.css"
             ));
         }
     }

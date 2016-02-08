@@ -325,6 +325,7 @@
                 Page.ele.$newCategoryAdd.addClass('disabled');
                 Page.ele.$imageThumbLink.featherlight();
                 Page.initLeaflet();
+                Page.initAutocomplete();
             },
             ele: {
                 $ItemImagePrimary: $('.ItemImagePrimary'),
@@ -511,7 +512,7 @@
                     }
                 });
 
-                Page.ele.$newItemCategory.on('change', function() {
+                Page.ele.$newItemCategory.on('change keyup paste mouseup', function() {
                     if ($(this).val() !== '') {
                         Page.ele.$newCategoryAdd.removeClass('disabled');
                     } else {
@@ -568,25 +569,40 @@
                 });
             },
             imageFile: null,
-            initLeaflet:
-                function() {
-                    Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
-                    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    }).addTo(Page.map);
+            initLeaflet: function() {
+                Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(Page.map);
 
-                    if (Page.func.getLatLngFromInput()) {
-                        Page.func.createMarker(Page.func.getLatLngFromInput());
-                    } else {
-                        Page.map.addOneTimeEventListener('click', function(e) {
-                            Page.func.createMarker(e.latlng);
-                            Page.func.setInputFromLatLng(e.latlng);
-                        });
-                    }
-                },
+                if (Page.func.getLatLngFromInput()) {
+                    Page.func.createMarker(Page.func.getLatLngFromInput());
+                } else {
+                    Page.map.addOneTimeEventListener('click', function(e) {
+                        Page.func.createMarker(e.latlng);
+                        Page.func.setInputFromLatLng(e.latlng);
+                    });
+                }
+            },
+            initAutocomplete: function() {
+                $.getJSON('@Url.Action("GetAll", "Categories")', null, function(data) {
+                    Page.categories = data;
+
+                    Page.ele.$newItemCategory.autocomplete({
+                        source: function(request, response) {
+                            var results = $.ui.autocomplete.filter(Page.categories, request.term);
+
+                            response(results.slice(0, 10));
+                        }
+                    });
+                });
+
+                
+            },
             map: null,
-            marker: null
+            marker: null,
+            categories: null
         };
 
         $(document).ready(function() {
