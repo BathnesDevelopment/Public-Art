@@ -348,6 +348,7 @@
                 Page.ele.$imageThumbLink.featherlight();
                 Page.initLeaflet();
                 Page.initAutocomplete();
+                Page.initDatePickers();
             },
             ele: {
                 $ItemImagePrimary: $('.ItemImagePrimary'),
@@ -362,6 +363,8 @@
                 $itemImageDelete: $('.itemImageDelete'),
                 $itemCategoryDelete: $('.itemCategoryDelete'),
                 $imageThumbLink: $('.imageThumbLink'),
+                $inDate: $('#Date'),
+                $inUnveilingYear: $('#UnveilingYear'),
                 $inLatitude: $('#Latitude'),
                 $inLongitude: $('#Longitude'),
                 $removeMapMarker: $('#removeMapMarker')
@@ -621,6 +624,19 @@
                 });
 
                 
+            },
+            initDatePickers: function() {
+                Page.ele.$inDate.datepicker( {
+                    format: "yyyy",
+                    viewMode: "years", 
+                    minViewMode: "years"
+                });
+
+                Page.ele.$inUnveilingYear.datepicker( {
+                    format: "yyyy",
+                    viewMode: "years", 
+                    minViewMode: "years"
+                });
             },
             map: null,
             marker: null,
