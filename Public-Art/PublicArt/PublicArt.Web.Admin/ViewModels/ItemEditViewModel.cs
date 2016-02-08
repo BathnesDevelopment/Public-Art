@@ -70,19 +70,19 @@ namespace PublicArt.Web.Admin.ViewModels
         [DataType(DataType.Url)]
         public string WebsiteUrl { get; set; }
 
-        [Display(Name = "Height (cm)")]
+        [Display(Name = "Height")]
         [Range(0, 10000)]
         public short? Height { get; set; }
 
-        [Display(Name = "Width (cm)")]
+        [Display(Name = "Width")]
         [Range(0, 10000)]
         public short? Width { get; set; }
 
-        [Display(Name = "Depth (cm)")]
+        [Display(Name = "Depth")]
         [Range(0, 10000)]
         public short? Depth { get; set; }
 
-        [Display(Name = "Diameter (cm)")]
+        [Display(Name = "Diameter")]
         [Range(0, 10000)]
         public short? Diameter { get; set; }
 

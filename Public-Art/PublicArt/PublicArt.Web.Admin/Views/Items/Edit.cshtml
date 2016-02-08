@@ -4,8 +4,9 @@
     ViewBag.Title = Model.Reference;
 }
 
-<h2>Editing @Model.Reference</h2>
-<hr/>
+<div class="jumbotron">
+    <h1>Editing item: @Model.Reference</h1>
+</div>
 
 @using (Html.BeginForm())
 {
@@ -13,6 +14,7 @@
 
     <div class="row">
     <div class="col-md-5 col-md-push-7">
+        
         <div class="panel panel-default collapsable">
             <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
                 <h3 class="panel-title">
@@ -95,20 +97,21 @@
                 </div>
             </div>
         </div>
+
         <div class="panel panel-default collapsable">
-            <div class="panel-heading" data-toggle="collapse" data-target="#artistsPanelCollapse">
+            <div class="panel-heading" data-toggle="collapse" data-target="#categoriesPanelCollapse">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Categories
                 </h3>
             </div>
-            <div id="artistsPanelCollapse" class="panel-collapse collapse in">
+            <div id="categoriesPanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body categorypanel">
                     <ul class="list-inline">
                         @foreach (var category in Model.Categories)
                         {
                             <li class="label label-info categorytag">
                                 @category.Value
-                                <span class="itemCategoryDelete" data-deleteuri="@Url.Action("Delete", "ItemCategories", new { itemId = Model.ItemId, categoryId = category.Key })">×</span>
+                                <span class="itemCategoryDelete" data-deleteuri="@Url.Action("Delete", "ItemCategories", new {itemId = Model.ItemId, categoryId = category.Key})">×</span>
                             </li>
                         }
                     </ul>
@@ -118,14 +121,29 @@
                 <div class="pull-right">
                     <div class="form-inline">
                         <div class="input-group">
-                            <input type="text" class="form-control input-sm" id="newItemCategory" placeholder="Category" autocomplete="off" />
+                            <input type="text" class="form-control input-sm" id="newItemCategory" placeholder="Category" autocomplete="off"/>
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-success btn-sm" id="newCategoryAdd">Add</button>
                             </span>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="panel panel-default collapsable">
+            <div class="panel-heading" data-toggle="collapse" data-target="#locationPanelCollapse">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location
+                </h3>
+            </div>
+            <div id="locationPanelCollapse" class="panel-collapse collapse in">
+                @Html.HiddenFor(model => model.Latitude)
+                @Html.HiddenFor(model => model.Longitude)
+                <div id="leafletmap"></div>
+                <p class="text-center">
+                    <small>Click map to place marker. Drag marker to move. <span class="pseudolink" id="removeMapMarker">Click here to delete marker</span>.</small>
+                </p>
             </div>
         </div>
     </div>
@@ -226,34 +244,50 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Height, new {@class = "control-label col-md-2"})
+                @Html.Label("Size", new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Height, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Height, "", new {@class = "text-danger"})
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Height)</span>
+                                @Html.EditorFor(model => model.Height, new {htmlAttributes = new {@class = "form-control"}})
+                                <span class="input-group-addon" id="basic-addon2">cm</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Height, "", new {@class = "text-danger"})
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Width)</span>
+                                @Html.EditorFor(model => model.Width, new {htmlAttributes = new {@class = "form-control"}})
+                                <span class="input-group-addon" id="basic-addon2">cm</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Width, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
             <div class="form-group">
-                @Html.LabelFor(model => model.Width, new {@class = "control-label col-md-2"})
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Width, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Width, "", new {@class = "text-danger"})
-                </div>
-            </div>
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Depth)</span>
+                                @Html.EditorFor(model => model.Depth, new {htmlAttributes = new {@class = "form-control"}})
+                                <span class="input-group-addon" id="basic-addon2">cm</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Depth, "", new {@class = "text-danger"})
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">@Html.DisplayNameFor(model => model.Diameter)</span>
+                                @Html.EditorFor(model => model.Diameter, new {htmlAttributes = new {@class = "form-control"}})
+                                <span class="input-group-addon" id="basic-addon2">cm</span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Diameter, "", new {@class = "text-danger"})
+                        </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Depth, new {@class = "control-label col-md-2"})
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Depth, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Depth, "", new {@class = "text-danger"})
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Diameter, new {@class = "control-label col-md-2"})
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Diameter, new {htmlAttributes = new {@class = "form-control"}})
-                    @Html.ValidationMessageFor(model => model.Diameter, "", new {@class = "text-danger"})
+                    </div>
                 </div>
             </div>
 
@@ -278,18 +312,6 @@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
                     @Html.ValidationMessageFor(model => model.Address, "", new {@class = "text-danger"})
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.HiddenFor(model => model.Latitude)
-                @Html.HiddenFor(model => model.Longitude)
-                @Html.Label("Location", new {@class = "control-label col-md-2"})
-                <div class="col-md-10">
-                    <div id="leafletmap"></div>
-                    <p>
-                        <small>Click map to place marker. Drag marker to move. <span class="pseudolink" id="removeMapMarker">Click here to delete marker</span>.</small>
-                    </p>
                 </div>
             </div>
 
