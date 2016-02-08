@@ -108,7 +108,7 @@
                         {
                             <li class="label label-info categorytag">
                                 @category.Value
-                                <a class="itemCategoryDelete" href="#" data-deleteuri="@Url.Action("Delete", "ItemCategories", new { itemId = Model.ItemId, categoryId = category.Key })">×</a>
+                                <span class="itemCategoryDelete" data-deleteuri="@Url.Action("Delete", "ItemCategories", new { itemId = Model.ItemId, categoryId = category.Key })">×</span>
                             </li>
                         }
                     </ul>

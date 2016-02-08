@@ -81,7 +81,7 @@ textarea {
     margin: 4px;
 }
 
-    .categorytag > a {
+    .categorytag > span {
         opacity: 0.5;
         padding: 0;
         cursor: pointer;
@@ -89,7 +89,7 @@ textarea {
         color: inherit;
     }
 
-    .categorytag > a:hover {
+    .categorytag > span:hover {
         opacity: 0.9;
         text-decoration: inherit;
     }
