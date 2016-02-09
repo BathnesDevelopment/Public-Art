@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PublicArt.DAL;
-using PublicArt.Web.Admin.ViewModels;
 using PublicArt.Util.Extensions;
 using PublicArt.Util.Spatial;
+using PublicArt.Web.Admin.ViewModels;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -24,14 +20,14 @@ namespace PublicArt.Web.Admin.Controllers
         public async Task<ActionResult> Index()
         {
             var items = await _db.Items.ToListAsync();
-            var viewModels = items.Select(x => new ItemIndexViewModel()
+            var viewModels = items.Select(x => new ItemIndexViewModel
             {
                 ItemId = x.ItemId,
                 ThumbnailGuid = x.ItemImages.Where(i => i.Primary).Select(i => i.stream_id).FirstOrDefault(),
                 Reference = x.Reference,
                 Title = x.Title.ShortenIfTooLong(40),
                 Date = x.Date,
-                Artists = x.ItemArtists.Select(a => new ItemIndexArtistViewModel()
+                Artists = x.ItemArtists.Select(a => new ItemIndexArtistViewModel
                 {
                     ArtistId = a.ArtistId,
                     Name = a.Artist.Name,
@@ -56,14 +52,15 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Create")]
-        public async Task<ActionResult> Create([Bind(Include = "Reference,Title,Description")] ItemCreateViewModel itemViewModel)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "Reference,Title,Description")] ItemCreateViewModel itemViewModel)
         {
             if (await _db.Items.AnyAsync(i => i.Reference == itemViewModel.Reference))
                 ModelState.AddModelError("Reference", "Item reference already exists.");
 
             if (!ModelState.IsValid) return View(itemViewModel);
 
-            var item = new Item()
+            var item = new Item
             {
                 Reference = itemViewModel.Reference,
                 Title = itemViewModel.Title,
@@ -74,14 +71,14 @@ namespace PublicArt.Web.Admin.Controllers
             _db.Items.Add(item);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Edit", new { id = item.ItemId});
+            return RedirectToAction("Edit", new {id = item.ItemId});
         }
 
         // GET: Items/5
         [Route("{id:int}")]
         public async Task<ActionResult> Edit(int id)
         {
-            Item item = await _db.Items.FindAsync(id);
+            var item = await _db.Items.FindAsync(id);
 
             if (item == null)
             {
@@ -114,21 +111,21 @@ namespace PublicArt.Web.Admin.Controllers
                 Longitude = item.Location?.Longitude,
                 Published = item.Published,
                 ModifiedDate = item.ModifiedDate,
-                Artists = item.ItemArtists.Select(a => new ItemEditArtistViewModel()
+                Artists = item.ItemArtists.Select(a => new ItemEditArtistViewModel
                 {
                     ArtistId = a.ArtistId,
                     Name = a.Artist.Name,
                     Notes = a.Notes
                 }),
                 Categories = item.ItemCategories.ToDictionary(c => c.CategoryId, c => c.Category.Description),
-                Images = item.ItemImages.Select(i => new ItemEditItemImageViewModel()
+                Images = item.ItemImages.Select(i => new ItemEditItemImageViewModel
                 {
                     stream_id = i.stream_id,
                     Primary = i.Primary,
                     Caption = i.Caption
                 }),
                 ArtistDictionary =
-                    await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name),
+                    await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name)
             };
 
             return View(viewModel);
@@ -140,7 +137,11 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id:int}")]
-        public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Published,Artists,Categories,Images")] ItemEditViewModel itemViewModel)
+        public async Task<ActionResult> Edit(
+            [Bind(
+                Include =
+                    "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Published,Artists,Categories,Images"
+                )] ItemEditViewModel itemViewModel)
         {
             if (!ModelState.IsValid) return View(itemViewModel);
 
@@ -166,7 +167,7 @@ namespace PublicArt.Web.Admin.Controllers
             item.SurfaceCondition = itemViewModel.SurfaceCondition;
             item.StructuralCondition = itemViewModel.StructuralCondition;
             item.Address = itemViewModel.Address;
-            item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
+            item.Location = itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue
                 ? Geography.CreateFromLatLng(itemViewModel.Longitude.Value, itemViewModel.Latitude.Value)
                 : null;
             item.Published = itemViewModel.Published;
@@ -198,7 +199,7 @@ namespace PublicArt.Web.Admin.Controllers
 
             if (item == null) return HttpNotFound();
 
-            var viewModel = new ItemDeleteViewModel()
+            var viewModel = new ItemDeleteViewModel
             {
                 ItemId = item.ItemId,
                 Title = item.Title,
