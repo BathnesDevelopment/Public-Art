@@ -189,29 +189,33 @@ namespace PublicArt.Web.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Items/5/Delete
         [Route("{id:int}/Delete")]
         public async Task<ActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var item = await _db.Items.FindAsync(id);
+
+            if (item == null) return HttpNotFound();
+
+            var viewModel = new ItemDeleteViewModel()
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Item item = await _db.Items.FindAsync(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
+                ItemId = item.ItemId,
+                Title = item.Title,
+                Reference = item.Reference,
+                Description = item.Description,
+                PrimaryImage = item.ItemImages.FirstOrDefault(i => i.Primary)?.stream_id
+            };
+
+            return View(viewModel);
         }
 
-        // POST: Items/5/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Route("{id:int}/Delete")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Item item = await _db.Items.FindAsync(id);
+            var item = await _db.Items.FindAsync(id);
             _db.Items.Remove(item);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");

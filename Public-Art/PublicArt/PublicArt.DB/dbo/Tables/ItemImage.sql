@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[ItemImage]
 
 ,   CONSTRAINT [PK_ItemImage_ItemId_stream_id] UNIQUE CLUSTERED ([ItemId], [stream_id])
 ,   CONSTRAINT [UI_ItemImage_stream_id] PRIMARY KEY NONCLUSTERED ([stream_id])
-,   CONSTRAINT [FK_ItemImage_ItemId_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item]([ItemId])
+,   CONSTRAINT [FK_ItemImage_ItemId_Item] FOREIGN KEY ([ItemId]) REFERENCES [dbo].[Item]([ItemId]) ON DELETE CASCADE
 );
 GO
 

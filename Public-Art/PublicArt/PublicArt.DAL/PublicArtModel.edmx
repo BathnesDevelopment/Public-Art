@@ -114,7 +114,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemArtist_ArtistId_Artist">
-          <End Role="Artist" Type="Self.Artist" Multiplicity="1" />
+          <End Role="Artist" Type="Self.Artist" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Artist">
@@ -126,7 +128,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemArtist_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ItemArtist" Type="Self.ItemArtist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -150,7 +154,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemCategory_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ItemCategory" Type="Self.ItemCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -162,7 +168,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemImage_ItemId_Item">
-          <End Role="Item" Type="Self.Item" Multiplicity="1" />
+          <End Role="Item" Type="Self.Item" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ItemImage" Type="Self.ItemImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -394,7 +402,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemArtist_ItemId_Item">
-          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="PublicArtModel.ItemArtist" Role="ItemArtist" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -406,7 +416,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemCategory_ItemId_Item">
-          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="PublicArtModel.ItemCategory" Role="ItemCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">
@@ -418,7 +430,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ItemImage_ItemId_Item">
-          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" />
+          <End Type="PublicArtModel.Item" Role="Item" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="PublicArtModel.ItemImage" Role="ItemImage" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Item">

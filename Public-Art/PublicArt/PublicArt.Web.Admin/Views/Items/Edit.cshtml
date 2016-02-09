@@ -8,13 +8,15 @@
     <h1>Editing item - @Model.Reference</h1>
 </div>
 
+<hr/>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="row">
     <div class="col-md-5 col-md-push-7">
-        
+
         <div class="panel panel-default collapsable">
             <div class="panel-heading" data-toggle="collapse" data-target="#imagePanelCollapse">
                 <h3 class="panel-title">
@@ -24,16 +26,17 @@
             <div id="imagePanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
                     @if (Model.Images.Any())
-                    {<table class="table table-condensed">
-                        <colgroup>
-                            <col class="col-sm-2">
-                            <col class="col-sm-7">
-                            <col class="col-sm-1">
-                        </colgroup>
-                        <tbody>
+                    {
+                        <table class="table table-condensed">
+                            <colgroup>
+                                <col class="col-sm-2">
+                                <col class="col-sm-7">
+                                <col class="col-sm-1">
+                            </colgroup>
+                            <tbody>
                             @Html.EditorFor(x => x.Images)
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
                     }
                     else
                     {
@@ -72,7 +75,7 @@
                             @foreach (var artist in Model.Artists)
                             {
                                 <li class="list-group-item">
-                                    <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new { id = artist.ArtistId }, null)</strong> <small>@artist.Notes</small>
+                                    <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}, null)</strong> <small>@artist.Notes</small>
                                     <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -136,7 +139,7 @@
                     {
                         <p class="text-center">No categories selected yet...</p>
                     }
-                    
+
                 </div>
             </div>
             <div class="panel-footer clearfix">
@@ -194,22 +197,22 @@
             </div>
 
             <div class="form-group">
-                @Html.Label("Dates", new { @class = "control-label col-md-2" })
+                @Html.Label("Dates", new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">@Html.DisplayNameFor(model => model.Date)</span>
-                                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", placeholder = "year" } })
+                                @Html.EditorFor(model => model.Date, new {htmlAttributes = new {@class = "form-control", placeholder = "year"}})
                             </div>
-                            @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Date, "", new {@class = "text-danger"})
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">@Html.DisplayNameFor(model => model.UnveilingYear)</span>
-                                @Html.EditorFor(model => model.UnveilingYear, new { htmlAttributes = new { @class = "form-control", placeholder = "year" } })
+                                @Html.EditorFor(model => model.UnveilingYear, new {htmlAttributes = new {@class = "form-control", placeholder = "year"}})
                             </div>
-                            @Html.ValidationMessageFor(model => model.UnveilingYear, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.UnveilingYear, "", new {@class = "text-danger"})
                         </div>
                     </div>
                 </div>
@@ -353,10 +356,16 @@
         </div>
     </div>
     </div>
+    <hr/>
     <div class="row">
-        <div class="col-md-2 col-md-offset-10">
+        <div class="col-md-2">
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-lg btn-success"/>
+                @Html.ActionLink("Delete", "Delete", new {id = Model.ItemId}, new {@class = "btn btn-danger"})
+            </div>
+        </div>
+        <div class="col-md-2 col-md-offset-8">
+            <div class="form-group">
+                <button type="submit" class="btn btn-lg btn-success">Save</button>
             </div>
         </div>
     </div>
@@ -594,7 +603,7 @@
                     data.append('categoryName', Page.ele.$newItemCategory.val());
 
                     $.ajax({
-                        url: '@Url.Action("Create", "ItemCategories")',
+                            url: '@Url.Action("Create", "ItemCategories")',
                             type: 'POST',
                             data: data,
                             cache: false,
@@ -664,26 +673,26 @@
                     });
                 });
 
-                
+
             },
             initDatePickers: function() {
-                Page.ele.$inDate.datepicker( {
+                Page.ele.$inDate.datepicker({
                     format: "yyyy",
-                    viewMode: "years", 
+                    viewMode: "years",
                     minViewMode: "years"
                 });
 
-                Page.ele.$inUnveilingYear.datepicker( {
+                Page.ele.$inUnveilingYear.datepicker({
                     format: "yyyy",
-                    viewMode: "years", 
+                    viewMode: "years",
                     minViewMode: "years"
                 });
             },
             initJumbotron: function() {
                 @if (Model.Images.Any())
                 {
-                    @:Page.ele.$jumbotronItemImage.css('background', 'url(\'@Url.Action("Image", "ItemImages", new { id = Model.Images.First(i => i.Primary).stream_id })\') center / cover');
-                    @:Page.ele.$jumbotronItemImage.css('box-shadow', 'inset 0 0 0 1000px rgba(255,255,255,0.6)');
+                    @:Page.ele.$jumbotronItemImage.css('background', 'url(\'@Url.Action("Image", "ItemImages", new {id = Model.Images.First(i => i.Primary).stream_id})\') center / cover');
+                    @:Page.ele.$jumbotronItemImage.css('box-shadow', 'inset 0 0 0 1000px rgba(255, 255, 255, 0.6)');
                 }
             },
             map: null,
