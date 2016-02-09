@@ -165,6 +165,7 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ItemArtistCreateViewModel.cs" />
+    <Compile Include="ViewModels\ItemCreateViewModel.cs" />
     <Compile Include="ViewModels\ItemEditItemImageViewModel.cs" />
     <Compile Include="ViewModels\ItemEditViewModel.cs" />
     <Compile Include="ViewModels\ItemEditArtistViewModel.cs" />

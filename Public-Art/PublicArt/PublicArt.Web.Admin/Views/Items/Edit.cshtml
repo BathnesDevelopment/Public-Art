@@ -30,7 +30,14 @@
                             <col class="col-sm-1">
                         </colgroup>
                         <tbody>
-                        @Html.EditorFor(x => x.Images)
+                        @if (Model.Images.Any())
+                        {
+                            @Html.EditorFor(x => x.Images)
+                        }
+                        else
+                        {
+                            <p class="text-center">No images uploaded yet...</p>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -59,17 +66,24 @@
             </div>
             <div id="artistsPanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <ul class="list-group">
-                        @foreach (var artist in Model.Artists)
-                        {
-                            <li class="list-group-item">
-                                <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId}, null)</strong> <small>@artist.Notes</small>
-                                <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </li>
-                        }
-                    </ul>
+                    @if (Model.Artists.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var artist in Model.Artists)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@Html.ActionLink(artist.Name, "Edit", "Artists", new { id = artist.ArtistId }, null)</strong> <small>@artist.Notes</small>
+                                    <button type="button" class="close itemArtistDelete" data-deleteuri="@Url.Action("Delete", "ItemArtists", new {itemId = Model.ItemId, artistId = artist.ArtistId})" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-center">No artists added yet...</p>
+                    }
                 </div>
             </div>
             <div class="panel-footer clearfix">
@@ -106,15 +120,23 @@
             </div>
             <div id="categoriesPanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body categorypanel">
-                    <ul class="list-inline">
-                        @foreach (var category in Model.Categories)
-                        {
-                            <li class="label label-info categorytag">
-                                @category.Value
-                                <span class="itemCategoryDelete" data-deleteuri="@Url.Action("Delete", "ItemCategories", new {itemId = Model.ItemId, categoryId = category.Key})">×</span>
-                            </li>
-                        }
-                    </ul>
+                    @if (Model.Categories.Any())
+                    {
+                        <ul class="list-inline">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <li class="label label-info categorytag">
+                                    @category.Value
+                                    <span class="itemCategoryDelete" data-deleteuri="@Url.Action("Delete", "ItemCategories", new {itemId = Model.ItemId, categoryId = category.Key})">×</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-center">No categories selected yet...</p>
+                    }
+                    
                 </div>
             </div>
             <div class="panel-footer clearfix">
@@ -646,8 +668,11 @@
                 });
             },
             initJumbotron: function() {
-                Page.ele.$jumbotronItemImage.css('background', 'url(\'@Url.Action("Image", "ItemImages", new { id = Model.Images.First(i => i.Primary).stream_id })\') center / cover');
-                Page.ele.$jumbotronItemImage.css('box-shadow', 'inset 0 0 0 1000px rgba(255,255,255,0.6)');
+                @if (Model.Images.Any())
+                {
+                    @:Page.ele.$jumbotronItemImage.css('background', 'url(\'@Url.Action("Image", "ItemImages", new { id = Model.Images.First(i => i.Primary).stream_id })\') center / cover');
+                    @:Page.ele.$jumbotronItemImage.css('box-shadow', 'inset 0 0 0 1000px rgba(255,255,255,0.6)');
+                }
             },
             map: null,
             marker: null,

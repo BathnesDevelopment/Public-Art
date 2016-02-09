@@ -17,13 +17,13 @@ namespace PublicArt.Web.Admin.Controllers
     [RoutePrefix("Items")]
     public class ItemsController : Controller
     {
-        private PublicArtEntities db = new PublicArtEntities();
+        private readonly PublicArtEntities _db = new PublicArtEntities();
 
         // GET: Items
         [Route]
         public async Task<ActionResult> Index()
         {
-            var items = await db.Items.ToListAsync();
+            var items = await _db.Items.ToListAsync();
             var viewModels = items.Select(x => new ItemIndexViewModel()
             {
                 ItemId = x.ItemId,
@@ -56,23 +56,31 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("Create")]
-        public async Task<ActionResult> Create([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Location,Archived,rowguid,ModifiedDate")] Item item)
+        public async Task<ActionResult> Create([Bind(Include = "Reference,Title,Description")] ItemCreateViewModel itemViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                db.Items.Add(item);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+            if (await _db.Items.AnyAsync(i => i.Reference == itemViewModel.Reference))
+                ModelState.AddModelError("Reference", "Item reference already exists.");
 
-            return View(item);
+            if (!ModelState.IsValid) return View(itemViewModel);
+
+            var item = new Item()
+            {
+                Reference = itemViewModel.Reference,
+                Title = itemViewModel.Title,
+                Description = itemViewModel.Description
+            };
+
+            _db.Items.Add(item);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Edit", new { id = item.ItemId});
         }
 
         // GET: Items/5
         [Route("{id:int}")]
         public async Task<ActionResult> Edit(int id)
         {
-            Item item = await db.Items.FindAsync(id);
+            Item item = await _db.Items.FindAsync(id);
 
             if (item == null)
             {
@@ -120,7 +128,7 @@ namespace PublicArt.Web.Admin.Controllers
                 }),
             };
 
-            viewModel.ArtistDictionary = await db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name);
+            viewModel.ArtistDictionary = await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name);
             //viewModel.CategoryDictionary = await db.Categories.OrderBy(c => c.Description).ToDictionaryAsync(c => c.CategoryId, c => c.Description);
 
             return View(viewModel);
@@ -136,7 +144,7 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(itemViewModel);
 
-            var item = await db.Items.FindAsync(itemViewModel.ItemId);
+            var item = await _db.Items.FindAsync(itemViewModel.ItemId);
 
             // TODO: Implement automapper for viewmodels
             //item.Reference = itemViewModel.Reference;
@@ -163,7 +171,7 @@ namespace PublicArt.Web.Admin.Controllers
                 : null;
             item.Archived = itemViewModel.Archived;
 
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
 
             foreach (var img in itemViewModel.Images)
             {
@@ -171,12 +179,12 @@ namespace PublicArt.Web.Admin.Controllers
                 itemImage.Caption = img.Caption;
             }
 
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
 
             // Set primary
-            db.SetPrimaryItemImage(item.ItemId, itemViewModel.Images.First(i => i.Primary).stream_id);
+            _db.SetPrimaryItemImage(item.ItemId, itemViewModel.Images.First(i => i.Primary).stream_id);
 
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -189,7 +197,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await db.Items.FindAsync(id);
+            Item item = await _db.Items.FindAsync(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -203,9 +211,9 @@ namespace PublicArt.Web.Admin.Controllers
         [Route("{id:int}/Delete")]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Item item = await db.Items.FindAsync(id);
-            db.Items.Remove(item);
-            await db.SaveChangesAsync();
+            Item item = await _db.Items.FindAsync(id);
+            _db.Items.Remove(item);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -213,7 +221,7 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
