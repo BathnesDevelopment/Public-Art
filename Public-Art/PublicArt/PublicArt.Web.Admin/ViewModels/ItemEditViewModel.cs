@@ -111,8 +111,8 @@ namespace PublicArt.Web.Admin.ViewModels
         [RequiredIfPropertyPopulated("Latitude")]
         public double? Longitude { get; set; }
 
-        [Display(Name = "Archived")]
-        public bool Archived { get; set; }
+        [Display(Name = "Published")]
+        public bool Published { get; set; }
 
         [Display(Name = "Modified")]
         [ReadOnly(true)]

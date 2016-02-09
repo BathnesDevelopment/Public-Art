@@ -67,7 +67,8 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 Reference = itemViewModel.Reference,
                 Title = itemViewModel.Title,
-                Description = itemViewModel.Description
+                Description = itemViewModel.Description,
+                Published = false
             };
 
             _db.Items.Add(item);
@@ -111,7 +112,7 @@ namespace PublicArt.Web.Admin.Controllers
                 Address = item.Address,
                 Latitude = item.Location?.Latitude,
                 Longitude = item.Location?.Longitude,
-                Archived = item.Archived,
+                Published = item.Published,
                 ModifiedDate = item.ModifiedDate,
                 Artists = item.ItemArtists.Select(a => new ItemEditArtistViewModel()
                 {
@@ -120,16 +121,15 @@ namespace PublicArt.Web.Admin.Controllers
                     Notes = a.Notes
                 }),
                 Categories = item.ItemCategories.ToDictionary(c => c.CategoryId, c => c.Category.Description),
-                Images = item.ItemImages.Select (i => new ItemEditItemImageViewModel()
+                Images = item.ItemImages.Select(i => new ItemEditItemImageViewModel()
                 {
                     stream_id = i.stream_id,
                     Primary = i.Primary,
                     Caption = i.Caption
                 }),
+                ArtistDictionary =
+                    await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name),
             };
-
-            viewModel.ArtistDictionary = await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name);
-            //viewModel.CategoryDictionary = await db.Categories.OrderBy(c => c.Description).ToDictionaryAsync(c => c.CategoryId, c => c.Description);
 
             return View(viewModel);
         }
@@ -140,7 +140,7 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id:int}")]
-        public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Archived,Artists,Categories,Images")] ItemEditViewModel itemViewModel)
+        public async Task<ActionResult> Edit([Bind(Include = "ItemId,Reference,Title,Description,Date,UnveilingYear,UnveilingDetails,Statement,Material,Inscription,History,Notes,WebsiteURL,Height,Width,Depth,Diameter,SurfaceCondition,StructuralCondition,Address,Latitude,Longitude,Published,Artists,Categories,Images")] ItemEditViewModel itemViewModel)
         {
             if (!ModelState.IsValid) return View(itemViewModel);
 
@@ -169,7 +169,7 @@ namespace PublicArt.Web.Admin.Controllers
             item.Location = (itemViewModel.Latitude.HasValue && itemViewModel.Longitude.HasValue)
                 ? Geography.CreateFromLatLng(itemViewModel.Longitude.Value, itemViewModel.Latitude.Value)
                 : null;
-            item.Archived = itemViewModel.Archived;
+            item.Published = itemViewModel.Published;
 
             await _db.SaveChangesAsync();
 

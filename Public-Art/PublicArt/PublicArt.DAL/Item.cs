@@ -43,7 +43,7 @@ namespace PublicArt.DAL
         public string StructuralCondition { get; set; }
         public string Address { get; set; }
         public System.Data.Entity.Spatial.DbGeography Location { get; set; }
-        public bool Archived { get; set; }
+        public bool Published { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     

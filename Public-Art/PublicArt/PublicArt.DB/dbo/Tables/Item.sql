@@ -33,7 +33,7 @@ CREATE TABLE [dbo].[Item]
 ,   [Address]                   NVARCHAR(1000)      NULL
 ,   [Location]                  GEOGRAPHY           NULL
 
-,   [Archived]                  BIT                 NOT NULL                        CONSTRAINT [DF_Item_Deleted] DEFAULT (0)
+,   [Published]                  BIT                 NOT NULL                       CONSTRAINT [DF_Item_Published] DEFAULT (0)
 
 ,   [rowguid]                   UNIQUEIDENTIFIER    NOT NULL        ROWGUIDCOL      CONSTRAINT [DF_Item_rowguid] DEFAULT (NEWID())
 ,   [ModifiedDate]              DATETIME2           NOT NULL                        CONSTRAINT [DF_Item_ModifiedDate] DEFAULT (SYSDATETIME())
@@ -48,5 +48,5 @@ GO
 CREATE SPATIAL INDEX [SI_Item_Location] ON [dbo].[Item]([Location]) USING GEOGRAPHY_AUTO_GRID
 GO
 
-CREATE NONCLUSTERED INDEX [IX_Item_Archived] ON [dbo].[Item]([Archived]);
+CREATE NONCLUSTERED INDEX [IX_Item_Published] ON [dbo].[Item]([Published]) WHERE [Published] = 1;
 GO

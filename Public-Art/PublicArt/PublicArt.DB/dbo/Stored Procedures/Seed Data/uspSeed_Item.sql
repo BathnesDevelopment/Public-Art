@@ -784,7 +784,7 @@ WHEN NOT MATCHED BY TARGET THEN
     ,   [StructuralCondition]
     ,   [Address]            
     ,   [Location]           
-    ,   [Archived]     
+    ,   [Published]     
     )
     VALUES (
         [SOURCE].[Reference]          
@@ -852,7 +852,7 @@ AND NOT EXISTS ( SELECT
                  ,  [TARGET].[SurfaceCondition]
                  ,  [TARGET].[StructuralCondition]
                  ,  [TARGET].[Address]
-                 ,  [TARGET].[Archived] ) OR
+                 ,  [TARGET].[Published] ) OR
     -- Geography datatype cannot be used in implicit comparison
     ([TARGET].[Location].[STEquals]([SOURCE].[Location]) = 0 OR
      ([TARGET].[Location] IS NULL AND
@@ -881,7 +881,7 @@ AND NOT EXISTS ( SELECT
 ,   [StructuralCondition]   = [SOURCE].[StructuralCondition]
 ,   [Address]               = [SOURCE].[Address]            
 ,   [Location]              = [SOURCE].[Location]           
-,   [Archived]              = [SOURCE].[Archived]
+,   [Published]              = [SOURCE].[Archived]
 ,   [ModifiedDate]          = CURRENT_TIMESTAMP;
 
 RETURN 0;

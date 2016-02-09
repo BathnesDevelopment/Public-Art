@@ -63,7 +63,7 @@
           <Property Name="StructuralCondition" Type="nvarchar" MaxLength="1000" />
           <Property Name="Address" Type="nvarchar" MaxLength="1000" />
           <Property Name="Location" Type="geography" />
-          <Property Name="Archived" Type="bit" Nullable="false" />
+          <Property Name="Published" Type="bit" Nullable="false" />
           <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="datetime2" Precision="7" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
@@ -374,7 +374,7 @@
           <Property Name="StructuralCondition" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Location" Type="Geography" />
-          <Property Name="Archived" Type="Boolean" Nullable="false" />
+          <Property Name="Published" Type="Boolean" Nullable="false" />
           <Property Name="rowguid" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="7" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="ItemArtists" Relationship="PublicArtModel.FK_ItemArtist_ItemId_Item" FromRole="Item" ToRole="ItemArtist" />
@@ -506,9 +506,9 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="PublicArtModel.Item">
               <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="Published" ColumnName="Published" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="rowguid" ColumnName="rowguid" />
-                <ScalarProperty Name="Archived" ColumnName="Archived" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="StructuralCondition" ColumnName="StructuralCondition" />

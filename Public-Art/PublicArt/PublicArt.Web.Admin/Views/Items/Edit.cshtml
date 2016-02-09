@@ -23,24 +23,24 @@
             </div>
             <div id="imagePanelCollapse" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <table class="table table-condensed">
+                    @if (Model.Images.Any())
+                    {<table class="table table-condensed">
                         <colgroup>
                             <col class="col-sm-2">
                             <col class="col-sm-7">
                             <col class="col-sm-1">
                         </colgroup>
                         <tbody>
-                        @if (Model.Images.Any())
-                        {
                             @Html.EditorFor(x => x.Images)
-                        }
-                        else
-                        {
-                            <p class="text-center">No images uploaded yet...</p>
-                        }
                         </tbody>
                     </table>
+                    }
+                    else
+                    {
+                        <p class="text-center">No images uploaded yet...</p>
+                    }
                 </div>
+
             </div>
             <div class="panel-footer clearfix">
                 <div class="pull-right">
@@ -343,10 +343,10 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Archived, new {@class = "control-label col-md-2"})
+                @Html.LabelFor(model => model.Published, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
                     <div class="checkbox">
-                        @Html.CheckBoxFor(model => model.Archived, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_onstyle = "danger", data_offstyle = "info"})
+                        @Html.CheckBoxFor(model => model.Published, new {data_toggle = "toggle", data_on = "Yes", data_off = "No", data_onstyle = "success", data_offstyle = "danger"})
                     </div>
                 </div>
             </div>
