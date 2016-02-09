@@ -191,7 +191,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -221,7 +221,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.UnveilingDetails, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.UnveilingDetails, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.UnveilingDetails, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.UnveilingDetails, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -229,7 +229,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Statement, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Statement, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Statement, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Statement, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -237,7 +237,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Material, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Material, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Material, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Material, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -245,7 +245,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Inscription, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Inscription, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Inscription, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Inscription, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -253,7 +253,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.History, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.History, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.History, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.History, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -261,7 +261,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Notes, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Notes, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Notes, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Notes, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -324,7 +324,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.SurfaceCondition, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.SurfaceCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.SurfaceCondition, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.SurfaceCondition, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -332,7 +332,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.StructuralCondition, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.StructuralCondition, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.StructuralCondition, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.StructuralCondition, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -340,7 +340,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Address, new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control", @rows = 6}})
+                    @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control", @rows = 4}})
                     @Html.ValidationMessageFor(model => model.Address, "", new {@class = "text-danger"})
                 </div>
             </div>
@@ -358,13 +358,12 @@
     </div>
     <hr/>
     <div class="row">
-        <div class="col-md-2">
-            <div class="form-group">
-                @Html.ActionLink("Delete", "Delete", new {id = Model.ItemId}, new {@class = "btn btn-danger"})
+        <div class="col-xs-12 clearfix">
+            <div class="form-group pull-left">
+                @Html.ActionLink("Delete", "Delete", new { id = Model.ItemId }, new { @class = "btn btn-danger" })
             </div>
-        </div>
-        <div class="col-md-2 col-md-offset-8">
-            <div class="form-group">
+
+            <div class="form-group pull-right">
                 <button type="submit" class="btn btn-lg btn-success">Save</button>
             </div>
         </div>

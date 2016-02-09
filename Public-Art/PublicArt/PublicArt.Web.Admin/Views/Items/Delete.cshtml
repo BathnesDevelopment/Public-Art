@@ -1,11 +1,11 @@
 ﻿@model PublicArt.Web.Admin.ViewModels.ItemDeleteViewModel
 
 @{
-    ViewBag.Title = "Delete " + Model.Reference;
+    ViewBag.Title = Model.Reference;
 }
 
 <div class="jumbotron">
-    <h1>Delete @Model.Reference?</h1>
+    <h1>Deleting @Model.Reference</h1>
     <p>Are you sure you want to delete this?</p>
     @using (Html.BeginForm())
     {
@@ -22,15 +22,15 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6">
-        <div class="thumbnail">
-            @if (Model.PrimaryImage.HasValue)
-            {
-                <img src="@Url.Action("Image", "ItemImages", new {id = Model.PrimaryImage})" alt="Primary image" class="img-responsive"/>
-            }
-        </div>
-    </div>
     <div class="col-md-6">
-        <p>@Model.Description</p>
+        <p class="text-justify">@Model.Description</p>
     </div>
+    @if (Model.PrimaryImage.HasValue)
+    {
+        <div class="col-sm-6">
+            <div class="thumbnail">
+                <img src="@Url.Action("Image", "ItemImages", new {id = Model.PrimaryImage})" alt="Primary image" class="img-responsive"/>
+            </div>
+        </div>
+    }
 </div>
