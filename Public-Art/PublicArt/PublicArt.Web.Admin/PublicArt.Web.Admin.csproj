@@ -427,7 +427,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Artists\Create.cshtml" />
     <Content Include="Views\Artists\Delete.cshtml" />
-    <Content Include="Views\Artists\Details.cshtml" />
     <Content Include="Views\Artists\Edit.cshtml" />
     <Content Include="Views\Artists\Index.cshtml" />
     <Content Include="Views\Items\Create.cshtml" />

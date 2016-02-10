@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Util.Extensions;
@@ -20,33 +16,21 @@ namespace PublicArt.Web.Admin.Controllers
         // GET: Artists
         public ActionResult Index()
         {
-            var artistViewModels = _db.Artists.AsEnumerable().Select(a => new ArtistIndexViewModel
+            var artistViewModels = _db.Artists.OrderBy(a => a.Name).AsEnumerable().Select(a => new ArtistIndexViewModel
             {
                 ArtistId = a.ArtistId,
                 Name = a.Name,
                 WebsiteUrl = a.WebsiteURL,
                 WebsiteUrlShort = a.WebsiteURL?.TrimUrl(30),
-                Dates = (a.StartYear.HasValue || a.EndYear.HasValue) ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}" : null,
+                Dates =
+                    (a.StartYear.HasValue || a.EndYear.HasValue)
+                        ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}"
+                        : null,
                 BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography",
                 ItemsCount = a.ItemArtists.Count
             });
 
             return View(artistViewModels);
-        }
-
-        // GET: Artists/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Artist artist = await _db.Artists.FindAsync(id);
-            if (artist == null)
-            {
-                return HttpNotFound();
-            }
-            return View(artist);
         }
 
         // GET: Artists/Create
@@ -60,7 +44,8 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +64,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = await _db.Artists.FindAsync(id);
+            var artist = await _db.Artists.FindAsync(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -92,7 +77,8 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
+        public async Task<ActionResult> Edit(
+            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +96,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = await _db.Artists.FindAsync(id);
+            var artist = await _db.Artists.FindAsync(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -123,7 +109,7 @@ namespace PublicArt.Web.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Artist artist = await _db.Artists.FindAsync(id);
+            var artist = await _db.Artists.FindAsync(id);
             _db.Artists.Remove(artist);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");

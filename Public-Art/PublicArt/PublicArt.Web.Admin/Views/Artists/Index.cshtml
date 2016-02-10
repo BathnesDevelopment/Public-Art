@@ -7,7 +7,7 @@
 <div class="jumbotron">
     <h1>Artists</h1>
     <div class="btn-group" role="group">
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success", role = "button" })
+        @Html.ActionLink("Create New", "Create", null, new {@class = "btn btn-success", role = "button"})
     </div>
 </div>
 
@@ -20,7 +20,7 @@
                     <h3 class="panel-title">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         @artist.Name
-                        <a href="@Url.Action("Edit", new { id = artist.ArtistId})" class="pull-right" title="Edit this artist">
+                        <a href="@Url.Action("Edit", new {id = artist.ArtistId})" class="pull-right" title="Edit this artist">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
                     </h3>
@@ -32,10 +32,12 @@
                     </colgroup>
                     <tbody>
                     <tr>
-                        <th scope="row"><small>Items</small></th>
+                        <th scope="row">
+                            <small>Items</small>
+                        </th>
                         <td>
                             @artist.ItemsCount
-                            <a href="@Url.Action("Create", "Items", new { artistId = artist.ArtistId})" class="pull-right" title="Add new item">
+                            <a href="@Url.Action("Create", "Items", new {artistId = artist.ArtistId})" class="pull-right" title="Add new item">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </a>
                         </td>
@@ -43,21 +45,32 @@
                     @if (!string.IsNullOrWhiteSpace(artist.WebsiteUrl))
                     {
                         <tr>
-                            <th scope="row"><small>Website</small></th>
-                            <td><small><a href="@artist.WebsiteUrl" title="Artist's website">@artist.WebsiteUrlShort</a></small></td>
+                            <th scope="row">
+                                <small>Website</small>
+                            </th>
+                            <td>
+                                <small>
+                                    <a href="@artist.WebsiteUrl" title="Artist's website">@artist.WebsiteUrlShort</a>
+                                </small>
+                            </td>
                         </tr>
                     }
                     @if (!string.IsNullOrWhiteSpace(artist.Dates))
                     {
                         <tr>
-                            <th scope="row"><small>Dates</small></th>
-                            <td><small>@artist.Dates</small></td>
+                            <th scope="row">
+                                <small>Dates</small>
+                            </th>
+                            <td>
+                                <small>@artist.Dates</small>
+                            </td>
                         </tr>
                     }
                     </tbody>
                 </table>
                 <div class="panel-body">
-                    <p class="text-justify"><em>
+                    <p class="text-justify">
+                        <em>
                             @artist.BiographyShort
                         </em>
                     </p>

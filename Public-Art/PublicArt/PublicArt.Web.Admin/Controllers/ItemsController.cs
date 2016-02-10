@@ -41,9 +41,15 @@ namespace PublicArt.Web.Admin.Controllers
 
         // GET: Items/Create
         [Route("New")]
-        public ActionResult Create()
+        public async Task<ActionResult> Create(int? artistId)
         {
-            return View();
+            var itemViewModel = new ItemCreateViewModel
+            {
+                ArtistId = artistId,
+                ArtistsDictionary =
+                    await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name)
+            };
+            return View(itemViewModel);
         }
 
         // POST: Items/Create
@@ -53,12 +59,20 @@ namespace PublicArt.Web.Admin.Controllers
         [ValidateAntiForgeryToken]
         [Route("New")]
         public async Task<ActionResult> Create(
-            [Bind(Include = "Reference,Title,Description")] ItemCreateViewModel itemViewModel)
+            [Bind(Include = "Reference,Title,ArtistId,ArtistNotes,Description")] ItemCreateViewModel itemViewModel)
         {
             if (await _db.Items.AnyAsync(i => i.Reference == itemViewModel.Reference))
                 ModelState.AddModelError("Reference", "Item reference already exists.");
 
-            if (!ModelState.IsValid) return View(itemViewModel);
+            if (!await _db.Artists.AnyAsync((a => a.ArtistId == itemViewModel.ArtistId)))
+                ModelState.AddModelError("ArtistId", "Artist does not exist.");
+
+            if (!ModelState.IsValid)
+            {
+                itemViewModel.ArtistsDictionary =
+                    await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name);
+                return View(itemViewModel);
+            }
 
             var item = new Item
             {
@@ -67,6 +81,15 @@ namespace PublicArt.Web.Admin.Controllers
                 Description = itemViewModel.Description,
                 Published = false
             };
+
+            if (itemViewModel.ArtistId.HasValue)
+            {
+                item.ItemArtists.Add(new ItemArtist
+                {
+                    ArtistId = itemViewModel.ArtistId.Value,
+                    Notes = itemViewModel.ArtistNotes
+                });
+            }
 
             _db.Items.Add(item);
             await _db.SaveChangesAsync();
