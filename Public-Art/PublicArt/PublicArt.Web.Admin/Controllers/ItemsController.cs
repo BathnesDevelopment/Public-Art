@@ -40,7 +40,7 @@ namespace PublicArt.Web.Admin.Controllers
         }
 
         // GET: Items/Create
-        [Route("Create")]
+        [Route("New")]
         public ActionResult Create()
         {
             return View();
@@ -51,7 +51,7 @@ namespace PublicArt.Web.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Create")]
+        [Route("New")]
         public async Task<ActionResult> Create(
             [Bind(Include = "Reference,Title,Description")] ItemCreateViewModel itemViewModel)
         {
