@@ -93,3 +93,37 @@ textarea {
         opacity: 0.9;
         text-decoration: inherit;
     }
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .artist-row>.clear:nth-child(4n)::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .artist-row>.clear:nth-child(6n)::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+@media (min-width: 1200px) {
+    .artist-row>.clear:nth-child(8n)::before {  
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+.artist-panel .glyphicon-edit {
+    color: grey;
+}
+.artist-panel .glyphicon-edit:hover {
+    color: black;
+}
+.artist-panel .panel-heading {
+    background: linear-gradient(to top, rgba(245,245,245,0) 0%,rgba(245,245,245,1) 100%);
+}
+.artist-panel .panel-body {
+    background: linear-gradient(to bottom, rgba(245,245,245,0) 0%,rgba(245,245,245,1) 100%);
+}

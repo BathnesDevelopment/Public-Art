@@ -8,17 +8,29 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PublicArt.DAL;
+using PublicArt.Util.Extensions;
+using PublicArt.Web.Admin.ViewModels;
 
 namespace PublicArt.Web.Admin.Controllers
 {
     public class ArtistsController : Controller
     {
-        private PublicArtEntities db = new PublicArtEntities();
+        private readonly PublicArtEntities _db = new PublicArtEntities();
 
         // GET: Artists
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.Artists.ToListAsync());
+            var artistViewModels = _db.Artists.AsEnumerable().Select(a => new ArtistIndexViewModel
+            {
+                ArtistId = a.ArtistId,
+                Name = a.Name,
+                WebsiteUrl = a.WebsiteURL,
+                WebsiteUrlShort = a.WebsiteURL?.TrimUrl(30),
+                Dates = (a.StartYear.HasValue || a.EndYear.HasValue) ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}" : null,
+                BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography"
+            });
+
+            return View(artistViewModels);
         }
 
         // GET: Artists/Details/5
@@ -28,7 +40,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = await db.Artists.FindAsync(id);
+            Artist artist = await _db.Artists.FindAsync(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -51,8 +63,8 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Artists.Add(artist);
-                await db.SaveChangesAsync();
+                _db.Artists.Add(artist);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +78,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = await db.Artists.FindAsync(id);
+            Artist artist = await _db.Artists.FindAsync(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -83,8 +95,8 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(artist).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _db.Entry(artist).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(artist);
@@ -97,7 +109,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Artist artist = await db.Artists.FindAsync(id);
+            Artist artist = await _db.Artists.FindAsync(id);
             if (artist == null)
             {
                 return HttpNotFound();
@@ -110,9 +122,9 @@ namespace PublicArt.Web.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Artist artist = await db.Artists.FindAsync(id);
-            db.Artists.Remove(artist);
-            await db.SaveChangesAsync();
+            Artist artist = await _db.Artists.FindAsync(id);
+            _db.Artists.Remove(artist);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +132,7 @@ namespace PublicArt.Web.Admin.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
