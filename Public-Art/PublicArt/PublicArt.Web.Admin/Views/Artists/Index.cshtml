@@ -20,14 +20,26 @@
                     <h3 class="panel-title">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         @artist.Name
-                        <a href="@Url.Action("Edit", new {id = artist.ArtistId})" class="pull-right" title="Edit">
+                        <a href="@Url.Action("Edit", new { id = artist.ArtistId})" class="pull-right" title="Edit this artist">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
                     </h3>
                 </div>
                 <table class="table">
-                    <thead></thead>
+                    <colgroup>
+                        <col class="col-xs-3">
+                        <col class="col-xs-8">
+                    </colgroup>
                     <tbody>
+                    <tr>
+                        <th scope="row"><small>Items</small></th>
+                        <td>
+                            @artist.ItemsCount
+                            <a href="@Url.Action("Create", "Items", new { artistId = artist.ArtistId})" class="pull-right" title="Add new item">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
                     @if (!string.IsNullOrWhiteSpace(artist.WebsiteUrl))
                     {
                         <tr>

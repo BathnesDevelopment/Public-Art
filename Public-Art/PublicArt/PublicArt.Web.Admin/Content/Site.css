@@ -115,10 +115,10 @@ textarea {
       clear: both;
     }
 }
-.artist-panel .glyphicon-edit {
+.artist-panel .glyphicon {
     color: grey;
 }
-.artist-panel .glyphicon-edit:hover {
+.artist-panel .glyphicon:hover {
     color: black;
 }
 .artist-panel .panel-heading {

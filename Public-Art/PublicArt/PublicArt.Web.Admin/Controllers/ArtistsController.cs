@@ -27,7 +27,8 @@ namespace PublicArt.Web.Admin.Controllers
                 WebsiteUrl = a.WebsiteURL,
                 WebsiteUrlShort = a.WebsiteURL?.TrimUrl(30),
                 Dates = (a.StartYear.HasValue || a.EndYear.HasValue) ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}" : null,
-                BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography"
+                BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography",
+                ItemsCount = a.ItemArtists.Count
             });
 
             return View(artistViewModels);

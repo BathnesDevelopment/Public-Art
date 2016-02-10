@@ -18,5 +18,7 @@ namespace PublicArt.Web.Admin.ViewModels
         public string Dates { get; set; }
 
         public string BiographyShort { get; set; }
+
+        public int ItemsCount { get; set; }
     }
 }
