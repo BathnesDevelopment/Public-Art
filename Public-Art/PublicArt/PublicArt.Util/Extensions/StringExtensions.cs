@@ -43,7 +43,7 @@ namespace PublicArt.Util.Extensions
             // Step 4: Condense path
             var slashIndex1 = url.IndexOf("/", StringComparison.Ordinal);
             var slashIndex2 = url.LastIndexOf("/", StringComparison.Ordinal);
-            if (slashIndex1 < slashIndex2)
+            if (slashIndex1 < slashIndex2 && slashIndex2 - slashIndex1 > 3)
                 url = url.Replace(url.Substring(slashIndex1, slashIndex2 - slashIndex1), "/...");
             if (url.Length <= max) return url;
 
@@ -52,14 +52,10 @@ namespace PublicArt.Util.Extensions
             if (url.Length <= max) return url;
 
             // Step 6: Condense domain
-            var dotIndex1 = url.IndexOf(".", StringComparison.Ordinal) + 1;
-            var dotIndex2 = url.IndexOf(".", dotIndex1, StringComparison.Ordinal) - 1;
-            var charsToRemove = url.Length - max + 3;
-            if (dotIndex2 - dotIndex1 > 4 && dotIndex2 - dotIndex1 >= charsToRemove)
-            {
-                var mid = ((dotIndex2 - dotIndex1) / 2) + dotIndex1;
-                url = url.Substring(0, mid - (charsToRemove / 2)) + "..." + url.Substring(mid - (charsToRemove / 2) + charsToRemove);
-            }
+            var charsToRemove = (url.Length - max) + 3;
+            url = url.Substring(0, (url.Length / 2) - (charsToRemove / 2))
+                + "..."
+                + url.Substring((url.Length / 2) - (charsToRemove / 2) + charsToRemove);
             if (url.Length <= max) return url;
 
             throw new FormatException($"Unable to shorten URL to maximum limit ({max})");
