@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="ViewModels\ArtistCreateViewModel.cs" />
     <Compile Include="ViewModels\ArtistIndexViewModel.cs" />
     <Compile Include="ViewModels\ItemArtistCreateViewModel.cs" />
     <Compile Include="ViewModels\ItemCreateViewModel.cs" />

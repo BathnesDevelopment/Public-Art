@@ -14,7 +14,7 @@
 
     <div class="row">
         
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-1">
 
             <div class="form-horizontal">
 
@@ -47,11 +47,6 @@
                                 @Html.EditorFor(model => model.ArtistNotes, new { htmlAttributes = new { @class="form-control", placeholder = "Notes (optional)", autocomplete = "off" } })
                             </span>
                         </div>
-
-
-
-
-
                         @Html.ValidationMessageFor(model => model.ArtistId, "", new {@class = "text-danger"})
                     </div>
                 </div>
