@@ -2,8 +2,11 @@
 
 namespace PublicArt.Web.Admin.ViewModels
 {
-    public class ArtistCreateViewModel
+    public class ArtistEditViewModel
     {
+        [Key]
+        public int ArtistId { get; set; }
+
         [Display(Name = "Name")]
         [Required]
         [StringLength(300)]

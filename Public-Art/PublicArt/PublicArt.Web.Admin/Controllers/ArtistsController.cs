@@ -44,66 +44,97 @@ namespace PublicArt.Web.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
-            [Bind(Include = "Name,Biography,WebsiteURL,StartYear,EndYear")] Artist artist)
+            [Bind(Include = "Name,Biography,WebsiteURL,StartYear,EndYear")] ArtistCreateViewModel artistViewModel)
         {
-            // TODO: Use viewmodel
-            if (ModelState.IsValid)
-            {
-                _db.Artists.Add(artist);
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
 
-            return View(artist);
+            if (await _db.Artists.AnyAsync(a => a.Name.Equals(artistViewModel.Name)))
+                ModelState.AddModelError("Name", "An artist with this name already exists");
+
+            if (!ModelState.IsValid)
+                return View(artistViewModel);
+
+            var artist = new Artist
+            {
+                Name = artistViewModel.Name,
+                Biography = artistViewModel.Biography,
+                WebsiteURL = artistViewModel.WebsiteUrl,
+                StartYear = artistViewModel.StartYear,
+                EndYear = artistViewModel.EndYear
+            };
+
+            _db.Artists.Add(artist);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<ActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var artist = await _db.Artists.FindAsync(id);
-            if (artist == null)
+            if (artist == null) return HttpNotFound();
+
+            var artistViewModel = new ArtistEditViewModel
             {
-                return HttpNotFound();
-            }
-            return View(artist);
+                ArtistId = artist.ArtistId,
+                Name = artist.Name,
+                Biography = artist.Biography,
+                WebsiteUrl = artist.WebsiteURL,
+                StartYear = artist.StartYear,
+                EndYear = artist.EndYear
+            };
+
+            return View(artistViewModel);
         }
 
-        [Route("{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("{id:int}")]
         public async Task<ActionResult> Edit(
-            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear")] Artist artist)
+            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear")] ArtistEditViewModel artistViewModel)
         {
-            // TODO: Use viewmodel
-            if (ModelState.IsValid)
-            {
-                _db.Entry(artist).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(artist);
+            var artist = await _db.Artists.FindAsync(artistViewModel.ArtistId);
+
+            if (artist == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+
+            if (await _db.Artists.AnyAsync(a => a.Name.Equals(artistViewModel.Name) && a.ArtistId != artistViewModel.ArtistId))
+                ModelState.AddModelError("Name", "An artist with this name already exists");
+
+            if (!ModelState.IsValid) return View(artistViewModel);
+
+            // TODO: Implement automapper for viewmodels
+            artist.Name = artistViewModel.Name;
+            artist.Biography = artistViewModel.Biography;
+            artist.WebsiteURL = artistViewModel.WebsiteUrl;
+            artist.StartYear = artistViewModel.StartYear;
+            artist.EndYear = artistViewModel.EndYear;
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
-        [Route("{id}/Delete")]
+        [Route("{id:int}/Delete")]
         public async Task<ActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
             var artist = await _db.Artists.FindAsync(id);
-            if (artist == null)
+            if (artist == null) return HttpNotFound();
+
+            var artistViewModel = new ArtistDeleteViewModel
             {
-                return HttpNotFound();
-            }
-            return View(artist);
+                ArtistId = artist.ArtistId,
+                Name = artist.Name,
+                Biography = artist.Biography
+            };
+
+            return View(artistViewModel);
         }
 
-        [Route("{id}/Delete")]
+        [Route("{id:int}/Delete")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)

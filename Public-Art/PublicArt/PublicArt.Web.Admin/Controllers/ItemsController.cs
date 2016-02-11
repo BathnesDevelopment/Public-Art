@@ -64,7 +64,7 @@ namespace PublicArt.Web.Admin.Controllers
             if (await _db.Items.AnyAsync(i => i.Reference == itemViewModel.Reference))
                 ModelState.AddModelError("Reference", "Item reference already exists.");
 
-            if (!await _db.Artists.AnyAsync((a => a.ArtistId == itemViewModel.ArtistId)))
+            if (itemViewModel.ArtistId.HasValue && !await _db.Artists.AnyAsync((a => a.ArtistId == itemViewModel.ArtistId)))
                 ModelState.AddModelError("ArtistId", "Artist does not exist.");
 
             if (!ModelState.IsValid)
@@ -103,10 +103,7 @@ namespace PublicArt.Web.Admin.Controllers
         {
             var item = await _db.Items.FindAsync(id);
 
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
+            if (item == null) return HttpNotFound();
 
             var viewModel = new ItemEditViewModel
             {
@@ -154,9 +151,6 @@ namespace PublicArt.Web.Admin.Controllers
             return View(viewModel);
         }
 
-        // POST: Items/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("{id:int}")]
