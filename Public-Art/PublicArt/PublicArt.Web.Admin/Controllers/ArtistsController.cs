@@ -9,11 +9,12 @@ using PublicArt.Web.Admin.ViewModels;
 
 namespace PublicArt.Web.Admin.Controllers
 {
+    [RoutePrefix("Artists")]
     public class ArtistsController : Controller
     {
         private readonly PublicArtEntities _db = new PublicArtEntities();
 
-        // GET: Artists
+        [Route]
         public ActionResult Index()
         {
             var artistViewModels = _db.Artists.OrderBy(a => a.Name).AsEnumerable().Select(a => new ArtistIndexViewModel
@@ -33,20 +34,19 @@ namespace PublicArt.Web.Admin.Controllers
             return View(artistViewModels);
         }
 
-        // GET: Artists/Create
+        [Route("New")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Artists/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("New")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
-            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
+            [Bind(Include = "Name,Biography,WebsiteURL,StartYear,EndYear")] Artist artist)
         {
+            // TODO: Use viewmodel
             if (ModelState.IsValid)
             {
                 _db.Artists.Add(artist);
@@ -57,7 +57,7 @@ namespace PublicArt.Web.Admin.Controllers
             return View(artist);
         }
 
-        // GET: Artists/Edit/5
+        [Route("{id}")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,14 +72,13 @@ namespace PublicArt.Web.Admin.Controllers
             return View(artist);
         }
 
-        // POST: Artists/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(
-            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear,rowguid,ModifiedDate")] Artist artist)
+            [Bind(Include = "ArtistId,Name,Biography,WebsiteURL,StartYear,EndYear")] Artist artist)
         {
+            // TODO: Use viewmodel
             if (ModelState.IsValid)
             {
                 _db.Entry(artist).State = EntityState.Modified;
@@ -89,7 +88,7 @@ namespace PublicArt.Web.Admin.Controllers
             return View(artist);
         }
 
-        // GET: Artists/Delete/5
+        [Route("{id}/Delete")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -104,7 +103,7 @@ namespace PublicArt.Web.Admin.Controllers
             return View(artist);
         }
 
-        // POST: Artists/Delete/5
+        [Route("{id}/Delete")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
