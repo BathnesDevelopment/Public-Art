@@ -147,7 +147,7 @@ namespace PublicArt.Web.Admin.Controllers
                     Primary = i.Primary,
                     Caption = i.Caption
                 }),
-                ArtistDictionary =
+                ArtistsDictionary =
                     await _db.Artists.OrderBy(a => a.Name).ToDictionaryAsync(a => a.ArtistId, a => a.Name)
             };
 

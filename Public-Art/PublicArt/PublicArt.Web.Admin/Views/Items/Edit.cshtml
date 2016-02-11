@@ -94,13 +94,7 @@
                     <div class="form-inline">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                    <select class="form-control input-sm" id="newArtistId">
-                                        <option value="" disabled hidden selected>Artist...</option>
-                                        @foreach (var a in Model.ArtistDictionary)
-                                        {
-                                            <option value="@a.Key">@a.Value</option>
-                                        }
-                                    </select>
+                                    @Html.DropDownList("newArtistId", new SelectList(Model.ArtistsDictionary, "Key", "Value"), "Select artist...", new { @class = "form-control input-sm" })
                                 </span>
 
                             <span class="input-group-btn">
@@ -389,9 +383,6 @@
             init: function() {
                 Page.initHandlers();
                 Page.func.updatePrimaryButtons();
-                Page.ele.$newImageUpload.addClass('disabled');
-                Page.ele.$newArtistAdd.addClass('disabled');
-                Page.ele.$newCategoryAdd.addClass('disabled');
                 Page.ele.$imageThumbLink.featherlight();
                 Page.initLeaflet();
                 Page.initAutocomplete();
@@ -484,15 +475,15 @@
                 Page.ele.$newImageFile.on('change', function() {
                     if (this.files.length > 0) {
                         Page.imageFile = this.files[0];
-                        Page.ele.$newImageUpload.removeClass('disabled');
+                        Page.ele.$newImageUpload.prop('disabled', false);
                     } else {
                         Page.imageFile = null;
-                        Page.ele.$newImageUpload.addClass('disabled');
+                        Page.ele.$newImageUpload.prop('disabled', true);
                     }
-                });
+                }).triggerHandler('change');
 
                 Page.ele.$newImageUpload.click(function() {
-                    if (Page.ele.$newImageUpload.hasClass('disabled')) return false;
+                    if (Page.ele.$newImageUpload.prop('disabled')) return false;
 
                     var data = new FormData();
                     data.append('file', Page.imageFile);
@@ -534,15 +525,19 @@
                 });
 
                 Page.ele.$newArtistId.on('change', function() {
-                    if ($(this).val() !== '') {
-                        Page.ele.$newArtistAdd.removeClass('disabled');
+                    console.log(Page.ele.$newArtistId.val());
+                    if (Page.ele.$newArtistId.val() > 0) {
+                        Page.ele.$newArtistNotes.prop('disabled', false);
+                        Page.ele.$newArtistAdd.prop('disabled', false);
                     } else {
-                        Page.ele.$newArtistAdd.addClass('disabled');
+                        Page.ele.$newArtistNotes.val('');
+                        Page.ele.$newArtistNotes.prop('disabled', true);
+                        Page.ele.$newArtistAdd.prop('disabled', true);
                     }
-                });
+                }).triggerHandler('change');
 
                 Page.ele.$newArtistAdd.click(function() {
-                    if (Page.ele.$newArtistAdd.hasClass('disabled')) return false;
+                    if (Page.ele.$newArtistAdd.prop('disabled')) return false;
 
                     var data = new FormData();
                     data.append('ItemId', @Model.ItemId);
@@ -588,11 +583,11 @@
 
                 Page.ele.$newItemCategory.on('change keyup paste mouseup', function() {
                     if ($(this).val() !== '') {
-                        Page.ele.$newCategoryAdd.removeClass('disabled');
+                        Page.ele.$newCategoryAdd.prop('disabled', false);
                     } else {
-                        Page.ele.$newCategoryAdd.addClass('disabled');
+                        Page.ele.$newCategoryAdd.prop('disabled', true);
                     }
-                });
+                }).triggerHandler('change');
 
                 Page.ele.$newCategoryAdd.click(function() {
                     if (Page.ele.$newCategoryAdd.hasClass('disabled')) return false;

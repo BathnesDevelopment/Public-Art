@@ -41,7 +41,7 @@
                     <div class="col-md-10">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                @Html.DropDownListFor(model => model.ArtistId, new SelectList(Model.ArtistsDictionary, "Key", "Value"), new { @class = "form-control" })
+                                @Html.DropDownListFor(model => model.ArtistId, new SelectList(Model.ArtistsDictionary, "Key", "Value"), "Select artist...", new { @class = "form-control" })
                             </span>
                             <span class="input-group-btn">
                                 @Html.EditorFor(model => model.ArtistNotes, new { htmlAttributes = new { @class="form-control", placeholder = "Notes (optional)", autocomplete = "off" } })
@@ -74,4 +74,29 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var Page = {
+            init: function() {
+                Page.initHandlers();
+            },
+            ele: {
+                $inArtistId: $('#ArtistId'),
+                $inArtistNotes: $('#ArtistNotes')
+            },
+            initHandlers: function() {
+                Page.ele.$inArtistId.on('change', function() {
+                    if (Page.ele.$inArtistId.val() > 0) {
+                        Page.ele.$inArtistNotes.prop('disabled', false);
+                    } else {
+                        Page.ele.$inArtistNotes.val('');
+                        Page.ele.$inArtistNotes.prop('disabled', true);
+                    }
+                }).triggerHandler('change');
+            }
+        };
+
+        $().ready(function() {
+            Page.init();
+        });
+    </script>
 }
