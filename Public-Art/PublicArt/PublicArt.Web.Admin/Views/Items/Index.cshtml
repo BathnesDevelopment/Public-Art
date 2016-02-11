@@ -65,16 +65,14 @@
                 <td>
                     @foreach (var artist in item.Artists)
                     {
-                        @*Html.ActionLink(artist.Name, "Edit", "Artists", new {id = artist.ArtistId})*@
                         <p>
-                            <a href="#">@artist.Name</a> <small>@artist.Notes</small>
+                            <a href="@(Url.Action("Index", "Artists") + "#" + artist.ArtistId)">@artist.Name</a> <small>@artist.Notes</small>
                         </p>
                     }
                 </td>
                 <td>
                     @foreach (var cat in item.Categories)
                     {
-                        @*Html.ActionLink(cat.Value, "Index", "ItemCategories", new { CategoryId = cat.Key })*@
                         <span class="label label-default category-filter hover-pointer" data-category="@cat.Value">@cat.Value</span>
                     }
                 </td>

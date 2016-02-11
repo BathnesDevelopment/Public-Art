@@ -113,7 +113,9 @@ namespace PublicArt.Web.Admin.Controllers
 
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action("Index") + "#" + artist.ArtistId);
+
+            //return RedirectToAction("Index");
         }
 
         [Route("{id:int}/Delete")]

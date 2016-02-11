@@ -127,3 +127,14 @@ textarea {
 .artist-panel .panel-body {
     background: linear-gradient(to bottom, rgba(245,245,245,0) 0%,rgba(245,245,245,1) 100%);
 }
+
+.artistAnchor:target {
+    padding-top: 70px;
+    margin-top: -70px;
+}
+.artistAnchor:target .artist-panel .panel-heading {
+    background: linear-gradient(to top, rgba(186, 232, 186, 0) 0%,rgba(186, 232, 186, 1) 100%);
+}
+.artistAnchor:target .artist-panel .panel-body {
+    background: linear-gradient(to bottom, rgba(186, 232, 186, 0) 0%,rgba(186, 232, 186, 1) 100%);
+}
