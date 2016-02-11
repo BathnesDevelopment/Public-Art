@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Web.Admin.ViewModels;
@@ -19,7 +14,8 @@ namespace PublicArt.Web.Admin.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Create([Bind(Include = "ItemId,ArtistId,Notes")] ItemArtistCreateViewModel viewModel)
+        public async Task<ActionResult> Create(
+            [Bind(Include = "ItemId,ArtistId,Notes")] ItemArtistCreateViewModel viewModel)
         {
             var itemArtist = await db.ItemArtists.FindAsync(viewModel.ItemId, viewModel.ArtistId);
 
@@ -30,7 +26,7 @@ namespace PublicArt.Web.Admin.Controllers
 
             if (!(itemExists && artistExists)) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            itemArtist = new ItemArtist()
+            itemArtist = new ItemArtist
             {
                 ArtistId = viewModel.ArtistId,
                 ItemId = viewModel.ItemId,

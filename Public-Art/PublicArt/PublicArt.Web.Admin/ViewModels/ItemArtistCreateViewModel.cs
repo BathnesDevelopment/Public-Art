@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PublicArt.Web.Admin.ViewModels
+﻿namespace PublicArt.Web.Admin.ViewModels
 {
     public class ItemArtistCreateViewModel
     {

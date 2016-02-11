@@ -128,6 +128,5 @@ namespace PublicArt.Web.Admin.ViewModels
         public IEnumerable<ItemEditItemImageViewModel> Images { get; set; }
 
         public IDictionary<int, string> ArtistsDictionary { get; set; }
-
     }
 }

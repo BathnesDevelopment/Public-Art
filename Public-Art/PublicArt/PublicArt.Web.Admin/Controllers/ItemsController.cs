@@ -64,7 +64,8 @@ namespace PublicArt.Web.Admin.Controllers
             if (await _db.Items.AnyAsync(i => i.Reference == itemViewModel.Reference))
                 ModelState.AddModelError("Reference", "Item reference already exists.");
 
-            if (itemViewModel.ArtistId.HasValue && !await _db.Artists.AnyAsync((a => a.ArtistId == itemViewModel.ArtistId)))
+            if (itemViewModel.ArtistId.HasValue &&
+                !await _db.Artists.AnyAsync(a => a.ArtistId == itemViewModel.ArtistId))
                 ModelState.AddModelError("ArtistId", "Artist does not exist.");
 
             if (!ModelState.IsValid)

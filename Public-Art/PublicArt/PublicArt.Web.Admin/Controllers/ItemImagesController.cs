@@ -83,7 +83,7 @@ namespace PublicArt.Web.Admin.Controllers
             {
                 Item = item,
                 file_stream = bytes,
-                Primary = ! item.ItemImages.Any()
+                Primary = !item.ItemImages.Any()
             });
             await db.SaveChangesAsync();
 

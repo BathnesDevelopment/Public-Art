@@ -24,7 +24,7 @@ namespace PublicArt.Web.Admin.Controllers
                 WebsiteUrl = a.WebsiteURL,
                 WebsiteUrlShort = a.WebsiteURL?.TrimUrl(30),
                 Dates =
-                    (a.StartYear.HasValue || a.EndYear.HasValue)
+                    a.StartYear.HasValue || a.EndYear.HasValue
                         ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}"
                         : null,
                 BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography",
@@ -46,7 +46,6 @@ namespace PublicArt.Web.Admin.Controllers
         public async Task<ActionResult> Create(
             [Bind(Include = "Name,Biography,WebsiteURL,StartYear,EndYear")] ArtistCreateViewModel artistViewModel)
         {
-
             if (await _db.Artists.AnyAsync(a => a.Name.Equals(artistViewModel.Name)))
                 ModelState.AddModelError("Name", "An artist with this name already exists");
 
@@ -99,7 +98,10 @@ namespace PublicArt.Web.Admin.Controllers
 
             if (artist == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            if (await _db.Artists.AnyAsync(a => a.Name.Equals(artistViewModel.Name) && a.ArtistId != artistViewModel.ArtistId))
+            if (
+                await
+                    _db.Artists.AnyAsync(
+                        a => a.Name.Equals(artistViewModel.Name) && a.ArtistId != artistViewModel.ArtistId))
                 ModelState.AddModelError("Name", "An artist with this name already exists");
 
             if (!ModelState.IsValid) return View(artistViewModel);

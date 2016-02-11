@@ -7,7 +7,7 @@
 <div class="jumbotron">
     <h1>Catalogue Items</h1>
     <div class="btn-group" role="group">
-        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success", role = "button" })
+        @Html.ActionLink("Create New", "Create", null, new {@class = "btn btn-success", role = "button"})
         <button class="btn btn-default" href="#" role="button">Reset table filter</button>
     </div>
 </div>
@@ -38,56 +38,56 @@
     </thead>
     <tbody>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @if (item.ThumbnailGuid != Guid.Empty)
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @if (item.ThumbnailGuid != Guid.Empty)
                 {
-                        <a href="@Url.Action("Edit", new {id = item.ItemId})">
-                            <img src="@Url.Action("Thumb", "ItemImages", new {id = item.ThumbnailGuid, w = 100})" alt="@item.Reference" />
-                        </a>
-                    }
-                    else
-                    {
-                        <p>No Image</p>
-                    }
-                </td>
-                <td>
-                    @Html.ActionLink(item.Reference, "Edit", new { id = item.ItemId })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @foreach (var artist in item.Artists)
-                    {
-                        <p>
-                            <a href="@(Url.Action("Index", "Artists") + "#" + artist.ArtistId)">@artist.Name</a> <small>@artist.Notes</small>
-                        </p>
-                    }
-                </td>
-                <td>
-                    @foreach (var cat in item.Categories)
-                    {
-                        <span class="label label-default category-filter hover-pointer" data-category="@cat.Value">@cat.Value</span>
-                    }
-                </td>
-                <td>
-                    <small>@item.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")</small>
-                </td>
-            </tr>
-        }
+                    <a href="@Url.Action("Edit", new {id = item.ItemId})">
+                        <img src="@Url.Action("Thumb", "ItemImages", new {id = item.ThumbnailGuid, w = 100})" alt="@item.Reference"/>
+                    </a>
+                }
+                else
+                {
+                    <p>No Image</p>
+                }
+            </td>
+            <td>
+                @Html.ActionLink(item.Reference, "Edit", new {id = item.ItemId})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @foreach (var artist in item.Artists)
+                {
+                    <p>
+                        <a href="@(Url.Action("Index", "Artists") + "#" + artist.ArtistId)">@artist.Name</a> <small>@artist.Notes</small>
+                    </p>
+                }
+            </td>
+            <td>
+                @foreach (var cat in item.Categories)
+                {
+                    <span class="label label-default category-filter hover-pointer" data-category="@cat.Value">@cat.Value</span>
+                }
+            </td>
+            <td>
+                <small>@item.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss")</small>
+            </td>
+        </tr>
+    }
     </tbody>
 
 </table>
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var $ItemsTable = $('#ItemsTable').DataTable({
                 "stateSave": true,
                 "order": [[1, "asc"]],
@@ -96,14 +96,14 @@
                     { "width": "100px", "orderable": false, "searchable": false },
                     { "width": "80px" },
                     null,
-                    { "type": "num"},
+                    { "type": "num" },
                     { "orderable": false },
                     { "orderable": false },
                     { "width": "100px", "type": "date" }
                 ]
             });
 
-            $('#ItemsTable').on('click', '.category-filter', function () {
+            $('#ItemsTable').on('click', '.category-filter', function() {
                 var $this = $(this);
                 console.log('Filtering', $ItemsTable, 'on', $this.data('category'));
                 $ItemsTable.column([5]).search($this.data('category')).draw();

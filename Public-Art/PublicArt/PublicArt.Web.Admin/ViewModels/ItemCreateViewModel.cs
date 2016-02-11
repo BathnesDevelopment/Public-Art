@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using PublicArt.Util.DataAnnotations;
 
 namespace PublicArt.Web.Admin.ViewModels
@@ -19,7 +16,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Required]
         public string Title { get; set; }
 
-        [Display(Name="Artist")]
+        [Display(Name = "Artist")]
         public int? ArtistId { get; set; }
 
         [Display(Name = "Artist Notes")]
@@ -32,7 +29,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [DataType(DataType.MultilineText)]
         [Required]
         public string Description { get; set; }
-        
+
         public IDictionary<int, string> ArtistsDictionary { get; set; }
     }
 }

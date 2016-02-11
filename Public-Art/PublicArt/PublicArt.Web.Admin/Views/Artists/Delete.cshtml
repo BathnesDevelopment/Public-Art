@@ -11,7 +11,7 @@
     {
         @Html.AntiForgeryToken()
         <div class="btn-group btn-group-lg" role="group">
-            @Html.ActionLink("Cancel", "Edit", new { id = Model.ArtistId }, new { @class = "btn btn-default", role = "button" })
+            @Html.ActionLink("Cancel", "Edit", new {id = Model.ArtistId}, new {@class = "btn btn-default", role = "button"})
             <button type="submit" class="btn btn-danger">Delete</button>
         </div>
     }

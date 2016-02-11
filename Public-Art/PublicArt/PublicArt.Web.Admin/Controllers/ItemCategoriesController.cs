@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using PublicArt.DAL;
 
@@ -15,7 +11,7 @@ namespace PublicArt.Web.Admin.Controllers
     public class ItemCategoriesController : Controller
     {
         private readonly PublicArtEntities _db = new PublicArtEntities();
-        
+
         [HttpPost]
         [Route("Create")]
         public async Task<ActionResult> Create(int itemId, string categoryName)
@@ -30,7 +26,7 @@ namespace PublicArt.Web.Admin.Controllers
             if (category == null)
             {
                 // No category exists with this name so create it
-                category = new Category()
+                category = new Category
                 {
                     Description = categoryName
                 };
@@ -44,7 +40,7 @@ namespace PublicArt.Web.Admin.Controllers
             if (item.ItemCategories.Any(c => c.CategoryId == category.CategoryId))
                 return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 
-            var itemCategory = new ItemCategory()
+            var itemCategory = new ItemCategory
             {
                 ItemId = item.ItemId,
                 CategoryId = category.CategoryId

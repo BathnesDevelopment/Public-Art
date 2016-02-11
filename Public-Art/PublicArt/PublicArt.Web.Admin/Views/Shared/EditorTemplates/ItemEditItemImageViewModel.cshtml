@@ -3,18 +3,20 @@
 <tr>
     <td>
         <a href="@Url.Action("Image", "ItemImages", new {id = Model.stream_id})" class="imageThumbLink">
-            <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = Model.stream_id })" alt="@Model.Caption" />
+            <img class="img-responsive" src="@Url.Action("Thumb", "ItemImages", new {id = Model.stream_id})" alt="@Model.Caption"/>
         </a>
     </td>
     <td>
-        @Html.TextAreaFor(x => x.Caption, new { @class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
+        @Html.TextAreaFor(x => x.Caption, new {@class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
     </td>
     <td>
         @Html.HiddenFor(x => x.stream_id)
         @Html.HiddenFor(x => x.Primary)
-        <p><a class="btn btn-default btn-block ItemImagePrimary" data-controlid="@Html.IdFor(x => x.Primary)">Primary</a>
+        <p>
+            <a class="btn btn-default btn-block ItemImagePrimary" data-controlid="@Html.IdFor(x => x.Primary)">Primary</a>
         </p>
-        <p><a href="#" class="btn btn-danger btn-sm btn-block itemImageDelete" data-deleteuri="@Url.Action("Delete", "ItemImages", new {id = Model.stream_id})" role="button">Delete</a>
+        <p>
+            <a href="#" class="btn btn-danger btn-sm btn-block itemImageDelete" data-deleteuri="@Url.Action("Delete", "ItemImages", new {id = Model.stream_id})" role="button">Delete</a>
         </p>
     </td>
 </tr>
