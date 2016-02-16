@@ -1,4 +1,13 @@
-﻿CREATE PROCEDURE [dbo].[uspExportImages] (@path VARCHAR(220))
+﻿-- BUILD ACTION SET TO NONE
+
+/*
+    Name:           [dbo].[uspExportImages]
+    Author:         Chris Pickford
+    Created:        2016-02-16
+    Description:    Makes use of the ExportImageFile CLR function to export all images to disk.
+                    
+*/
+CREATE PROCEDURE [dbo].[uspExportImages] (@path VARCHAR(220))
 AS
 SET NOCOUNT ON;
 

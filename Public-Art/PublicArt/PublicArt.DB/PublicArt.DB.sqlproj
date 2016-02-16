@@ -103,7 +103,8 @@
     <Build Include="dbo\Triggers\TR_Item_Update.sql" />
     <Build Include="dbo\Triggers\TR_ImageThumbnail_Update.sql" />
     <Build Include="dbo\Stored Procedures\uspItemImage_SetPrimary.sql" />
-    <Build Include="dbo\Stored Procedures\uspExportImages.sql" />
+    <None Include="dbo\Stored Procedures\uspExportImages.sql" />
+    <Build Include="dbo\Stored Procedures\uspExportData.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
@@ -120,6 +121,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLR\ExportImageFile.cs" />
+    <None Include="CLR\ExportImageFile.cs" />
   </ItemGroup>
 </Project>

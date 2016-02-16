@@ -1,3 +1,5 @@
+// BUILD ACTION SET TO NONE
+
 using System;
 using System.Data.SqlTypes;
 using System.IO;
