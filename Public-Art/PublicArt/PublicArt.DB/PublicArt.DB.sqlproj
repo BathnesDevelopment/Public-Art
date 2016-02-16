@@ -27,6 +27,9 @@
     <FileStreamDirectoryName>PublicArt</FileStreamDirectoryName>
     <DacApplicationName>PublicArt</DacApplicationName>
     <DefaultFileStreamFilegroup>PublicArtImages</DefaultFileStreamFilegroup>
+    <TargetFrameworkProfile />
+    <PermissionSet>EXTERNAL_ACCESS</PermissionSet>
+    <Trustworthy>True</Trustworthy>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -72,6 +75,7 @@
     <Folder Include="Storage\Filegroups" />
     <Folder Include="dbo\Types" />
     <Folder Include="dbo\Triggers" />
+    <Folder Include="CLR" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
@@ -99,6 +103,7 @@
     <Build Include="dbo\Triggers\TR_Item_Update.sql" />
     <Build Include="dbo\Triggers\TR_ImageThumbnail_Update.sql" />
     <Build Include="dbo\Stored Procedures\uspItemImage_SetPrimary.sql" />
+    <Build Include="dbo\Stored Procedures\uspExportImages.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
@@ -108,5 +113,13 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CLR\ExportImageFile.cs" />
   </ItemGroup>
 </Project>
