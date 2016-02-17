@@ -5,7 +5,9 @@
     Description:    Flattens all data for export to CSV.
                     
 */
-CREATE PROCEDURE [dbo].[uspExportData]
+CREATE PROCEDURE [dbo].[uspExportData] (
+    @columnHeaders BIT = 0
+)
 AS
 SET NOCOUNT ON;
 
@@ -158,65 +160,129 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
                 [i1].[ItemId]
              )
     SELECT
+         [Reference] = 'Reference'
+        ,[Title] = 'Title'
+        ,[Description] = 'Description'
+        ,[Date] = 'Date'
+        ,[UnveilingYear] = 'UnveilingYear'
+        ,[UnveilingDetails] = 'UnveilingDetails'
+        ,[Statement] = 'Statement'
+        ,[Material] = 'Material'
+        ,[Inscription] = 'Inscription'
+        ,[History] = 'History'
+        ,[Notes] = 'Notes'
+        ,[WebsiteUrl] = 'WebsiteUrl'
+        ,[Height] = 'Height'
+        ,[Width] = 'Width'
+        ,[Depth] = 'Depth'
+        ,[Diameter] = 'Diameter'
+        ,[SurfaceCondition] = 'SurfaceCondition'
+        ,[StructuralCondition] = 'StructuralCondition'
+        ,[Address] = 'Address'
+        ,[Location] = 'Location'
+        ,[Lat] = 'Lat'
+        ,[Lng] = 'Lng'
+        ,[Categories] = 'Categories'
+        ,[Artist1_Name] = 'Artist1_Name'
+        ,[Artist1_Biography] = 'Artist1_Biography'
+        ,[Artist1_WebsiteUrl] = 'Artist1_WebsiteUrl'
+        ,[Artist1_StartYear] = 'Artist1_StartYear'
+        ,[Artist1_EndYear] = 'Artist1_EndYear'
+        ,[Artist1_Notes] = 'Artist1_Notes'
+        ,[Artist2_Name] = 'Artist2_Name'
+        ,[Artist2_Biography] = 'Artist2_Biography'
+        ,[Artist2_WebsiteUrl] = 'Artist2_WebsiteUrl'
+        ,[Artist2_StartYear] = 'Artist2_StartYear'
+        ,[Artist2_EndYear] = 'Artist2_EndYear'
+        ,[Artist2_Notes] = 'Artist2_Notes'
+        ,[Artist3_Name] = 'Artist3_Name'
+        ,[Artist3_Biography] = 'Artist3_Biography'
+        ,[Artist3_WebsiteUrl] = 'Artist3_WebsiteUrl'
+        ,[Artist3_StartYear] = 'Artist3_StartYear'
+        ,[Artist3_EndYear] = 'Artist3_EndYear'
+        ,[Artist3_Notes] = 'Artist3_Notes'
+        ,[Artist4_Name] = 'Artist4_Name'
+        ,[Artist4_Biography] = 'Artist4_Biography'
+        ,[Artist4_WebsiteUrl] = 'Artist4_WebsiteUrl'
+        ,[Artist4_StartYear] = 'Artist4_StartYear'
+        ,[Artist4_EndYear] = 'Artist4_EndYear'
+        ,[Artist4_Notes] = 'Artist4_Notes'
+        ,[Artist5_Name] = 'Artist5_Name'
+        ,[Artist5_Biography] = 'Artist5_Biography'
+        ,[Artist5_WebsiteUrl] = 'Artist5_WebsiteUrl'
+        ,[Artist5_StartYear] = 'Artist5_StartYear'
+        ,[Artist5_EndYear] = 'Artist5_EndYear'
+        ,[Artist5_Notes] = 'Artist5_Notes'
+        ,[Artist6_Name] = 'Artist6_Name'
+        ,[Artist6_Biography] = 'Artist6_Biography'
+        ,[Artist6_WebsiteUrl] = 'Artist6_WebsiteUrl'
+        ,[Artist6_StartYear] = 'Artist6_StartYear'
+        ,[Artist6_EndYear] = 'Artist6_EndYear'
+        ,[Artist6_Notes] = 'Artist6_Notes'
+        ,[ImageFileNames] = 'ImageFileNames'
+    WHERE @columnHeaders = 1
+    UNION ALL
+    SELECT
         [Reference] = [Reference]
-    ,   [Title] = [Title]
-    ,   [Description] = [Description]
-    ,   [Date] = [Date]
-    ,   [UnveilingYear] = [UnveilingYear]
-    ,   [UnveilingDetails] = [UnveilingDetails]
-    ,   [Statement] = [Statement]
-    ,   [Material] = [Material]
-    ,   [Inscription] = [Inscription]
-    ,   [History] = [History]
-    ,   [Notes] = [Notes]
+    ,   [Title] = [dbo].[fncEscapeText]([Title])
+    ,   [Description] = [dbo].[fncEscapeText]([Description])
+    ,   [Date] = CONVERT(CHAR(4), [Date])
+    ,   [UnveilingYear] = CONVERT(CHAR(4), [UnveilingYear])
+    ,   [UnveilingDetails] = [dbo].[fncEscapeText]([UnveilingDetails])
+    ,   [Statement] = [dbo].[fncEscapeText]([Statement])
+    ,   [Material] = [dbo].[fncEscapeText]([Material])
+    ,   [Inscription] = [dbo].[fncEscapeText]([Inscription])
+    ,   [History] = [dbo].[fncEscapeText]([History])
+    ,   [Notes] = [dbo].[fncEscapeText]([Notes])
     ,   [WebsiteUrl] = [WebsiteUrl]
-    ,   [Height] = [Height]
-    ,   [Width] = [Width]
-    ,   [Depth] = [Depth]
-    ,   [Diameter] = [Diameter]
-    ,   [SurfaceCondition] = [SurfaceCondition]
-    ,   [StructuralCondition] = [StructuralCondition]
-    ,   [Address] = [Address]
-    ,   [Lat] = [Location].[Lat]
-    ,   [Lng] = [Location].[Long]
+    ,   [Height] = CONVERT(VARCHAR(10), [Height])
+    ,   [Width] = CONVERT(VARCHAR(10), [Width])
+    ,   [Depth] = CONVERT(VARCHAR(10), [Depth])
+    ,   [Diameter] = CONVERT(VARCHAR(10), [Diameter])
+    ,   [SurfaceCondition] = [dbo].[fncEscapeText]([SurfaceCondition])
+    ,   [StructuralCondition] = [dbo].[fncEscapeText]([StructuralCondition])
+    ,   [Address] = [dbo].[fncEscapeText]([Address])
+    ,   [Location] = '(' + CONVERT(VARCHAR(16), [Location].[Lat]) + ',' + CONVERT(VARCHAR(16), [Location].[Long]) + ')'
+    ,   [Lat] = CONVERT(VARCHAR(16), [Location].[Lat])
+    ,   [Lng] = CONVERT(VARCHAR(16), [Location].[Long])
     ,   [Categories] = [CTE_ItemCategoryFlat].[Categories]
-    ,   [CTE_ItemArtistFlat].[Artist1_Name]
-    ,   [Artist1_Biography] = [CTE_ItemArtistFlat].[Artist1_Biography]
+    ,   [Artist1_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist1_Name])
+    ,   [Artist1_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist1_Biography])
     ,   [Artist1_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist1_WebsiteUrl]
-    ,   [Artist1_StartYear] = [CTE_ItemArtistFlat].[Artist1_StartYear]
-    ,   [Artist1_EndYear] = [CTE_ItemArtistFlat].[Artist1_EndYear]
-    ,   [Artist1_Notes] = [CTE_ItemArtistFlat].[Artist1_Notes]
-    ,   [Artist2_Name] = [CTE_ItemArtistFlat].[Artist2_Name]
-    ,   [Artist2_Biography] = [CTE_ItemArtistFlat].[Artist2_Biography]
+    ,   [Artist1_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist1_StartYear])
+    ,   [Artist1_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist1_EndYear])
+    ,   [Artist1_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist1_Notes])
+    ,   [Artist2_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist2_Name])
+    ,   [Artist2_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist2_Biography])
     ,   [Artist2_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist2_WebsiteUrl]
-    ,   [Artist2_StartYear] = [CTE_ItemArtistFlat].[Artist2_StartYear]
-    ,   [Artist2_EndYear] = [CTE_ItemArtistFlat].[Artist2_EndYear]
-    ,   [Artist2_Notes] = [CTE_ItemArtistFlat].[Artist2_Notes]
-    ,   [Artist3_Name] = [CTE_ItemArtistFlat].[Artist3_Name]
-    ,   [Artist3_Biography] = [CTE_ItemArtistFlat].[Artist3_Biography]
+    ,   [Artist2_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist2_StartYear])
+    ,   [Artist2_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist2_EndYear])
+    ,   [Artist2_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist2_Notes])
+    ,   [Artist3_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist3_Name])
+    ,   [Artist3_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist3_Biography])
     ,   [Artist3_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist3_WebsiteUrl]
-    ,   [Artist3_StartYear] = [CTE_ItemArtistFlat].[Artist3_StartYear]
-    ,   [Artist3_EndYear] = [CTE_ItemArtistFlat].[Artist3_EndYear]
-    ,   [Artist3_Notes] = [CTE_ItemArtistFlat].[Artist3_Notes]
-    ,   [Artist4_Name] = [CTE_ItemArtistFlat].[Artist4_Name]
-    ,   [Artist4_Biography] = [CTE_ItemArtistFlat].[Artist4_Biography]
+    ,   [Artist3_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist3_StartYear])
+    ,   [Artist3_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist3_EndYear])
+    ,   [Artist3_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist3_Notes])
+    ,   [Artist4_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist4_Name])
+    ,   [Artist4_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist4_Biography])
     ,   [Artist4_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist4_WebsiteUrl]
-    ,   [Artist4_StartYear] = [CTE_ItemArtistFlat].[Artist4_StartYear]
-    ,   [Artist4_EndYear] = [CTE_ItemArtistFlat].[Artist4_EndYear]
-    ,   [Artist4_Notes] = [CTE_ItemArtistFlat].[Artist4_Notes]
-    ,   [Artist5_Name] = [CTE_ItemArtistFlat].[Artist5_Name]
-    ,   [Artist5_Biography] = [CTE_ItemArtistFlat].[Artist5_Biography]
+    ,   [Artist4_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist4_StartYear])
+    ,   [Artist4_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist4_EndYear])
+    ,   [Artist4_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist4_Notes])
+    ,   [Artist5_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist5_Name])
+    ,   [Artist5_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist5_Biography])
     ,   [Artist5_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist5_WebsiteUrl]
-    ,   [Artist5_StartYear] = [CTE_ItemArtistFlat].[Artist5_StartYear]
-    ,   [Artist5_EndYear] = [CTE_ItemArtistFlat].[Artist5_EndYear]
-    ,   [Artist5_Notes] = [CTE_ItemArtistFlat].[Artist5_Notes]
-    ,   [Artist6_Name] = [CTE_ItemArtistFlat].[Artist6_Name]
-    ,   [Artist6_Biography] = [CTE_ItemArtistFlat].[Artist6_Biography]
+    ,   [Artist5_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist5_StartYear])
+    ,   [Artist5_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist5_EndYear])
+    ,   [Artist5_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist5_Notes])
+    ,   [Artist6_Name] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist6_Name])
+    ,   [Artist6_Biography] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist6_Biography])
     ,   [Artist6_WebsiteUrl] = [CTE_ItemArtistFlat].[Artist6_WebsiteUrl]
-    ,   [Artist6_StartYear] = [CTE_ItemArtistFlat].[Artist6_StartYear]
-    ,   [Artist6_EndYear] = [CTE_ItemArtistFlat].[Artist6_EndYear]
-    ,   [Artist6_Notes] = [CTE_ItemArtistFlat].[Artist6_Notes]
-    ,   [CTE_ItemImageFlat].[ImageFileNames]
+    ,   [Artist6_StartYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist6_StartYear])
+    ,   [Artist6_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist6_EndYear])
+    ,   [Artist6_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist6_Notes])
+    ,   [ImageFileNames] = [CTE_ItemImageFlat].[ImageFileNames]
     FROM
         [dbo].[Item]
     LEFT JOIN [CTE_ItemCategoryFlat]

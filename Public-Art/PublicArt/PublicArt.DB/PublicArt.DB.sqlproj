@@ -76,6 +76,7 @@
     <Folder Include="dbo\Types" />
     <Folder Include="dbo\Triggers" />
     <Folder Include="CLR" />
+    <Folder Include="dbo\Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Item.sql" />
@@ -105,6 +106,7 @@
     <Build Include="dbo\Stored Procedures\uspItemImage_SetPrimary.sql" />
     <None Include="dbo\Stored Procedures\uspExportImages.sql" />
     <Build Include="dbo\Stored Procedures\uspExportData.sql" />
+    <Build Include="dbo\Functions\fncEscapeText.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="PublicArt.DB.refactorlog" />
