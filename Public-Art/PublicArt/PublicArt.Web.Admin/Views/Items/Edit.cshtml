@@ -424,16 +424,16 @@
                 roundToDP: function(i, d) {
                     return Math.round(i * Math.pow(10, d)) / Math.pow(10, d);
                 },
-                getLatLngFromInput() {
+                getLatLngFromInput: function() {
                     if (Page.ele.$inLatitude.val() && Page.ele.$inLongitude.val())
                         return [Page.ele.$inLatitude.val(), Page.ele.$inLongitude.val()];
                     return false;
                 },
-                setInputFromLatLng(latLng) {
+                setInputFromLatLng: function(latLng) {
                     Page.ele.$inLatitude.val(Page.func.roundToDP(latLng.lat, 6));
                     Page.ele.$inLongitude.val(Page.func.roundToDP(latLng.lng, 6));
                 },
-                createMarker(latLng) {
+                createMarker: function(latLng) {
                     console.log('creating marker at:', latLng);
                     Page.marker = L.marker(latLng, {
                         icon: L.icon({
@@ -450,7 +450,7 @@
                         Page.func.setInputFromLatLng(this.getLatLng());
                     });
                 },
-                removeMarker() {
+                removeMarker: function() {
                     Page.map.removeLayer(Page.marker);
                     Page.ele.$inLatitude.val('');
                     Page.ele.$inLongitude.val('');
