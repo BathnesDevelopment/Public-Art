@@ -128,15 +128,15 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
               LEFT JOIN [dbo].[Artist] AS [Artist1]
                 ON [Artist1].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
               LEFT JOIN [dbo].[Artist] AS [Artist2]
-                ON [Artist2].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
+                ON [Artist2].[ArtistId] = [CTE_ItemArtistIds].[ArtistId2]
               LEFT JOIN [dbo].[Artist] AS [Artist3]
-                ON [Artist3].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
+                ON [Artist3].[ArtistId] = [CTE_ItemArtistIds].[ArtistId3]
               LEFT JOIN [dbo].[Artist] AS [Artist4]
-                ON [Artist4].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
+                ON [Artist4].[ArtistId] = [CTE_ItemArtistIds].[ArtistId4]
               LEFT JOIN [dbo].[Artist] AS [Artist5]
-                ON [Artist5].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
+                ON [Artist5].[ArtistId] = [CTE_ItemArtistIds].[ArtistId5]
               LEFT JOIN [dbo].[Artist] AS [Artist6]
-                ON [Artist6].[ArtistId] = [CTE_ItemArtistIds].[ArtistId1]
+                ON [Artist6].[ArtistId] = [CTE_ItemArtistIds].[ArtistId6]
              ),
         [CTE_ItemImageFlat]([ItemId], [ImageFileNames])
           AS (SELECT
