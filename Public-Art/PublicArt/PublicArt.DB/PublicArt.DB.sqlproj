@@ -35,7 +35,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="localhost.publish.xml" />
+    <None Include="Release.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
@@ -125,4 +126,7 @@
   <ItemGroup>
     <None Include="CLR\ExportImageFile.cs" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" xcopy "$(TargetDir)*.*" "D:\DEPLOY\PublicArt\Database\" /E /Y /C</PostBuildEvent>
+  </PropertyGroup>
 </Project>
