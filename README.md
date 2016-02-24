@@ -3,7 +3,7 @@ Cataloguing the public artworks around the Bath & North East Somerset region.
 
 This project is split into multiple sections, detailed below:
 
-## Public-Art Admin
+## [Public-Art Admin](Public-Art/PublicArt)
 
 An ASP.NET MVC website and SQL database used to manage the artworks data internally.
 The data is flattened daily and published to the [Bath: Hacked](http://www.bathhacked.org/) Data Store for public consumption.
@@ -14,6 +14,6 @@ The data is flattened daily and published to the [Bath: Hacked](http://www.bathh
 
 Community developed website using the Public-Art data from the [Bath: Hacked](http://www.bathhacked.org/) Data Store.
 
-## Scraping
+## [Scraping](Scraping)
 
 Python script to generate a csv of the public art data from the legacy drupal based website.
