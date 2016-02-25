@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using PublicArt.Util.DataAnnotations;
 
 namespace PublicArt.Web.Admin.ViewModels
@@ -23,6 +24,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Description")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         [Required]
         public string Description { get; set; }
 
@@ -37,31 +39,37 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Unveiling Details")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string UnveilingDetails { get; set; }
 
         [Display(Name = "Statement")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Statement { get; set; }
 
         [Display(Name = "Material")]
         [StringLength(1000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Material { get; set; }
 
         [Display(Name = "Inscription")]
         [StringLength(1000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Inscription { get; set; }
 
         [Display(Name = "History")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string History { get; set; }
 
         [Display(Name = "Notes")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Notes { get; set; }
 
         [Display(Name = "Website")]
@@ -89,11 +97,13 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Surface Condition")]
         [StringLength(2000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string SurfaceCondition { get; set; }
 
         [Display(Name = "Structural Condition")]
         [StringLength(2000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string StructuralCondition { get; set; }
 
         [Display(Name = "Address")]

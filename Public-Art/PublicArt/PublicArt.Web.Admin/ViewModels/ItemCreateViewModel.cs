@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using PublicArt.Util.DataAnnotations;
 
 namespace PublicArt.Web.Admin.ViewModels
@@ -27,6 +28,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Description")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         [Required]
         public string Description { get; set; }
 

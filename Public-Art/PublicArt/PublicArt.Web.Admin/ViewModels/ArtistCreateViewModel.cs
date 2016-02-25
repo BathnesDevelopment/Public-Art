@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace PublicArt.Web.Admin.ViewModels
 {
@@ -12,6 +13,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Biography")]
         [StringLength(4000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Biography { get; set; }
 
         [Display(Name = "Website")]
