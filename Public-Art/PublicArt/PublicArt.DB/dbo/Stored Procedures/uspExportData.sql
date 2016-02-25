@@ -138,7 +138,7 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
               LEFT JOIN [dbo].[Artist] AS [Artist6]
                 ON [Artist6].[ArtistId] = [CTE_ItemArtistIds].[ArtistId6]
              ),
-        [CTE_ItemImageFlat]([ItemId], [ImageFileNames])
+        [CTE_ItemImageFlat]([ItemId], [ImageFileNames], [ImageCaptions])
           AS (SELECT
                 [ItemId] = [i1].[ItemId]
               , [ImageFileNames] = STUFF((SELECT
@@ -150,7 +150,19 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
                                           WHERE
                                             [i2].[ItemId] = [i1].[ItemId]
                                           ORDER BY
-                                            [i2].[Primary] DESC
+                                            [i2].[Primary] DESC, [i2].[stream_id]
+                                         FOR
+                                          XML PATH('')
+                                         ), 1, 1, '')
+              , [ImageCaptions] = STUFF((SELECT
+                                            '|' +
+                                            CONVERT(VARCHAR(40), [i2].[Caption])
+                                          FROM
+                                            [dbo].[ItemImage] [i2]
+                                          WHERE
+                                            [i2].[ItemId] = [i1].[ItemId]
+                                          ORDER BY
+                                            [i2].[Primary] DESC, [i2].[stream_id]
                                          FOR
                                           XML PATH('')
                                          ), 1, 1, '')
@@ -220,6 +232,7 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
         ,[Artist6_EndYear] = 'Artist6_EndYear'
         ,[Artist6_Notes] = 'Artist6_Notes'
         ,[ImageFileNames] = 'ImageFileNames'
+        ,[ImageCaptions] = 'ImageCaptions'
     WHERE @columnHeaders = 1
     UNION ALL
     SELECT
@@ -283,6 +296,7 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
     ,   [Artist6_EndYear] = CONVERT(CHAR(4), [CTE_ItemArtistFlat].[Artist6_EndYear])
     ,   [Artist6_Notes] = [dbo].[fncEscapeText]([CTE_ItemArtistFlat].[Artist6_Notes])
     ,   [ImageFileNames] = [CTE_ItemImageFlat].[ImageFileNames]
+    ,   [ImageCaptions] = [CTE_ItemImageFlat].[ImageCaptions]
     FROM
         [dbo].[Item]
     LEFT JOIN [CTE_ItemCategoryFlat]
