@@ -639,14 +639,27 @@
             },
             imageFile: null,
             initLeaflet: function() {
-                Page.map = L.map('leafletmap').setView([51.3712403, -2.4936262], 11);
+                Page.map = L.map('leafletmap');
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(Page.map);
 
+                $.ajax({
+                    url: "http://www.openstreetmap.org/api/0.6/relation/81941/full",
+                    dataType: "xml",
+                    success: function(xml) {
+                        var layer = new L.OSM.DataLayer(xml).addTo(Page.map);
+
+                        if (!Page.func.getLatLngFromInput()) {
+                            Page.map.fitBounds(layer.getBounds());
+                        }
+                    }
+                });
+
                 if (Page.func.getLatLngFromInput()) {
                     Page.func.createMarker(Page.func.getLatLngFromInput());
+                    Page.map.setView(Page.func.getLatLngFromInput(), 16);
                 } else {
                     Page.map.addOneTimeEventListener('click', function(e) {
                         Page.func.createMarker(e.latlng);

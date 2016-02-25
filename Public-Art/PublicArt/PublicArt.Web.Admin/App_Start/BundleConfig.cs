@@ -38,6 +38,7 @@ namespace PublicArt.Web.Admin
                 "~/Scripts/bootstrap-datepicker.min.js",
                 "~/Scripts/featherlight.min.js",
                 "~/Scripts/leaflet-0.7.3.min.js",
+                "~/Scripts/leaflet-osm.js",
                 "~/Scripts/jquery-ui.min.js"
                 ));
 
