@@ -66,6 +66,7 @@ textarea { resize: vertical; }
 .collapsable .panel-heading.collapsed h3:after { content: "\e080"; }
 
 #leafletmap { height: 300px; }
+#itemsMap { height: 500px; }
 
 #newArtistId { max-width: 140px; }
 
@@ -116,15 +117,15 @@ textarea { resize: vertical; }
 
 .artist-panel .glyphicon:hover { color: black; }
 
-.artist-panel .panel-heading { background: linear-gradient(to top, rgba(245, 245, 245, 0) 0%, rgba(245, 245, 245, 1) 100%); }
+.artist-panel .panel-heading { background: linear-gradient(to top, rgba(245, 245, 245, 0) 0, rgba(245, 245, 245, 1) 100%); }
 
-.artist-panel .panel-body { background: linear-gradient(to bottom, rgba(245, 245, 245, 0) 0%, rgba(245, 245, 245, 1) 100%); }
+.artist-panel .panel-body { background: linear-gradient(to bottom, rgba(245, 245, 245, 0) 0, rgba(245, 245, 245, 1) 100%); }
 
 .artistAnchor:target {
     margin-top: -70px;
     padding-top: 70px;
 }
 
-.artistAnchor:target .artist-panel .panel-heading { background: linear-gradient(to top, rgba(186, 232, 186, 0) 0%, rgba(186, 232, 186, 1) 100%); }
+.artistAnchor:target .artist-panel .panel-heading { background: linear-gradient(to top, rgba(186, 232, 186, 0) 0, rgba(186, 232, 186, 1) 100%); }
 
-.artistAnchor:target .artist-panel .panel-body { background: linear-gradient(to bottom, rgba(186, 232, 186, 0) 0%, rgba(186, 232, 186, 1) 100%); }
+.artistAnchor:target .artist-panel .panel-body { background: linear-gradient(to bottom, rgba(186, 232, 186, 0) 0, rgba(186, 232, 186, 1) 100%); }
