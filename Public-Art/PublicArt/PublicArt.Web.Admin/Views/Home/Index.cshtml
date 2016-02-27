@@ -59,6 +59,18 @@
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(Page.itemsMap);
 
+                $.ajax({
+                    url: "http://www.openstreetmap.org/api/0.6/relation/81941/full",
+                    dataType: "xml",
+                    success: function (xml) {
+                        var layer = new L.OSM.DataLayer(xml).addTo(Page.itemsMap);
+
+                        if (!Page.func.getLatLngFromInput()) {
+                            Page.itemsMap.fitBounds(layer.getBounds());
+                        }
+                    }
+                });
+
                 $.getJSON("@Url.Action("GetMapMarkers","Items")", function(data) {
                     $.each(data, function (key, val) {
                         var link = "@Url.Action("Edit", "Items", new { id = 0 })";
