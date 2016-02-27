@@ -240,6 +240,18 @@ namespace PublicArt.Web.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("MapMarkers.json")]
+        public async Task<ActionResult> GetMapMarkers()
+        {
+            var locations =
+                await
+                    _db.Items.Where(i => i.Location != null).Select(
+                        i => new {id = i.ItemId, title = i.Title, reference = i.Reference, lat = i.Location.Latitude, lon = i.Location.Longitude})
+                        .ToListAsync();
+
+            return Json(locations, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

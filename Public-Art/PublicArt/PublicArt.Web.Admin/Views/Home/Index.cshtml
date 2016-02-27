@@ -7,17 +7,82 @@
     <p class="lead">Manage the collection of public art items and their artists.</p>
 </div>
 
+<hr />
+
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-6 text-center">
         <h2>Items (@ViewBag.ItemCount)</h2>
         <p>
             <a class="btn btn-success" href="@Url.Action("Index", "Items")">Manage &raquo;</a>
         </p>
     </div>
-    <div class="col-sm-6">
-        <h2>Artists  (@ViewBag.ArtistCount)</h2>
+    <div class="col-sm-6 text-center">
+        <h2>Artists (@ViewBag.ArtistCount)</h2>
         <p>
             <a class="btn btn-success" href="@Url.Action("Index", "Artists")">Manage &raquo;</a>
         </p>
     </div>
 </div>
+
+<hr/>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default collapsable">
+            <div class="panel-heading" data-toggle="collapse" data-target="#itemsMapPanelCollapse">
+                <h3 class="panel-title">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Items Map
+                </h3>
+            </div>
+            <div id="itemsMapPanelCollapse" class="panel-collapse collapse in">
+                <div id="itemsMap"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var Page = {
+            init: function() {
+                Page.initLeaflet();
+            },
+            ele: {
+                $itemsMap: $('#itemsMap')
+            },
+            itemsMap: null,
+            initLeaflet: function() {
+                Page.itemsMap = L.map('itemsMap').setView([51.3712403, -2.4936262], 11);
+
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(Page.itemsMap);
+
+                $.getJSON("@Url.Action("GetMapMarkers","Items")", function(data) {
+                    $.each(data, function (key, val) {
+                        var link = "@Url.Action("Edit", "Items", new { id = 0 })";
+                        L.marker([val.lat, val.lon], {
+                            title: val.title,
+                            icon: L.icon({
+                                iconUrl: '/Content/images/marker-icon.png',
+                                shadowUrl: '/Content/images/marker-shadow.png',
+                                iconSize: [25, 41],
+                                iconAnchor: [12, 41],
+                                popupAnchor: [1, -34],
+                                shadowSize: [41, 41]
+                            })
+                        })
+                            .bindPopup("<h4>" + val.title + ' <small>' + val.reference + '</small></h4><a class="btn btn-success" style="color: #FFF" href="' + link.replace("0", val.id) + '">Edit item &raquo;</a>')
+                            .addTo(Page.itemsMap);
+                    });
+                });
+
+            }
+        };
+
+        $(document).ready(function() {
+            Page.init();
+        });
+    </script>
+}
