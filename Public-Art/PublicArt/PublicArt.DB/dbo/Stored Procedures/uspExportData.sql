@@ -255,7 +255,7 @@ WITH    [CTE_ItemCategory]([ItemId], [Description])
     ,   [SurfaceCondition] = [dbo].[fncEscapeText]([SurfaceCondition])
     ,   [StructuralCondition] = [dbo].[fncEscapeText]([StructuralCondition])
     ,   [Address] = [dbo].[fncEscapeText]([Address])
-    ,   [Location] = '(' + CONVERT(VARCHAR(16), [Location].[Lat]) + ',' + CONVERT(VARCHAR(16), [Location].[Long]) + ')'
+    ,   [Location] = '"(' + CONVERT(VARCHAR(16), [Location].[Lat]) + ',' + CONVERT(VARCHAR(16), [Location].[Long]) + ')"'
     ,   [Lat] = CONVERT(VARCHAR(16), [Location].[Lat])
     ,   [Lng] = CONVERT(VARCHAR(16), [Location].[Long])
     ,   [Categories] = [CTE_ItemCategoryFlat].[Categories]

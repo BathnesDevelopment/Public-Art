@@ -16,4 +16,3 @@ EXEC [dbo].[uspSeed_Item];
 
 EXEC [dbo].[uspSeed_ItemCategory];
 EXEC [dbo].[uspSeed_ItemArtist];
-EXEC [dbo].[uspSeed_ItemImage];
