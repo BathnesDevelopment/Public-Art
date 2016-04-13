@@ -1,19 +1,8 @@
-# Public Art Catalogue
+# Public Art Catalogue Admin
 Cataloguing the public artworks around the Bath & North East Somerset region.
 
-This project is split into multiple sections, detailed below:
-
-## [Public-Art Admin](Public-Art/PublicArt)
-
-An ASP.NET MVC website and SQL database used to manage the artworks data internally.
-The data is flattened daily and published to the [Bath: Hacked](http://www.bathhacked.org/) Data Store for public consumption.
-
-## Public-Art Website
-
-**TBC**
-
-Community developed website using the Public-Art data from the [Bath: Hacked](http://www.bathhacked.org/) Data Store.
-
-## [Scraping](Scraping)
-
-Python script to generate a csv of the public art data from the legacy drupal based website.
+The Public-Art admin interface solution is a Visual Studio solution comprised of the following projects:
+- [PublicArt.DAL](PublicArt.DAL) - Entity Framework 6 Data Access Layer. Contains domain models imported from the database.
+- [PublicArt.DB](PublicArt.DB) - SQL Server Data Tools (SSDT) project.
+- [PublicArt.Util](PublicArt.Util) - Various helper classes and extension methods.
+- [PublicArt.Web.Admin](PublicArt.Web.Admin) - ASP.NET MVC 5 project used to manage the public art data within the database.
