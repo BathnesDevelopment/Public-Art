@@ -145,8 +145,10 @@
                                 <button type="button" class="btn btn-success btn-sm" id="newCategoryAdd">Add</button>
                             </span>
                         </div>
+                        
                     </div>
                 </div>
+                <span class="help-block">Please save existing work before modifying item categories.</span>
             </div>
         </div>
 
@@ -590,13 +592,15 @@
                 }).triggerHandler('change');
 
                 Page.ele.$newCategoryAdd.click(function() {
-                    if (Page.ele.$newCategoryAdd.hasClass('disabled')) return false;
 
-                    var data = new FormData();
-                    data.append('itemId', @Model.ItemId);
-                    data.append('categoryName', Page.ele.$newItemCategory.val());
+                    if (confirm('Please note, adding categories will lose current outstanding changes.  Please make sure you have saved work before adding categories. (Cancel if you need to do this first).')) {
+                        if (Page.ele.$newCategoryAdd.hasClass('disabled')) return false;
 
-                    $.ajax({
+                        var data = new FormData();
+                        data.append('itemId', @Model.ItemId);
+                        data.append('categoryName', Page.ele.$newItemCategory.val());
+
+                        $.ajax({
                             url: '@Url.Action("Create", "ItemCategories")',
                             type: 'POST',
                             data: data,
@@ -604,16 +608,18 @@
                             processData: false,
                             contentType: false
                         })
-                        .done(function() {
-                            location.reload(true);
-                        })
-                        .fail(function(jqXhr, textStatus, errorThrown) {
-                            alert('Add ItemCategory failed!');
-                            console.log('failed');
-                            console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
-                        });
-
-                    return true;
+                            .done(function() {
+                                location.reload(true);
+                            })
+                            .fail(function(jqXhr, textStatus, errorThrown) {
+                                alert('Add ItemCategory failed!');
+                                console.log('failed');
+                                console.log('jqXHR:', jqXhr, 'textStatus:', textStatus, 'errorThrown:', errorThrown);
+                            });
+                        return true;
+                    } else {
+                        return false;
+                    }
                 });
 
                 Page.ele.$itemCategoryDelete.click(function() {

@@ -1,4 +1,6 @@
-﻿namespace PublicArt.Web.Admin.ViewModels
+﻿using System.Collections.Generic;
+
+namespace PublicArt.Web.Admin.ViewModels
 {
     public class ArtistIndexViewModel
     {
@@ -15,5 +17,7 @@
         public string BiographyShort { get; set; }
 
         public int ItemsCount { get; set; }
+
+        public Dictionary<int, string> Items { get; set; }
     }
 }

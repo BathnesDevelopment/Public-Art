@@ -109,6 +109,7 @@ namespace PublicArt.Web.Admin.ViewModels
         [Display(Name = "Address")]
         [StringLength(2000)]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Address { get; set; }
 
         [Display(Name = "Latitude")]

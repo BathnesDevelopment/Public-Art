@@ -27,7 +27,7 @@ namespace PublicArt.Web.Admin
                 ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                "~/Content/bootstrap.min.css",
+                "~/Content/bootswatch/lumen/bootstrap.min.css",
                 "~/Content/site.css"
                 ));
 

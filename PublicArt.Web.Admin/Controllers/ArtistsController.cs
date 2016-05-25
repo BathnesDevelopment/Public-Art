@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using PublicArt.DAL;
 using PublicArt.Util.Extensions;
 using PublicArt.Web.Admin.ViewModels;
+using System.Collections.Generic;
 
 namespace PublicArt.Web.Admin.Controllers
 {
@@ -28,7 +29,10 @@ namespace PublicArt.Web.Admin.Controllers
                         ? $"{a.StartYear?.ToString() ?? "?"}-{a.EndYear?.ToString() ?? "?"}"
                         : null,
                 BiographyShort = a.Biography?.ShortenIfTooLong(150) ?? "No biography",
-                ItemsCount = a.ItemArtists.Count
+                ItemsCount = a.ItemArtists.Count,
+                Items = a.ItemArtists.ToDictionary(
+                        xa => xa.ItemId, xb => xb.Item.Title 
+                    )
             });
 
             return View(artistViewModels);

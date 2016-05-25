@@ -7,7 +7,7 @@
         </a>
     </td>
     <td>
-        @Html.TextAreaFor(x => x.Caption, new {@class = "ItemImageCaptionTextArea", placeholder = "Caption (optional)"})
+        @Html.TextAreaFor(x => x.Caption, new {@class = "ItemImageCaptionTextArea form-control", @rows = 4, placeholder = "Caption (optional)"})
     </td>
     <td>
         @Html.HiddenFor(x => x.stream_id)

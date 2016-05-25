@@ -24,17 +24,17 @@
     </div>
 </div>
 
-<hr/>
+<hr />
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="panel panel-default collapsable">
-            <div class="panel-heading" data-toggle="collapse" data-target="#itemsMapPanelCollapse">
+        <div class="panel panel-info collapsable">
+            <div class="panel-heading">
                 <h3 class="panel-title">
                     <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Items Map
                 </h3>
             </div>
-            <div id="itemsMapPanelCollapse" class="panel-collapse collapse in">
+            <div id="itemsMapPanelCollapse" class="">
                 <div id="itemsMap"></div>
             </div>
         </div>
@@ -44,14 +44,14 @@
 @section Scripts {
     <script>
         var Page = {
-            init: function() {
+            init: function () {
                 Page.initLeaflet();
             },
             ele: {
                 $itemsMap: $('#itemsMap')
             },
             itemsMap: null,
-            initLeaflet: function() {
+            initLeaflet: function () {
                 Page.itemsMap = L.map('itemsMap').setView([51.3712403, -2.4936262], 11);
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,13 +65,13 @@
                     success: function (xml) {
                         var layer = new L.OSM.DataLayer(xml).addTo(Page.itemsMap);
 
-                        if (!Page.func.getLatLngFromInput()) {
+                        if (Page.func && !Page.func.getLatLngFromInput()) {
                             Page.itemsMap.fitBounds(layer.getBounds());
                         }
                     }
                 });
 
-                $.getJSON("@Url.Action("GetMapMarkers","Items")", function(data) {
+                $.getJSON("@Url.Action("GetMapMarkers","Items")", function (data) {
                     $.each(data, function (key, val) {
                         var link = "@Url.Action("Edit", "Items", new { id = 0 })";
                         L.marker([val.lat, val.lon], {
@@ -93,7 +93,7 @@
             }
         };
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             Page.init();
         });
     </script>

@@ -42,6 +42,11 @@
                             </a>
                         </td>
                     </tr>
+                    @foreach (var item in artist.Items)
+                    {
+                        <tr><td colspan="2"><a href="@Url.Action("Edit", "Items", new { id = @item.Key })" title="Edit @item.Value">@item.Value</a></td></tr>
+
+                    }
                     @if (!string.IsNullOrWhiteSpace(artist.WebsiteUrl))
                     {
                         <tr>
